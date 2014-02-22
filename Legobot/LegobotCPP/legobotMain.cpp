@@ -1,5 +1,8 @@
 #include <iostream>
 #include <kovan/motors.hpp>
+
+#include "legobotFunctions.cpp"
+
 using namespace std;
 
 int main(int argc, char *argv[])
