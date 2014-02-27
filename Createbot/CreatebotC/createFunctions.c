@@ -13,6 +13,12 @@ void createInit() {
 	msleep(500);
 }
 
+void initActuators() {
+	set_servo_position(UPPER_CLAW, UPPER_CLAW_OPEN);
+	set_servo_position(LOWER_CLAW, LOWER_CLAW_OPEN);
+	enable_servos();
+}
+
 //----- ARM ------
 void raiseArm(int position) {
 	clear_motor_position_counter(ARM_PORT);
@@ -21,7 +27,9 @@ void raiseArm(int position) {
 		motor(ARM_PORT, 70);
 		msleep(100);
 	}
+	off(ARM_PORT);
 }
+
 void lowerArm(int position) {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) > position) {
@@ -29,6 +37,16 @@ void lowerArm(int position) {
 		motor(ARM_PORT, -70);
 		msleep(100);
 	}
+	off(ARM_PORT);
+}
+
+void lowerArmBySensor() {
+	motor(ARM_PORT, -30);
+	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
+		msleep(100);
+	}
+	msleep(300);
+	off(ARM_PORT);
 }
 
 //------ CREATE MOVEMENT-----

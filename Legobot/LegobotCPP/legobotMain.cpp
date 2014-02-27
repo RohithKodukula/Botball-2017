@@ -28,16 +28,33 @@ int main(int argc, char *argv[])
 	Motor lWheel(1);
 	Motor rWheel(3);
 	
+//	Servo disturber(2);
+	Servo dumper(3);
+	dumper.setPosition(2000);
+//	disturber.setPosition(700);
+//	disturber.enable();
+	dumper.enable();
+	
+	/*rWheel.motor(60);
+	lWheel.motor(-65);
+	spinner.moveAtVelocity(700);
+	
+	long time = systime();
+	
+	while (systime() - time < 7500) {
+		msleep(500);
+	}
+	*/
+	
 	rWheel.motor(60);
-	lWheel.motor(-60);
-	spinner.moveAtVelocity(600);
-	
-	for (int i = 0; i < 100; i++) {
-		cout << spinner.getPosition() << endl;
-	};	
-	
-	sleep(5);
-	cout << spinner.getPosition() << endl;
+	lWheel.motor(60);
+	rWheel.off();
+	lWheel.off();
+	spinner.off();
+	msleep(500);
+	dumper.setPosition(900);
+	msleep(500);
+	//cout << spinner.getPosition() << endl;
 	return 0;
 }
 
