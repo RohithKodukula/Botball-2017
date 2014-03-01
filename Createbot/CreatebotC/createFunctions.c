@@ -58,15 +58,20 @@ void createStop() {
 }
 void moveToDist(int dist, int speed) { 
 	set_create_distance(0); 
+	
+	//speed distance compensation
+	if(speed >= 400){dist = dist - (22 * (dist * 0.01));} //fast speed
+	else if(speed > 300 && speed < 400){dist = dist - (8 * (dist * 0.01));} //mid speed
+	else if(speed <= 300){dist = dist - (6 * (dist * 0.01));} //slow speed
 
 	if (dist > 0) {   
 		moveStraight(speed); 
-		while (-get_create_distance() < dist) { msleep(50); }
+		while (-get_create_distance() < dist) { msleep(10); }
 	}
 	
 	else if (dist < 0) { 
 		moveStraight(-speed); 
-		while (-get_create_distance() > dist) { msleep(50); }
+		while (-get_create_distance() > dist) { msleep(10); }
 	}
 	
 	createStop();
@@ -77,6 +82,11 @@ void moveToDist(int dist, int speed) {
 //0 to 359 degrees
 void rotate(int degrees, int speed) {
 	set_create_normalized_angle(0);
+	
+	//speed degree compensation
+	if(speed >= 200){degrees = degrees - (2.6 * (degrees * 0.1));} //fast speed
+	//else if(speed > 40 && speed < 200){degrees = degrees;} //mid speed
+	else if(speed <= 40){degrees = degrees - (1.1 * (degrees * 0.1));} //slow speed
 	
 	//printf("rotating %d degrees at speed %d\n", degrees, speed);
 	

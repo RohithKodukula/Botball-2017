@@ -21,6 +21,11 @@ const int TURN_SLOW_SPEED;
 const int TURN_MID_SPEED;
 const int TURN_FAST_SPEED;
 
+//move speeds
+const int MOVE_SLOW_SPEED;
+const int MOVE_MID_SPEED;
+const int MOVE_FAST_SPEED;
+
 //power levels
 const int ARM_POWER;
 

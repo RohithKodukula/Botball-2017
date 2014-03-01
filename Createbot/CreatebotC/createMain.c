@@ -41,10 +41,9 @@ int main() {
 	createInit();
 	initActuators();
 	
-	printf("rotating\n");
-	rotate(-90, TURN_SLOW_SPEED);
-	rotate(90, TURN_MID_SPEED);
-	//rotate(-90, TURN_FAST_SPEED);
+	rotate(90, TURN_FAST_SPEED);
+	
+	//moveToDist(50 * 10, MOVE_MID_SPEED);
 	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);

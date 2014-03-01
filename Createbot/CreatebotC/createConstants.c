@@ -17,6 +17,10 @@ const int TURN_SLOW_SPEED = 20;
 const int TURN_MID_SPEED = 50;
 const int TURN_FAST_SPEED = 300;
 
+//move speeds
+const int MOVE_SLOW_SPEED = 100;
+const int MOVE_MID_SPEED = 300;
+const int MOVE_FAST_SPEED = 450;
 
 //power levels
 const int ARM_POWER = 70;
