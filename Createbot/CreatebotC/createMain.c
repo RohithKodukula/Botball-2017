@@ -40,9 +40,15 @@ int main() {
 	
 	createInit();
 	initActuators();
+	
+	printf("rotating\n");
+	rotate(-90, TURN_SLOW_SPEED);
+	rotate(90, TURN_MID_SPEED);
+	//rotate(-90, TURN_FAST_SPEED);
+	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);
-	printf("Press A to move, B to enter testing utility, C to end");
+	/*printf("Press A to move, B to enter testing utility, C to end");
 	while (!c_button()) {
 		if (a_button()) {
 			moveToDist(10,400);
@@ -52,7 +58,7 @@ int main() {
 			testingUtility();
 		}
 		msleep(100);
-	}
+	}*/
 	
 	return 0;
 }

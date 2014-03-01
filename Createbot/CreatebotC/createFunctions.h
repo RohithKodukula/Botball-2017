@@ -12,5 +12,7 @@ void lowerArm(int position);
 void moveStraight(int vel);
 void createStop();
 void moveToDist(int dist, int speed);
+void rotate(int degrees, int speed);
+
 
 # endif

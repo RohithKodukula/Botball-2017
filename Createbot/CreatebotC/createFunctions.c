@@ -73,4 +73,26 @@ void moveToDist(int dist, int speed) {
 	
 	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
 }
+//speed of -500 to 500mm/sec
+//0 to 359 degrees
+void rotate(int degrees, int speed) {
+	set_create_normalized_angle(0);
+	
+	//printf("rotating %d degrees at speed %d\n", degrees, speed);
+	
+	if(degrees > 0) {
+		while(get_create_normalized_angle() > -degrees || get_create_normalized_angle() == 0) {
+			create_spin_CW(speed);
+			msleep(3);
+			printf("angle = %d\n", get_create_normalized_angle());
+		}
+	} else if (degrees < 0) {
+		while(get_create_normalized_angle() < -degrees || get_create_normalized_angle() == 0) {
+			create_spin_CCW(speed);
+			msleep(3);
+			printf("angle = %d\n", get_create_normalized_angle());
+		}
+	}
+	create_stop();
+}
 

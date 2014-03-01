@@ -12,5 +12,11 @@ const int UPPER_CLAW_CLOSED = 1930;
 const int LOWER_CLAW_OPEN = 1900;
 const int LOWER_CLAW_CLOSED = 1400;
 
+//turn speeds
+const int TURN_SLOW_SPEED = 20;
+const int TURN_MID_SPEED = 50;
+const int TURN_FAST_SPEED = 300;
+
+
 //power levels
 const int ARM_POWER = 70;
