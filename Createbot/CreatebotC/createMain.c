@@ -1,14 +1,14 @@
 #include "createFunctions.h"
-//#include "createConstants.h"
+#include "createConstants.h"
 
 
 
 void lowerArmAt(int power) {
-	motor(0, power);
+	motor(ARM_PORT, power);
 }
 
 void stopArm() {
-	off(0);
+	off(ARM_PORT);
 }
 
 void testingUtility() {
@@ -24,7 +24,7 @@ void testingUtility() {
 			while(!c_button()) {
 				msleep(50);
 			}
-			off(0);
+			off(ARM_PORT);
 		}
 		
 		else if (c_button()) { 
