@@ -41,7 +41,10 @@ int main() {
 	createInit();
 	initActuators();
 	
-	rotate(90, TURN_FAST_SPEED);
+	cameraInitialize();
+	centerCamera(0, 0);
+	
+	//rotate(90, TURN_FAST_SPEED);
 	
 	//moveToDist(50 * 10, MOVE_MID_SPEED);
 	
