@@ -73,9 +73,9 @@ void centerCamera2(int channel, int object) {
 	camera_update();
 	camera_update();
 	
-	point2 object = 
+	//point2 object = 
 	
-
+}
 
 //print x,y coordinates of a blob in a channel
 void blobTrack(int channel, int object) {
