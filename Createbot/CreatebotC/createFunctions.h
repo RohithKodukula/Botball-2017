@@ -14,8 +14,6 @@ void createStop();
 void moveToDist(int dist, int speed);
 void rotate(int degrees, int speed);
 
-//camera
-void centerCamera(int channel, int object);
-void cameraInitialize();
+
 
 # endif

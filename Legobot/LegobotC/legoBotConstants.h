@@ -11,9 +11,7 @@ const int ARM_MOTOR;
 
 //motor constants
 //const int CALIBRATION_CONSTANT;
-//const int TICKS_PER_CM;
-
-
+const int TICKS_PER_CM;
 
 //servos
 const int DUMPER_SERVO;
@@ -28,9 +26,9 @@ const int ARM_DOWN_SENSOR;
 const int ARM_TOP_POS;
 
 //hanger position constants
-const int HANGER_SERVO_FORWARD;
-const int HANGER_SERVO_BACK;
-const int HANGER_SERVO_UP;
+const int HANGER_FORWARD;
+const int HANGER_BACK;
+const int HANGER_UP;
 
 //kicker servo
 const int KICKER_KICKED;
