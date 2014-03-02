@@ -1,11 +1,15 @@
 # ifndef _CREATECONSTANTS_H_
 # define _CREATECONSTANTS_H_
 
-//ports
+//actuators
 const int ARM_PORT;
 const int LOWER_CLAW;
 const int UPPER_CLAW;
+
+//sensors
 const int ARM_DOWN_SENSOR_PORT;
+const int LEFT_TOUCH_SENSOR;
+const int RIGHT_TOUCH_SENSOR;
 
 //arm positions in ticks
 const int ARM_TOP_POS;

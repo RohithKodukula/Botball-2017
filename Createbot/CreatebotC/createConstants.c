@@ -1,7 +1,12 @@
+//actuators
 const int ARM_PORT = 0;
 const int LOWER_CLAW = 2;
 const int UPPER_CLAW = 0;
+
+//sensors
 const int ARM_DOWN_SENSOR_PORT = 1;
+const int LEFT_TOUCH_SENSOR = 14;
+const int RIGHT_TOUCH_SENSOR = 12;
 
 //arm positions in ticks
 const int ARM_TOP_POS = 4990;
