@@ -1,6 +1,6 @@
 #include "createFunctions.h"
 #include "createConstants.h"
-
+#include "createVision.h"
 
 
 void lowerArmAt(int power) {
@@ -12,7 +12,7 @@ void stopArm() {
 }
 
 void testingUtility() {
-	printf("Press A to raise Arm 4990 ticks, B to lower Arm [C to stop lowering], C to lower by sensor side button to exit");
+	printf("Press A to raise Arm 4990 ticks, B to lower arm by sensor, C to center, side button to exit");
 	msleep(500);
 	while (!side_button()) {
 		if (a_button()) {
@@ -20,15 +20,12 @@ void testingUtility() {
 		}
 		
 		else if (b_button()) {
-			lowerArmAt(-30);
-			while(!c_button()) {
-				msleep(50);
-			}
-			off(ARM_PORT);
+			lowerArmBySensor();
 		}
 		
 		else if (c_button()) { 
-			lowerArmBySensor();
+			centerCamera(0, 0);
+
 		}
 		msleep(100);
 	}
@@ -36,7 +33,7 @@ void testingUtility() {
 
 
 int main() {
-	/*
+	
 	
 	printf(0);
 	
@@ -44,19 +41,19 @@ int main() {
 	initActuators();
 	
 	cameraInitialize();
-	centerCamera(0, 0);
+	//
 	
-	rotate(90, TURN_FAST_SPEED);
+	//rotate(90, TURN_FAST_SPEED);
 	
-	*/
+	
 	
 	//createInit();
 	//initActuators();
 	//printf("Moving to distance with normal function...\n\n");
 	//moveToDist(50 * 10, MOVE_MID_SPEED);
 	
-	printf("Moving to dist 50cm with serial function...\n\n");
-	moveWithSerial();
+
+	
 	
 	//msleep(5000);
 	//printf("Moving to distance with normal function again...\n");
@@ -66,18 +63,18 @@ int main() {
 	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);
-	/*printf("Press A to move, B to enter testing utility, C to end");
+	printf("Press A to move with serial, B to enter testing utility, C to end");
 	while (!c_button()) {
 		if (a_button()) {
-			moveToDist(10,400);
+			printf("Moving to dist 50cm with serial function...\n\n");
+			moveWithSerial();
 		}
 		
 		else if (b_button()) {
 			testingUtility();
 		}
 		msleep(100);
-	}*/
-	
+	}
 	return 0;
 }
 

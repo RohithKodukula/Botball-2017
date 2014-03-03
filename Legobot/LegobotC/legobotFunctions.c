@@ -1,17 +1,20 @@
 #include "legobotConstants.h"
+#include <math.h>
 
-void legoBotInit(){
+void legobotInit(){
 	//setting all servo positions and enabling.
 	set_servo_position(DUMPER_SERVO, DUMPER_UP);
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
-	set_servo_position(HANGER_SERVO, HANGER_START);
-	enable_sevos();
+	set_servo_position(HANGER_SERVO, HANGER_BACK);
+	set_servo_position(KICKER_SERVO, KICKER_BACK);
+	enable_servos();
 	//clear motor positions
 	//should use the link to move the motors to initial first
 	clear_motor_position_counter(LEFT_MOTOR);
 	clear_motor_position_counter(RIGHT_MOTOR);
-	clear_motor_position_counter(SPIN_MOTOR);
+	clear_motor_position_counter(SPINNER_MOTOR);
 	clear_motor_position_counter(ARM_MOTOR);
+	moveArm(500);
 	resetArm();
 }
 
@@ -20,6 +23,7 @@ void legoBotInit(){
 void halt() {
 	freeze(LEFT_MOTOR);
 	freeze(RIGHT_MOTOR);
+	msleep(200);
 }
 
 void rollStop() {
@@ -28,8 +32,7 @@ void rollStop() {
 }
 
 
-void moveStraight(int power)
-{
+void moveStraight(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power /* *CALIBRATION_CONSTANT*/);
 }
@@ -48,6 +51,11 @@ void moveToDist(int power, int dist){
 	
 	moveStraight(power);
 	
+	//all the distance calibrations are based on the left motor
+	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
+		msleep(10);
+	}
+	/*
 	if(ticks >= 0){
 		while(get_motor_position_counter(LEFT_MOTOR) < ticks && get_motor_position_counter(RIGHT_MOTOR) < ticks)
 			msleep(10);
@@ -56,39 +64,41 @@ void moveToDist(int power, int dist){
 		while(get_motor_position_counter(LEFT_MOTOR) > ticks && get_motor_position_counter(RIGHT_MOTOR) > ticks)
 			msleep(10);
 	}
+	*/
 	
-	downerbotStop();
+	halt();
 }
 
 void turn(int speed, int degrees){	
-	int ticks = degrees * DEGREES_TO_TICKS;
+	int ticks = degrees * TICKS_PER_CM;
 	
 	clear_motor_position_counter(RIGHT_MOTOR);
 	clear_motor_position_counter(LEFT_MOTOR);
 	
 	speed = degrees > 0 ? speed : -speed;
 	
-	mav(RIGHT_MOTOR, speed);
-	mav(LEFT_MOTOR, -speed);
+	motor(RIGHT_MOTOR, speed);
+	motor(LEFT_MOTOR, -speed);
 	
 	while((get_motor_position_counter(RIGHT_MOTOR) < ticks && ticks > 0) || (get_motor_position_counter(RIGHT_MOTOR) > ticks && ticks < 0)){
 		msleep(50);
 	}
 	
-	legobotStop();
+	rollStop();
 }
 
 //The Arm 
 
 void resetArm() {
 	motor(ARM_MOTOR, -SLOW_SPEED);
-	while (getArmDownSensorValue > 100) {
+	while (getArmDownSensorValue() > 100) {
 		msleep(30);
 	}
 	off(ARM_MOTOR);
 }
 
 void moveArm(int pos) {
+	clear_motor_position_counter(ARM_MOTOR);
 	mtp(ARM_MOTOR, FAST_SPEED, pos);	
 }
 
@@ -96,23 +106,23 @@ void moveArm(int pos) {
 
 void dipstickDoesShit(){
 	while(1){
-		set_servo_position(DIPSTICK_SERVO,DIPSTICK_CLOSE);
+		set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
 		msleep(200);
-		set_servo_position(DIPSTICK_SERVO,DIPSTICK_OPEN);
-		msleep(200);
+		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+		msleep(700);
 	}
-	set_servo_position(DIPSTICK_SERVO,DIPSTICK_CLOSE);
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
 }
 
 //Spinner
 void spinnerStop(){
 	int i;
-	for(int i = 0; i < 5; i++) {
-		freeze(SPINNER_MOTOR);
+	for(i = 0; i < 5; i++) {
+		off(SPINNER_MOTOR);
 	}
 }
 
-void spinner(speed){
+void spinner(int speed){
 	mav(SPINNER_MOTOR, speed);
 }
 

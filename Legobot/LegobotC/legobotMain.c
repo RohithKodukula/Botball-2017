@@ -1,28 +1,25 @@
-//#include "legobotFunctions.c"
 #include "legobotConstants.h"
+#include "legobotFunctions.h"
+
 
 int main() {
 	
-	//moveStraight();
+	//Tribble collecting/drive straight test!
+	legobotInit();
+	motor(RIGHT_MOTOR, 40*1.05);
+	motor(LEFT_MOTOR, 40);
 	
-	clear_motor_position_counter(LEFT_MOTOR);
-	clear_motor_position_counter(RIGHT_MOTOR);
+	mav(SPINNER_MOTOR, 500);
 	
-	motor(LEFT_MOTOR, 60);
-	motor(RIGHT_MOTOR, 60);
+	thread dipstickThread;
+	dipstickThread = thread_create(dipstickDoesShit);
+	thread_start(dipstickThread);
 	
-	while (get_motor_position_counter(LEFT_MOTOR) < 10000) {
-		msleep(10);
-	}
+	msleep(10000);
+	
 	ao();
+	msleep(1000);
+	thread_destroy(dipstickThread);
 	
 	
 }
-
-void moveStraight(int power) {
-	motor(LEFT_MOTOR, power);
-	motor(RIGHT_MOTOR, power);
-}
-
-//void moveToDist(int speed, double dist) {
-	
