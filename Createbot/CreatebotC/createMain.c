@@ -63,11 +63,13 @@ int main() {
 	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);
+	 console_clear();
 	printf("Press A to move with serial, B to enter testing utility, C to end");
+	
 	while (!c_button()) {
 		if (a_button()) {
-			printf("Moving to dist 50cm with serial function...\n\n");
-			moveWithSerial();
+			printf("\n\nMoving to dist 50cm with serial function...\n\n");
+			moveWithSerial(350, 100);
 		}
 		
 		else if (b_button()) {
@@ -77,41 +79,3 @@ int main() {
 	}
 	return 0;
 }
-
-void moveWithSerial() {
-	
-	create_connect();
-	 
-			create_write_byte(128); //initializes mode to full
-			create_write_byte(132);
-
-			create_write_byte(152); // script size
-			create_write_byte(14);
-	
-			create_write_byte(158);
-			create_write_byte(5);
-	
-			create_write_byte(137); //drive straight
-			create_write_byte(255);
-			create_write_byte(200 );
-			create_write_byte(128);
-			create_write_byte(0);
-	
-			create_write_byte(156); //wait dist 50cm
-			create_write_byte(254);
-			create_write_byte(10);
-
-			create_write_byte(137); //stop
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			
-	create_disconnect();
-	
-	create_connect();
-	create_write_byte(153);
-	create_disconnect();
-	
-}
-

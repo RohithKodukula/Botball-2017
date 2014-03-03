@@ -2,6 +2,7 @@ int R_MOTOR = 0;
 int L_MOTOR = 2;
 int main() {	
 	moveStraight(66.6);
+	turn(100,10);
 }
 
 void moveStraight(double distance) {
@@ -17,5 +18,17 @@ void moveStraight(double distance) {
 		msleep(50);
 		printf("%d\n",get_motor_position_counter(R_MOTOR));
 	}
+
+}
+void turn(double degrees, int speed) { 
+	
+	double ticksPerCentimeter = 75.35; (degrees/360);
+	int ticks = (int) ticksPerCentimeter;
+	ticks = (ticks > 0) ? ticks : -ticks;
+	printf("Ticks: %d\n", ticks);
+	
+	mav(R_MOTOR, (degrees > 0) ? 100 : 10);
+	mav(L_MOTOR, (degrees > 0) ? 10 : 100);
+	while(abs(get_motor_position_counter(R_MOTOR)) < ticks);
 	ao();
 }
