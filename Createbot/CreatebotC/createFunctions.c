@@ -167,18 +167,99 @@ void moveWithSerial(int speed, int distance) {
 			create_write_byte(152); // script size
 			create_write_byte(12);
 	
-			//create_write_byte(158); //wait bump
-			//create_write_byte(5);
-	
 			create_write_byte(137); //drive straight
 			create_write_byte(speed1);
 			create_write_byte(speed2);
 			create_write_byte(128);
 			create_write_byte(0);
 	
-			create_write_byte(156); //wait dist 50cm
+			create_write_byte(156); //wait specified distance
 			create_write_byte(dist1);
 			create_write_byte(dist2);
+
+			create_write_byte(137); //stop
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			
+	create_disconnect();
+	
+	create_connect();
+	create_write_byte(153);
+	create_disconnect();
+	create_connect();
+	
+}
+
+
+void turnWithSerial(int speed, int degrees) {
+	
+	printf("\nspeed value recieved: %d\nangle value recieved: %d\n",
+	speed, degrees
+	);
+	
+	int angle1, angle2, speed1, speed2, counter1 = 0;
+	
+	if (speed < 0) {
+		
+		speed1 = 0;
+		speed2 = speed * -1;
+		
+		while (speed2 > 255) {
+			speed1++;
+			speed2 -= 255;
+		}
+		
+	} else {
+		speed1 = 255;
+		speed2 = speed;
+		while (speed2 > 255) {
+			speed1--;
+			speed2 -= 255;
+		}
+		speed2 = 255 - speed2;
+	}
+	
+	if (degrees < 0) {
+		
+		angle1 = 0;
+		angle2 = degrees * -1;
+		
+		while (angle2 > 255) {
+			angle1++;
+			angle2 -= 255;
+		}
+		
+	} else {
+		angle1 = 255;
+		angle2 = degrees;
+		while (angle2 > 255) {
+			angle1--;
+			angle2 -= 255;
+		}
+		angle2 = 255 - angle2;
+	}
+	
+	printf("\nspeed1: %d\nspeed2:%d\ndist1: %d\ndist2: %d\n\n",
+	speed1, speed2, angle1, angle2
+	);
+	 
+			create_write_byte(128); //initializes mode to full
+			create_write_byte(132);
+
+			create_write_byte(152); // script size
+			create_write_byte(12);
+	
+			create_write_byte(137); //drive straight
+			create_write_byte(speed1);
+			create_write_byte(speed2);
+			create_write_byte(0);
+			create_write_byte(0);
+	
+			create_write_byte(157); //wait angle
+			create_write_byte(angle1);
+			create_write_byte(angle1);
 
 			create_write_byte(137); //stop
 			create_write_byte(0);

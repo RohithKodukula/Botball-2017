@@ -63,16 +63,22 @@ int main() {
 	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);
-	 console_clear();
-	printf("Press A to move with serial, B to enter testing utility, C to end");
+	 
+	console_clear();
+	printf("Press A to move with serial, B to turn with serial, C to enter testing utility, or the side button to exit the program.");
 	
-	while (!c_button()) {
+	while (!side_button()) {
 		if (a_button()) {
-			printf("\n\nMoving to dist 50cm with serial function...\n\n");
+			printf("\n\nMoving to distance 100cm at speed 350 mm/s with serial function...\n\n");
 			moveWithSerial(350, 100);
 		}
 		
 		else if (b_button()) {
+			printf("\n\nTurning 90 degrees at speed 350 mm/s with serial function...\n\n");
+			turnWithSerial(350, 90);
+		}
+		
+		else if (c_button()) {
 			testingUtility();
 		}
 		msleep(100);
