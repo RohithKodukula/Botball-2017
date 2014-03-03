@@ -69,6 +69,34 @@ void moveToDist(int power, int dist){
 	halt();
 }
 
+void moveToWallAlign(int power) {
+	motor(LEFT_MOTOR, power);
+	motor(RIGHT_MOTOR, power*1.05);
+	enable_servos();
+	set_servo_position(DIPSTICK_SERVO, 860);
+	
+	int rightTriggered = 0;
+	int leftTriggered = 0;
+	while (1) {
+		if (getLeftTouchSensor()) {
+			freeze(LEFT_MOTOR);
+			leftTriggered = 1;
+		}
+		if (getRightTouchSensor()) {
+			freeze(RIGHT_MOTOR);
+			rightTriggered = 1;
+		}
+		if (rightTriggered && leftTriggered) {
+			freeze(LEFT_MOTOR);
+			freeze(RIGHT_MOTOR);
+			printf("should be breaking out now...");
+			break;
+		}
+		msleep(30);
+	}
+	
+}
+
 void turn(int speed, int degrees){	
 	int ticks = degrees * TICKS_PER_CM;
 	
@@ -90,17 +118,35 @@ void turn(int speed, int degrees){
 //The Arm 
 
 void resetArm() {
-	motor(ARM_MOTOR, -SLOW_SPEED);
+	clear_motor_position_counter(ARM_MOTOR);
+	motor(ARM_MOTOR, -1);
+	int pwr = 0;
+	int increased = 0;
 	while (getArmDownSensorValue() > 100) {
+		if (get_motor_position_counter(ARM_MOTOR) < -200 && !increased) {
+			motor(ARM_MOTOR, 0);
+		}
 		msleep(30);
 	}
+	freeze(ARM_MOTOR);
+	msleep(100);
 	off(ARM_MOTOR);
 }
+
+void raiseArm() {
+	motor(ARM_MOTOR, FAST_SPEED);
+	while (getArmUpSensorValue() > 100) {
+		msleep(30);
+	}
+	motor(ARM_MOTOR, ARM_HOLDING_POWER);
+}
+	
 
 void moveArm(int pos) {
 	clear_motor_position_counter(ARM_MOTOR);
 	mtp(ARM_MOTOR, FAST_SPEED, pos);	
 }
+
 
 //Dipshit. *dipstick
 
@@ -116,10 +162,7 @@ void dipstickDoesShit(){
 
 //Spinner
 void spinnerStop(){
-	int i;
-	for(i = 0; i < 5; i++) {
-		off(SPINNER_MOTOR);
-	}
+	off(SPINNER_MOTOR);
 }
 
 void spinner(int speed){
@@ -130,4 +173,16 @@ void spinner(int speed){
 //Sensors
 int getArmDownSensorValue() {
 	return analog10(ARM_DOWN_SENSOR);
+}
+
+int getArmUpSensorValue() {
+	return analog10(ARM_UP_SENSOR);
+}
+
+int getLeftTouchSensor() {
+	return digital(LEFT_TOUCH_SENSOR);
+}
+
+int getRightTouchSensor() {
+	return digital(RIGHT_TOUCH_SENSOR);
 }

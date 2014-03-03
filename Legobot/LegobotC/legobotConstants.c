@@ -8,7 +8,7 @@ const int ARM_MOTOR = 3;
 //motor constants
 //const int CALIBRATION_CONSTANT;
 const int TICKS_PER_CM = 52;
-
+const double TICKS_PER_DEGREE = 10.25;
 
 
 //servos
@@ -19,6 +19,9 @@ const int HANGER_SERVO = 3;
 
 //sensor ports
 const int ARM_DOWN_SENSOR = 3;
+const int ARM_UP_SENSOR = 1;
+const int LEFT_TOUCH_SENSOR = 14;
+const int RIGHT_TOUCH_SENSOR = 12;
 
 //arm positions in ticks
 const int ARM_TOP_POS = 2000;
@@ -44,3 +47,6 @@ const int DIPSTICK_CLOSE = 500;
 const int FAST_SPEED = 80;
 const int NORMAL_SPEED = 60;
 const int SLOW_SPEED = 40;
+const int SUPER_SLOW_SPEED = 20;
+
+const int ARM_HOLDING_POWER = 1;

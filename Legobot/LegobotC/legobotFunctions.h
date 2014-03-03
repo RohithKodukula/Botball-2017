@@ -7,6 +7,7 @@ void rollStop();
 
 void moveStraight(int power);
 void moveToDist(int power, int dist);
+void moveToWallAlign(int power);
 void turn(int speed, int degrees);
 
 void resetArm();
@@ -17,7 +18,9 @@ void spinnerStop();
 void spinner(int speed);
 
 int getArmDownSensorValue();
-
+int getArmUpSensorValue();
+int getLeftTouchSensor();
+int getRightTouchSensor();
 
 
 #endif

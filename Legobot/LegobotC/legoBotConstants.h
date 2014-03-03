@@ -8,10 +8,10 @@ const int RIGHT_MOTOR;
 const int SPINNER_MOTOR;
 const int ARM_MOTOR;
 
-
 //motor constants
 //const int CALIBRATION_CONSTANT;
 const int TICKS_PER_CM;
+const double TICKS_PER_DEGREE;
 
 //servos
 const int DUMPER_SERVO;
@@ -21,6 +21,9 @@ const int HANGER_SERVO;
 
 //sensor ports
 const int ARM_DOWN_SENSOR;
+const int ARM_UP_SENSOR;
+const int LEFT_TOUCH_SENSOR;
+const int RIGHT_TOUCH_SENSOR;
 
 //arm positions in ticks
 const int ARM_TOP_POS;
@@ -46,6 +49,9 @@ const int DIPSTICK_CLOSE;
 const int FAST_SPEED;
 const int NORMAL_SPEED;
 const int SLOW_SPEED;
+const int SUPER_SLOW_SPEED;
+
+const int ARM_HOLDING_POWER;
 
 
 
