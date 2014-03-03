@@ -107,4 +107,91 @@ void rotate(int degrees, int speed) {
 }
 
 
+void moveWithSerial(int speed, int distance) {
+	
+	printf("\nspeed value recieved: %d\ndistance value recieved: %d\n",
+	speed, distance
+	);
+	
+	int dist1, dist2, speed1, speed2, counter1 = 0;
+	
+	if (speed < 0) {
+		
+		speed1 = 0;
+		speed2 = speed * -1;
+		
+		while (speed2 > 255) {
+			speed1++;
+			speed2 -= 255;
+		}
+		
+	} else {
+		speed1 = 255;
+		speed2 = speed;
+		while (speed2 > 255) {
+			speed1--;
+			speed2 -= 255;
+		}
+		speed2 = 255 - speed2;
+	}
+	
+	distance = distance * 10;
+	
+	if (distance < 0) {
+		
+		dist1 = 0;
+		dist2 = distance * -1;
+		
+		while (dist2 > 255) {
+			dist1++;
+			dist2 -= 255;
+		}
+		
+	} else {
+		dist1 = 255;
+		dist2 = distance;
+		while (dist2 > 255) {
+			dist1--;
+			dist2 -= 255;
+		}
+		dist2 = 255 - dist2;
+	}
+	
+	printf("\nspeed1: %d\nspeed2:%d\ndist1: %d\ndist2: %d\n\n",
+	speed1, speed2, dist1, dist2
+	);
+	 
+			create_write_byte(128); //initializes mode to full
+			create_write_byte(132);
+
+			create_write_byte(152); // script size
+			create_write_byte(12);
+	
+			//create_write_byte(158); //wait bump
+			//create_write_byte(5);
+	
+			create_write_byte(137); //drive straight
+			create_write_byte(speed1);
+			create_write_byte(speed2);
+			create_write_byte(128);
+			create_write_byte(0);
+	
+			create_write_byte(156); //wait dist 50cm
+			create_write_byte(dist1);
+			create_write_byte(dist2);
+
+			create_write_byte(137); //stop
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			
+	create_disconnect();
+	
+	create_connect();
+	create_write_byte(153);
+	create_disconnect();
+	create_connect();
+	
+}
 
