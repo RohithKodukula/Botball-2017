@@ -199,12 +199,14 @@ void turnWithSerial(int speed, int degrees) {
 	speed, degrees
 	);
 	
+	int compensation = 6;
+	
 	int angle1, angle2, speed1, speed2, counter1 = 0;
 	
-	if (speed < 0) {
+	if (degrees < 0) {
 		
 		speed1 = 0;
-		speed2 = speed * -1;
+		speed2 = speed;
 		
 		while (speed2 > 255) {
 			speed1++;
@@ -230,6 +232,7 @@ void turnWithSerial(int speed, int degrees) {
 			angle1++;
 			angle2 -= 255;
 		}
+		angle2 -= compensation;
 		
 	} else {
 		angle1 = 255;
@@ -239,19 +242,20 @@ void turnWithSerial(int speed, int degrees) {
 			angle2 -= 255;
 		}
 		angle2 = 255 - angle2;
+		angle2 += compensation;
 	}
 	
-	printf("\nspeed1: %d\nspeed2:%d\ndist1: %d\ndist2: %d\n\n",
+	printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
 	speed1, speed2, angle1, angle2
 	);
 	 
 			create_write_byte(128); //initializes mode to full
 			create_write_byte(132);
 
-			create_write_byte(152); // script size
+			create_write_byte(152); //script size
 			create_write_byte(12);
 	
-			create_write_byte(137); //drive straight
+			create_write_byte(137); //spin
 			create_write_byte(speed1);
 			create_write_byte(speed2);
 			create_write_byte(0);
@@ -259,7 +263,7 @@ void turnWithSerial(int speed, int degrees) {
 	
 			create_write_byte(157); //wait angle
 			create_write_byte(angle1);
-			create_write_byte(angle1);
+			create_write_byte(angle2);
 
 			create_write_byte(137); //stop
 			create_write_byte(0);

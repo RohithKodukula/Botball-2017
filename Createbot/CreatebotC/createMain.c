@@ -63,25 +63,64 @@ int main() {
 	
 	 //raiseArm(4990);
 	 //lowerArm(-4940);
-	 
-	console_clear();
-	printf("Press A to move with serial, B to turn with serial, C to enter testing utility, or the side button to exit the program.");
+	
+	
+	mainMenu();
 	
 	while (!side_button()) {
+		
 		if (a_button()) {
 			printf("\n\nMoving to distance 100cm at speed 350 mm/s with serial function...\n\n");
 			moveWithSerial(350, 100);
+			console_clear();
 		}
 		
 		else if (b_button()) {
-			printf("\n\nTurning 90 degrees at speed 350 mm/s with serial function...\n\n");
-			turnWithSerial(350, 90);
+			
+			console_clear();
+			set_a_button_text("90");
+			set_b_button_text("180");
+			set_c_button_text("-90");
+			printf("Press the desired degree angle to test. Side button returns to main menu.\n");
+			msleep(250);
+			while (!side_button()) {
+				
+				if (a_button()) {
+					printf("\n\nTurning 90 degrees at speed 150 mm/s with serial function...\n\n");
+					turnWithSerial(150, 90);
+				} else if (b_button()) {
+					printf("\n\nTurning 180 degrees at speed 150 mm/s with serial function...\n\n");
+					turnWithSerial(150, 180);
+				} else if (c_button()) {
+					printf("\n\nTurning 180 degrees at speed 150 mm/s with serial function...\n\n");
+					turnWithSerial(150, -90);
+				}
+				
+			}
+			msleep(100);
+			mainMenu();
 		}
 		
 		else if (c_button()) {
 			testingUtility();
+			console_clear();
 		}
 		msleep(100);
 	}
 	return 0;
+}
+
+void mainMenu() {
+	
+	console_clear();
+	
+	set_a_button_text("Bytecode Move");
+	set_b_button_text("Bytecode Turn");
+	set_c_button_text("Testing Utility");
+	
+	printf("--------MAIN MENU--------\n");
+		printf("\"Bytecode Move\"\n -- Test moving with bytecode functions\n\n");
+		printf("\"Bytecode Turn\"\n -- Test turning with bytecode functions\n\n");
+		printf("\"Testing Utility\"\n -- Enter the robot testing utilty");
+	
 }
