@@ -19,26 +19,26 @@ void cameraInitialize() {
 
 void centerCamera(int channel, int object) {
 	//printf("channel count = %d\n", get_channel_count());
+	
 	//Objects are sorted by area, largest first
-	/*while(1) {
-		camera_update();
-		camera_update();
-		printf("object count = %d\n", get_object_count(channel));
-		msleep(500);
-	}*/
-	camera_update();
-	camera_update();
-	/*point2 centroid = get_object_centroid(channel, object);
-	printf("centroid = (%d, %d)\n",centroid.x, centroid.y);*/
+	printf("\ncentering camera on orange\n");
 	
 	point2 camCenter;
 	camCenter.x = 160;
 	camCenter.y = 120;
 	
+	camera_update();
+	camera_update();
+	
+	//margin of error permitted, in pixels
+	int mOE = 10;
+	
+	printf("\norange blob:\ncentroid.x: %d\narea: %d\n", get_object_centroid(channel, object).x, get_object_area(channel,object));
+	
 	int counter = 0;
-	while ( (get_object_centroid(channel, object).x > camCenter.x+5 || get_object_centroid(channel, object).x < camCenter.x-5) && get_object_area(channel,object) > 1000)
+	while ( (get_object_centroid(channel, object).x > camCenter.x+mOE || get_object_centroid(channel, object).x < camCenter.x-mOE) && get_object_area(channel,object) > 1000)
 	{
-		printf("camCenter = (%d,%d), object centroid = (%d,%d)\n",camCenter.x,camCenter.y,get_object_centroid(channel, object).x,get_object_centroid(channel, object).y);
+		printf("camCenter = (%d,%d)\nobject centroid = (%d,%d)\n\n",camCenter.x,camCenter.y,get_object_centroid(channel, object).x,get_object_centroid(channel, object).y);
 		camera_update();
 		camera_update();
 		if(get_object_centroid(channel, object).x > camCenter.x) {
@@ -52,7 +52,7 @@ void centerCamera(int channel, int object) {
 		camera_update();
 		
 		counter++;
-		if ( counter > 60 )
+		if ( counter > 20 )
 		{
 			printf("timed out\n");
 			break;

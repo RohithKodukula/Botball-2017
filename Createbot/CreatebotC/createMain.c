@@ -11,6 +11,20 @@ void stopArm() {
 	off(ARM_PORT);
 }
 
+void mainMenu() {
+	
+	console_clear();
+	
+	set_a_button_text("Bytecode Move");
+	set_b_button_text("Bytecode Turn");
+	set_c_button_text("Testing Utility");
+	
+	printf("--------MAIN MENU--------\n");
+		printf("\"Bytecode Move\"\n -- Test moving with bytecode functions\n\n");
+		printf("\"Bytecode Turn\"\n -- Test turning with bytecode functions\n\n");
+		printf("\"Testing Utility\"\n -- Enter the robot testing utilty");
+	
+}
 void testingUtility() {
 	printf("Press A to raise Arm 4990 ticks, B to lower arm by sensor, C to center, side button to exit");
 	msleep(500);
@@ -31,42 +45,8 @@ void testingUtility() {
 	}
 }
 
-
-int main() {
-	
-	
-	printf(0);
-	
-	createInit();
-	initActuators();
-	
-	cameraInitialize();
-	//
-	
-	//rotate(90, TURN_FAST_SPEED);
-	
-	
-	
-	//createInit();
-	//initActuators();
-	//printf("Moving to distance with normal function...\n\n");
-	//moveToDist(50 * 10, MOVE_MID_SPEED);
-	
-
-	
-	
-	//msleep(5000);
-	//printf("Moving to distance with normal function again...\n");
-	//moveToDist(50 * 10, MOVE_MID_SPEED);
-	
-	
-	
-	 //raiseArm(4990);
-	 //lowerArm(-4940);
-	
-	
+void serialTestingUtility(){
 	mainMenu();
-	
 	while (!side_button()) {
 		
 		if (a_button()) {
@@ -107,20 +87,53 @@ int main() {
 		}
 		msleep(100);
 	}
+}
+
+
+
+
+
+int main() {
+	
+	
+	printf(0);
+	
+	createInit();
+	initActuators();
+	
+	cameraInitialize();
+	
+	centerCamera(0,0);
+	
+	
+	//moveToDist(75 * 10, MOVE_MID_SPEED);
+	//
+	
+	//rotate(90, TURN_FAST_SPEED);
+	
+	
+	
+	//createInit();
+	//initActuators();
+	//printf("Moving to distance with normal function...\n\n");
+	//moveToDist(50 * 10, MOVE_MID_SPEED);
+	
+
+	
+	
+	//msleep(5000);
+	//printf("Moving to distance with normal function again...\n");
+	//moveToDist(50 * 10, MOVE_MID_SPEED);
+	
+	
+	
+	 //raiseArm(4990);
+	 //lowerArm(-4940);
+	
+	
+	
+	
 	return 0;
 }
 
-void mainMenu() {
-	
-	console_clear();
-	
-	set_a_button_text("Bytecode Move");
-	set_b_button_text("Bytecode Turn");
-	set_c_button_text("Testing Utility");
-	
-	printf("--------MAIN MENU--------\n");
-		printf("\"Bytecode Move\"\n -- Test moving with bytecode functions\n\n");
-		printf("\"Bytecode Turn\"\n -- Test turning with bytecode functions\n\n");
-		printf("\"Testing Utility\"\n -- Enter the robot testing utilty");
-	
-}
+

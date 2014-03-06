@@ -106,7 +106,7 @@ void rotate(int degrees, int speed) {
 	create_stop();
 }
 
-
+//curves, 100cm = 110cm
 void moveWithSerial(int speed, int distance) {
 	
 	printf("\nspeed value recieved: %d\ndistance value recieved: %d\n",
