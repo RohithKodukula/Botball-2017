@@ -14,6 +14,8 @@ void createStop();
 void moveToDist(int dist, int speed);
 void rotate(int degrees, int speed);
 
+//create serial movement
 void moveWithSerial(int speed, int distance);
+void turnWithSerial(int speed, int degrees);
 
 # endif
