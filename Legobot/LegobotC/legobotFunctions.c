@@ -69,6 +69,43 @@ void moveToDist(int power, int dist){
 	halt();
 }
 
+
+//Dipshit. *dipstick
+
+void dipstickDoesShit(){
+	while(1){
+		set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
+		msleep(200);
+		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+		msleep(2000);
+	}
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
+}
+
+
+void moveToDistWithTribbleGrabbing(int power, int dist) {
+	int ticks = dist*TICKS_PER_CM;
+	clear_motor_position_counter(LEFT_MOTOR);
+	clear_motor_position_counter(RIGHT_MOTOR);
+	
+	power = dist > 0 ? power : -power;
+	
+	thread dipstickThread;
+	dipstickThread = thread_create(dipstickDoesShit);
+	thread_start(dipstickThread);
+	
+	moveStraight(power);
+	mav(SPINNER_MOTOR, 500);
+	
+	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
+		msleep(10);
+	}
+	halt();
+	thread_destroy(dipstickThread);
+	msleep(500);
+	off(SPINNER_MOTOR);
+}
+
 void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*1.05);
@@ -95,6 +132,12 @@ void moveToWallAlign(int power) {
 		msleep(30);
 	}
 	
+}
+
+//arcLeft is a boolean
+void arcToWallAlign(int power, int arcLeft) {
+	
+
 }
 
 void turn(int speed, int degrees){	
@@ -148,17 +191,7 @@ void moveArm(int pos) {
 }
 
 
-//Dipshit. *dipstick
 
-void dipstickDoesShit(){
-	while(1){
-		set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
-		msleep(200);
-		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
-		msleep(700);
-	}
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
-}
 
 //Spinner
 void spinnerStop(){

@@ -41,7 +41,7 @@ const int DUMPER_UP = 1960;
 
 //disturber position constants
 const int DIPSTICK_OPEN = 900;
-const int DIPSTICK_CLOSE = 500;
+const int DIPSTICK_CLOSE = 200;
 
 //motor powers
 const int FAST_SPEED = 80;
