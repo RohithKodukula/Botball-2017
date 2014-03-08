@@ -9,7 +9,9 @@ void moveStraight(int power);
 void moveToDist(int power, int dist);
 void moveToDistWithTribbleGrabbing(int power, int dist);
 void moveToWallAlign(int power);
-void turn(int speed, int degrees);
+
+void turn(double degrees);
+void turn_OLD(int speed, int degrees);
 
 void resetArm();
 void raiseArm();

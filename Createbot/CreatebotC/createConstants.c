@@ -24,3 +24,7 @@ const int MOVE_FAST_SPEED = 450;
 
 //power levels
 const int ARM_POWER = 70;
+
+//camera
+const double CAMERA_VIEW_ANGLE = 22.2;
+

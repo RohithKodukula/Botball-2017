@@ -9,9 +9,10 @@ const int SPINNER_MOTOR;
 const int ARM_MOTOR;
 
 //motor constants
-//const int CALIBRATION_CONSTANT;
 const int TICKS_PER_CM;
 const double TICKS_PER_DEGREE;
+const double R_WHEEL_CALIBRATION_CONSTANT;
+
 
 //servos
 const int DUMPER_SERVO;
@@ -44,6 +45,7 @@ const int DUMPER_UP;
 //disturber position constants
 const int DIPSTICK_OPEN;
 const int DIPSTICK_CLOSE;
+const int DIPSTICK_PARALLEL;
 
 //motor powers
 const int FAST_SPEED;

@@ -34,7 +34,7 @@ void rollStop() {
 
 void moveStraight(int power) {
 	motor(LEFT_MOTOR, power);
-	motor(RIGHT_MOTOR, power /* *CALIBRATION_CONSTANT*/);
+	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
 }
 
 
@@ -52,8 +52,15 @@ void moveToDist(int power, int dist){
 	moveStraight(power);
 	
 	//all the distance calibrations are based on the left motor
-	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
-		msleep(10);
+	if (dist < 0) {
+		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
+			msleep(10);
+		}
+	}
+	else {
+		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			msleep(10);
+		}
 	}
 	/*
 	if(ticks >= 0){
@@ -83,7 +90,7 @@ void dipstickDoesShit(){
 }
 
 
-void moveToDistWithTribbleGrabbing(int power, int dist) {
+void moveToDistWithDipstick(int power, int dist) {
 	int ticks = dist*TICKS_PER_CM;
 	clear_motor_position_counter(LEFT_MOTOR);
 	clear_motor_position_counter(RIGHT_MOTOR);
@@ -95,22 +102,20 @@ void moveToDistWithTribbleGrabbing(int power, int dist) {
 	thread_start(dipstickThread);
 	
 	moveStraight(power);
-	mav(SPINNER_MOTOR, 500);
 	
 	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
 		msleep(10);
 	}
 	halt();
 	thread_destroy(dipstickThread);
-	msleep(500);
-	off(SPINNER_MOTOR);
+
 }
 
 void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*1.05);
 	enable_servos();
-	set_servo_position(DIPSTICK_SERVO, 860);
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
 	
 	int rightTriggered = 0;
 	int leftTriggered = 0;
@@ -140,7 +145,48 @@ void arcToWallAlign(int power, int arcLeft) {
 
 }
 
-void turn(int speed, int degrees){	
+
+void turn(double degrees) {
+	clear_motor_position_counter(LEFT_MOTOR);
+	
+	if (degrees > 0) {
+		degrees = -5.4 + 1.1*degrees - (0.000296296*(degrees*degrees));
+	}
+	else {
+		degrees = 3.57339 + 1.01722*degrees - (0.000017767*(degrees*degrees));
+	}
+	printf("corrected degrees: %f\n", degrees);
+
+	double ticks = degrees * TICKS_PER_DEGREE;
+	//everything is calibrated around left wheel
+	if (ticks < 0) {
+		motor(LEFT_MOTOR, -1*NORMAL_SPEED);
+		motor(RIGHT_MOTOR, NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
+			msleep(30);
+		}
+	}
+	else {
+		motor(LEFT_MOTOR, NORMAL_SPEED);
+		motor(RIGHT_MOTOR, -1*NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			msleep(30);
+		}
+	}
+	
+	halt();
+}
+
+//based on last year's... that's why it's based on RIGHT_MOTOR for the counter
+void turn_OLD(int speed, int degrees){	
+	
+	if (degrees < 0) {
+		double compensatedDegrees = 3.57339 + 1.01722 * degrees - 0.000017767  * (degrees*degrees);
+	}
+	else {
+		double compensatedDegrees = -5.4 + 1.1*degrees - (0.000296296*(degrees*degrees));
+	}
+	
 	int ticks = degrees * TICKS_PER_CM;
 	
 	clear_motor_position_counter(RIGHT_MOTOR);

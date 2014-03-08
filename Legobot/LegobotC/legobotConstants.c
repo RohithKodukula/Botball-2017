@@ -6,9 +6,9 @@ const int ARM_MOTOR = 3;
 
 
 //motor constants
-//const int CALIBRATION_CONSTANT;
 const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 10.25;
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.009;
 
 
 //servos
@@ -42,6 +42,7 @@ const int DUMPER_UP = 1960;
 //disturber position constants
 const int DIPSTICK_OPEN = 900;
 const int DIPSTICK_CLOSE = 200;
+const int DIPSTICK_PARALLEL = 860;
 
 //motor powers
 const int FAST_SPEED = 80;

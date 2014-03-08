@@ -29,4 +29,6 @@ const int MOVE_FAST_SPEED;
 //power levels
 const int ARM_POWER;
 
+//camera
+const double CAMERA_VIEW_ANGLE;
 # endif

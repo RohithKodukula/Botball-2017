@@ -69,11 +69,11 @@ void centerCamera(int channel, int object) {
 }
 
 
-void centerCamera2(int channel, int object) {
+void centerCameraFast(int channel, int object) {
 	camera_update();
 	camera_update();
 	
-	//point2 object = 
+	point2 object = 
 	
 }
 
