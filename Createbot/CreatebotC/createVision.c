@@ -1,4 +1,5 @@
 #include "createConstants.h"
+#include "createFunctions.h"
 
 //camera
 /*void openGraphicsInterface() {
@@ -69,12 +70,20 @@ void centerCamera(int channel, int object) {
 }
 
 
+//camera width is 320 with MED_RES
 void centerCameraFast(int channel, int object) {
 	camera_update();
 	camera_update();
 	
-	point2 object = 
+	int i = 0;
+	for (i = 0; i < 2; i++){
+		camera_update();
+		camera_update();
+		point2 object = get_object_centroid(channel, object);
+		int angle = (160-point2.x) * CAMERA_VIEW_ANGLE/2;
 	
+		turnWithSerial(int NORMAL_SPEED,  angle);
+	}	
 }
 
 //print x,y coordinates of a blob in a channel
@@ -85,3 +94,17 @@ void blobTrack(int channel, int object) {
 	printf("Location of object: (%d, %d)", centroid.x, centroid.y);
 }
 
+int getLargestBlob(int channel){
+	
+	int num = get_object_count(channel);
+	int largest = 0;
+	
+	int i = 0;
+	
+	for (i = 0; i < num; i++) {
+		if (get_object_area(channel, i) > get_object_area(channel, largest) && get_object_confidence(channel, i) > 0.5) {
+			largest = i
+		}
+	}
+	return largest;
+}
