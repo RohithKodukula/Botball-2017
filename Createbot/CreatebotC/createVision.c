@@ -79,10 +79,10 @@ void centerCameraFast(int channel, int object) {
 	for (i = 0; i < 2; i++){
 		camera_update();
 		camera_update();
-		point2 object = get_object_centroid(channel, object);
-		int angle = (160-point2.x) * CAMERA_VIEW_ANGLE/2;
-	
-		turnWithSerial(int NORMAL_SPEED,  angle);
+		point2 obj = get_object_centroid(channel, object);
+		int angle = (int)(((obj.x-160.0)/160.0) * (double)CAMERA_VIEW_ANGLE/2);
+		printf("\ncalculated angle: %d",angle);
+		rotate(angle, TURN_MID_SPEED);
 	}	
 }
 
@@ -103,7 +103,7 @@ int getLargestBlob(int channel){
 	
 	for (i = 0; i < num; i++) {
 		if (get_object_area(channel, i) > get_object_area(channel, largest) && get_object_confidence(channel, i) > 0.5) {
-			largest = i
+			largest = i;
 		}
 	}
 	return largest;

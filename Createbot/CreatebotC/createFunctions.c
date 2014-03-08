@@ -245,9 +245,9 @@ void turnWithSerial(int speed, int degrees) {
 		angle2 += compensation;
 	}
 	
-	printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
-	speed1, speed2, angle1, angle2
-	);
+	//printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
+	//speed1, speed2, angle1, angle2
+	//);
 	 
 			create_write_byte(128); //initializes mode to full
 			create_write_byte(132);

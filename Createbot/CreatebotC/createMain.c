@@ -99,11 +99,13 @@ int main() {
 	printf(0);
 	
 	createInit();
+	printf("initialized.");
 	initActuators();
 	
 	cameraInitialize();
-	
-	centerCamera(0,0);
+	//rotate(90, TURN_MID_SPEED);
+	centerCameraFast(0,0);
+	printf("done.");
 	
 	
 	//moveToDist(75 * 10, MOVE_MID_SPEED);
