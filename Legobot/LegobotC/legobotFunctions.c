@@ -84,7 +84,7 @@ void dipstickDoesShit(){
 		set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
 		msleep(200);
 		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
-		msleep(2000);
+		msleep(1000);
 	}
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
 }
@@ -113,7 +113,7 @@ void moveToDistWithDipstick(int power, int dist) {
 
 void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
-	motor(RIGHT_MOTOR, power*1.05);
+	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
 	enable_servos();
 	//set the left touch sensor to be parallel to 
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
@@ -146,8 +146,36 @@ void moveToWallAlign(int power) {
 
 //arcLeft is a boolean
 void arcToWallAlign(int power, int arcLeft) {
+	int leftPower = arcLeft ? power/2 : power;
+	int rightPower = arcLeft ? power : power/2;
+	motor(LEFT_MOTOR, leftPower);
+	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
+	enable_servos();
+	//set the left touch sensor to be parallel to 
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
 	
-
+	//variables to track which side has been activated
+	int rightTriggered = 0;
+	int leftTriggered = 0;
+	while (1) {
+		if (getLeftTouchSensor()) {
+			freeze(LEFT_MOTOR);
+			leftTriggered = 1;
+			//if we don't set anything then the touch sensors could un-trigger
+			//we might never escape loop
+		}
+		if (getRightTouchSensor()) {
+			freeze(RIGHT_MOTOR);
+			rightTriggered = 1;
+		}
+		if (rightTriggered && leftTriggered) {
+			//halt the motors
+			freeze(LEFT_MOTOR);
+			freeze(RIGHT_MOTOR);
+			break;
+		}
+		msleep(30);
+	}
 }
 
 
@@ -209,6 +237,49 @@ void turn_OLD(int speed, int degrees){
 	rollStop();
 }
 
+void pivotOnLeft(int power, int degrees) {
+	clear_motor_position_counter(RIGHT_MOTOR);
+	freeze(LEFT_MOTOR);
+	int ticks = degrees * TICKS_PER_DEGREE * 2 * 0.945;	//last one is calibration
+														//all ticks to cm is calibrated on left wheel
+	
+	power = degrees < 0 ? -power : power;
+	motor(RIGHT_MOTOR, power);
+	if (degrees < 0) {
+		while (get_motor_position_counter(RIGHT_MOTOR) > ticks) {
+			msleep(10);
+		}
+	}
+	else {
+		while (get_motor_position_counter(RIGHT_MOTOR) < ticks) {
+			msleep(10);
+		}
+	}
+	freeze(RIGHT_MOTOR);
+}
+
+void pivotOnRight(int power, int degrees) {
+	clear_motor_position_counter(LEFT_MOTOR);
+	freeze(RIGHT_MOTOR);
+	int ticks = degrees * TICKS_PER_DEGREE * 2;
+	
+	power = degrees < 0 ? -power : power;
+	motor(LEFT_MOTOR, power);
+	if (degrees < 0) {
+		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
+			msleep(10);
+		}
+	}
+	else {
+		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			msleep(10);
+		}
+	}
+	freeze(LEFT_MOTOR);
+}
+
+
+
 //The Arm 
 
 void resetArm() {
@@ -243,7 +314,6 @@ void moveArm(int pos) {
 
 
 
-
 //Spinner
 void spinnerStop(){
 	off(SPINNER_MOTOR);
@@ -270,3 +340,8 @@ int getLeftTouchSensor() {
 int getRightTouchSensor() {
 	return digital(RIGHT_TOUCH_SENSOR);
 }
+
+
+//Vision
+
+

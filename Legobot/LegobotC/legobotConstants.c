@@ -1,9 +1,12 @@
+
+
+
+
 //motor ports
 const int LEFT_MOTOR = 2;
 const int RIGHT_MOTOR = 0;
 const int SPINNER_MOTOR = 1;
 const int ARM_MOTOR = 3;
-
 
 //motor constants
 const int TICKS_PER_CM = 52;
