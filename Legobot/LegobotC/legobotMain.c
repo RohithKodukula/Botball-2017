@@ -31,20 +31,24 @@ void tribbleCollectTest() {
 }
 
 int main() {
-
+	legobotInit();
 	
 	//printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
 	while(1) {
 		if (a_button()) {
 			int i =0;
-			for (i = 0; i < 8; i++) { 
-				turn(45.0);
+			for (i = 0; i < 12; i++) { 
+				turnTest(27.0);
 				msleep(500);
 			}
 		}
 		else if (b_button()) {
 			//raiseArm();
-			moveToDist(NORMAL_SPEED,25);
+			int i;
+			for (i = 0; i < 8; i++) { 
+				turnTest(-40.0);
+				msleep(500);
+			}
 			//printf("Moving to distance of: 25");
 			//turnTest(91.2);
 			//turn(90.0);
@@ -57,7 +61,7 @@ int main() {
 			mav(SPINNER_MOTOR, 500);
 			moveToDistWithDipstick(SLOW_SPEED, 40);
 			turn(-90);
-			moveToDistWithDisptick(SLOW_SPEED, 60);
+			moveToDistWithDipstick(SLOW_SPEED, 60);
 			turn(90);
 			raiseArm();
 			off(SPINNER_MOTOR);
@@ -70,3 +74,25 @@ int main() {
 	
 }
 
+void turnTest(double degrees) {
+	clear_motor_position_counter(LEFT_MOTOR);
+	
+	double ticks = degrees * TICKS_PER_DEGREE;
+	//everything is calibrated around left wheel
+	if (ticks < 0) {
+		motor(LEFT_MOTOR, -1*NORMAL_SPEED);
+		motor(RIGHT_MOTOR, NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
+			msleep(30);
+		}
+	}
+	else {
+		motor(LEFT_MOTOR, NORMAL_SPEED);
+		motor(RIGHT_MOTOR, -1*NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			msleep(30);
+		}
+	}
+	
+	halt();
+}

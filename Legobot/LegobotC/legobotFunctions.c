@@ -115,20 +115,25 @@ void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*1.05);
 	enable_servos();
+	//set the left touch sensor to be parallel to 
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
 	
+	//variables to track which side has been activated
 	int rightTriggered = 0;
 	int leftTriggered = 0;
 	while (1) {
 		if (getLeftTouchSensor()) {
 			freeze(LEFT_MOTOR);
 			leftTriggered = 1;
+			//if we don't set anything then the touch sensors could un-trigger
+			//we might never escape loop
 		}
 		if (getRightTouchSensor()) {
 			freeze(RIGHT_MOTOR);
 			rightTriggered = 1;
 		}
 		if (rightTriggered && leftTriggered) {
+			//halt the motors
 			freeze(LEFT_MOTOR);
 			freeze(RIGHT_MOTOR);
 			printf("should be breaking out now...");

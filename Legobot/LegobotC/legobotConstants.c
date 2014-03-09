@@ -28,7 +28,7 @@ const int ARM_TOP_POS = 2000;
 
 //hanger position constants
 const int HANGER_FORWARD = 2047;
-const int HANGER_BACK = 65;
+const int HANGER_BACK = 80;
 const int HANGER_UP = 1024;
 
 //kicker servo
