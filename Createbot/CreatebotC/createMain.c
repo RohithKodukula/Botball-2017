@@ -94,8 +94,22 @@ void serialTestingUtility(){
 
 
 int main() {
-	
-	
+
+	void routine()
+	{
+		createInit();
+		initActuators();
+		rotate(-90, TURN_MID );
+		moveToDist(500, MOVE_MID_SPEED);
+		turnWithSerial(TURN_MID_SPEED, -90);
+		moveToDist(200, MOVE_MID_SPEED);
+		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
+		moveToDist(500, MOVE_MID_SPEED);
+		turnWithSerial(TURN_MID_SPEED, -90);
+		moveToDist(500, MOVE_MID_SPEED);
+		setLowerClaw(LOWER_CLAW_OPEN);
+	}
+	/*
 	printf(0);
 	
 	createInit();
@@ -104,38 +118,10 @@ int main() {
 	
 	cameraInitialize();
 	//rotate(90, TURN_MID_SPEED);
+	
 	centerCameraFast(0,0);
-	printf("done.");
-	
-
-	
-	//moveToDist(75 * 10, MOVE_MID_SPEED);
-	//
-	
-	//rotate(90, TURN_FAST_SPEED);
-	
-	
-	
-	//createInit();
-	//initActuators();
-	//printf("Moving to distance with normal function...\n\n");
-	//moveToDist(50 * 10, MOVE_MID_SPEED);
-	
-
-	
-	
-	//msleep(5000);
-	//printf("Moving to distance with normal function again...\n");
-	//moveToDist(50 * 10, MOVE_MID_SPEED);
-	
-	
-	
-	 //raiseArm(4990);
-	 //lowerArm(-4940);
-	
-	
-	
-	
+	*/
+	routine();
 	return 0;
 }
 
