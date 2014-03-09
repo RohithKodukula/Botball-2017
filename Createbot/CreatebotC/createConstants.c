@@ -14,7 +14,7 @@ const int LOWER_CLAW_CLOSED = 1400;
 
 //turn speeds
 const int TURN_SLOW_SPEED = 20;
-const int TURN_MID_SPEED = 50;
+const int TURN_MID_SPEED = 150;
 const int TURN_FAST_SPEED = 300;
 
 //move speeds

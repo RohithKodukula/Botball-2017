@@ -107,6 +107,7 @@ int main() {
 	centerCameraFast(0,0);
 	printf("done.");
 	
+
 	
 	//moveToDist(75 * 10, MOVE_MID_SPEED);
 	//

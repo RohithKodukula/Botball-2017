@@ -199,7 +199,7 @@ void turnWithSerial(int speed, int degrees) {
 	speed, degrees
 	);
 	
-	int compensation = 6;
+	int compensation = 0;
 	
 	int angle1, angle2, speed1, speed2, counter1 = 0;
 	
@@ -249,6 +249,9 @@ void turnWithSerial(int speed, int degrees) {
 	//speed1, speed2, angle1, angle2
 	//);
 	 
+	create_disconnect();
+	create_connect();
+	
 			create_write_byte(128); //initializes mode to full
 			create_write_byte(132);
 
