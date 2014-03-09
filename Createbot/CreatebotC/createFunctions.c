@@ -109,6 +109,10 @@ void rotate(int degrees, int speed) {
 //curves, 100cm = 110cm
 void moveWithSerial(int speed, int distance) {
 	
+	if (speed < 1) {
+		speed *= -1;
+	}
+	
 	printf("\nspeed value recieved: %d\ndistance value recieved: %d\n",
 	speed, distance
 	);
@@ -161,11 +165,14 @@ void moveWithSerial(int speed, int distance) {
 	speed1, speed2, dist1, dist2
 	);
 	 
+	create_disconnect();
+	create_connect();
+	
 			create_write_byte(128); //initializes mode to full
 			create_write_byte(132);
 
 			create_write_byte(152); // script size
-			create_write_byte(12);
+			create_write_byte(13);
 	
 			create_write_byte(137); //drive straight
 			create_write_byte(speed1);
@@ -199,7 +206,11 @@ void turnWithSerial(int speed, int degrees) {
 	speed, degrees
 	);
 	
-	int compensation = 0;
+	if (speed < 1) {
+		speed *= -1;
+	}
+	
+	int compensation = (int) (degrees / 15);
 	
 	int angle1, angle2, speed1, speed2, counter1 = 0;
 	
@@ -233,6 +244,12 @@ void turnWithSerial(int speed, int degrees) {
 			angle2 -= 255;
 		}
 		angle2 -= compensation;
+		if (angle2 < 0) {
+			angle2 += compensation;
+		}
+		if (angle2 > 255) {
+			angle2 = 255;
+		}
 		
 	} else {
 		angle1 = 255;
@@ -242,14 +259,37 @@ void turnWithSerial(int speed, int degrees) {
 			angle2 -= 255;
 		}
 		
-		angle2 = 255 - angle2;
+		angle2 -= compensation;
 		
-		angle2 += compensation;
+		if (angle2 < 0) {
+			angle2 = 0;
+		}
+		
+		if (angle2 > 255) {
+			angle2 = 255;
+		}
+		
+		angle2 = 255 - angle2; 
+		
 	}
 	
 	//printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
 	//speed1, speed2, angle1, angle2
 	//);
+	
+	if (angle = 0) {
+		angle1 = 0;
+		angle2 = 0;
+		speed1 = 0;
+		speed2 = 0;
+	}
+	
+	if (speed = 0) {
+		angle1 = 0;
+		angle2 = 0;
+		speed1 = 0;
+		speed2 = 0;
+	}
 	 
 	create_disconnect();
 	create_connect();
@@ -258,7 +298,7 @@ void turnWithSerial(int speed, int degrees) {
 			create_write_byte(132);
 
 			create_write_byte(152); //script size
-			create_write_byte(12);
+			create_write_byte(13);
 	
 			create_write_byte(137); //spin
 			create_write_byte(speed1);
