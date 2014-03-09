@@ -14,15 +14,35 @@ void createInit() {
 }
 
 void initActuators() {
-	set_servo_position(UPPER_CLAW, UPPER_CLAW_OPEN);
-	set_servo_position(LOWER_CLAW, LOWER_CLAW_OPEN);
+	raiseArm(500);
+	lowerArmBySensor();
+	setUpperClaw(UPPER_CLAW_OPEN);
+	setLowerClaw(LOWER_CLAW_OPEN);
 	enable_servos();
+}
+
+void setUpperClaw(int position) {
+	set_servo_position(UPPER_CLAW, position);
+}
+
+void setLowerClaw(int position) {
+	set_servo_position(LOWER_CLAW, position);
 }
 
 //----- ARM ------
 void raiseArm(int position) {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) < position) {
+		printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
+		motor(ARM_PORT, 70);
+		msleep(100);
+	}
+	off(ARM_PORT);
+}
+
+void raiseArmToTop() {
+	clear_motor_position_counter(ARM_PORT);
+	while(get_motor_position_counter(ARM_PORT) < ARM_TOP_POS) {
 		printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
 		motor(ARM_PORT, 70);
 		msleep(100);
@@ -210,9 +230,9 @@ void turnWithSerial(int speed, int degrees) {
 		speed *= -1;
 	}
 	
-	int compensation = (int) (degrees / 15);
+	double compensation = 3.7;
 	
-	int angle1, angle2, speed1, speed2, counter1 = 0;
+	double angle1, angle2, speed1, speed2, counter1 = 0;
 	
 	if (degrees < 0) {
 		
@@ -273,11 +293,11 @@ void turnWithSerial(int speed, int degrees) {
 		
 	}
 	
-	//printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
-	//speed1, speed2, angle1, angle2
-	//);
+	printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
+	speed1, speed2, angle1, angle2
+	);
 	
-	if (angle = 0) {
+	if (degrees = 0) {
 		angle1 = 0;
 		angle2 = 0;
 		speed1 = 0;
@@ -292,6 +312,7 @@ void turnWithSerial(int speed, int degrees) {
 	}
 	 
 	create_disconnect();
+	msleep(50);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full

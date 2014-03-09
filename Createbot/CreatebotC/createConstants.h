@@ -14,7 +14,8 @@ const int ARM_TOP_POS;
 const int UPPER_CLAW_OPEN;
 const int UPPER_CLAW_CLOSED;
 const int LOWER_CLAW_OPEN;
-const int LOWER_CLAW_CLOSED;
+const int LOWER_CLAW_CLOSED_PIPE;
+const int LOWER_CLAW_CLOSED_BLOCK;
 
 //turn speeds
 const int TURN_SLOW_SPEED;

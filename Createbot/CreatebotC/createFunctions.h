@@ -6,6 +6,7 @@ void createInit();
 
 //arm
 void raiseArm(int position);
+void raiseArmToTop();
 void lowerArm(int position);
 
 //create movement
@@ -18,4 +19,8 @@ void rotate(int degrees, int speed);
 void moveWithSerial(int speed, int distance);
 void turnWithSerial(int speed, int degrees);
 
+//claws
+void initActuators();
+void setUpperClaw(int position);
+void setLowerClaw(int position);
 # endif
