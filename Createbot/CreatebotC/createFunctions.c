@@ -241,7 +241,9 @@ void turnWithSerial(int speed, int degrees) {
 			angle1--;
 			angle2 -= 255;
 		}
+		
 		angle2 = 255 - angle2;
+		
 		angle2 += compensation;
 	}
 	
