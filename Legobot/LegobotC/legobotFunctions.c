@@ -145,9 +145,16 @@ void moveToWallAlign(int power) {
 }
 
 //arcLeft is a boolean
-void arcToWallAlign(int power, int arcLeft) {
-	int leftPower = arcLeft ? power/2 : power;
-	int rightPower = arcLeft ? power : power/2;
+//extremeArc is a boolean that says whether or not to increase the difference (more arc)
+void arcToWallAlign(int power, int arcLeft, int extremeArc) {
+	if (extremeArc) {
+		int leftPower = arcLeft ? power/3 : power*1.5;
+		int rightPower = arcLeft ? power*1.5 : power/3;
+	}
+	else {
+		int leftPower = arcLeft ? power/2 : power;
+		int rightPower = arcLeft ? power : power/2;
+	}
 	motor(LEFT_MOTOR, leftPower);
 	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
 	enable_servos();
