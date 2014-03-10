@@ -319,8 +319,8 @@ void spinnerStop(){
 	off(SPINNER_MOTOR);
 }
 
-void spinner(int speed){
-	mav(SPINNER_MOTOR, speed);
+void spinnerStart(){
+	mav(SPINNER_MOTOR, 500);
 }
 
 

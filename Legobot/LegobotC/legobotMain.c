@@ -36,37 +36,31 @@ int main() {
 	//printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
 	while(1) {
 		if (a_button()) {
-			pivotOnRight(NORMAL_SPEED, 90);
-			pivotOnRight(NORMAL_SPEED, -90);
-			arcToWallAlign(50,1);
+			mav(SPINNER_MOTOR, 500);
+			msleep(2000);
+			ao();
 			
-			/*
-			int i =0;
-			for (i = 0; i < 12; i++) { 
-				turnTest(-25.5);
-				msleep(500);
-			}
-			*/
 		}
 		else if (b_button()) {
 			//raiseArm();
-			pivotOnLeft(NORMAL_SPEED, 90);
-			pivotOnLeft(NORMAL_SPEED, -90);
+			//turnTest(-88.3);
 			//printf("Moving to distance of: 25");
 			//turnTest(91.2);
 			//turn(90.0);
 		}
 		else if (c_button()) {
+			thread spinnerThread = thread_create(spinnerStart);
+			thread_start(spinnerThread);
+			motor(SPINNER_MOTOR, 50);
+			arcToWallAlign(NORMAL_SPEED, 1);
+			moveToDist(NORMAL_SPEED,-30);
+			turnTest(-87.75);
 			
-			moveToWallAlign(NORMAL_SPEED);
-			moveToDist(-20, NORMAL_SPEED);
-			turn(-90);
-			spinner(500);
 			moveToDistWithDipstick(SLOW_SPEED, 40);
-			turn(-90);
+			turnTest(-87.75);
 			moveToDistWithDipstick(SLOW_SPEED, 60);
-			turn(90);
-			spinnerStop();
+			turnTest(88.4);
+			thread_destroy(spinnerThread);
 			off(SPINNER_MOTOR);
 			msleep(1000);
 			ao();

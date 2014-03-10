@@ -19,7 +19,7 @@ void moveArm(int pos);
 
 void dipstickDoesShit();
 void spinnerStop();
-void spinner(int speed);
+void spinnerStart();
 
 int getArmDownSensorValue();
 int getArmUpSensorValue();
