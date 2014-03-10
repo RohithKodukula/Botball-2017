@@ -23,4 +23,7 @@ void turnWithSerial(int speed, int degrees);
 void initActuators();
 void setUpperClaw(int position);
 void setLowerClaw(int position);
+
+//distance sensor
+double getMillimeterDistance();
 # endif

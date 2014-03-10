@@ -3,6 +3,7 @@
 
 //camera
 void centerCamera(int channel, int object);
+
 void cameraInitialize();
 
 void blobTrack(int channel, int object);

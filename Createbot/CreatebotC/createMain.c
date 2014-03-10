@@ -95,7 +95,6 @@ void serialTestingUtility(){
 
 int main() {
 
-	
 	void routine()
 	{
 		createInit();
@@ -106,28 +105,38 @@ int main() {
 		moveToDist(250, MOVE_MID_SPEED);
 		msleep(100);
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
-		raiseArm(500);
+		raiseArm(1000);
 		moveToDist(500, MOVE_MID_SPEED);
 		turnWithSerial(TURN_MID_SPEED, -90);
-		moveToDist(450, MOVE_MID_SPEED);
+		moveToDist(700, MOVE_MID_SPEED);
+		moveToDist(-300,MOVE_MID_SPEED);
 		setLowerClaw(LOWER_CLAW_OPEN);
-		moveToDist(-300, MOVE_MID_SPEED);
+		msleep(500);
+		lowerArmBySensor();
 		turnWithSerial(TURN_MID_SPEED, 90);
 		moveToDist(200, MOVE_MID_SPEED);
-		
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
+		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_SLOW_SPEED, 90);
+		thread_destroy(t);
+		printf("continuing");
 		msleep(1000);
-		
-
+		printf("continuing");
+		centerCameraFast(0,getLargestBlob(0));
+		msleep(500);
+		int x;
+		x = getMillimeterDistance();
+		x = getMillimeterDistance();
+		printf("distance to move: %d", x);
+		moveToDist(x - 10, MOVE_SLOW_SPEED);
+		setUpperClaw(UPPER_CLAW_CLOSED);
+		moveToDist(-300,MOVE_MID_SPEED);
 	}
-	
+	cameraInitialize();
 	routine();
-
-	
-	
 	return 0;
+	
 }
 
 

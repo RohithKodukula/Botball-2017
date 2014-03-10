@@ -69,6 +69,23 @@ void lowerArmBySensor() {
 	off(ARM_PORT);
 }
 
+double getMillimeterDistance() {
+	int y0 = analog_et(ET_SENSOR_PORT);
+	int y1 = analog_et(ET_SENSOR_PORT);
+	int y2 = analog_et(ET_SENSOR_PORT);
+	int y3 = analog_et(ET_SENSOR_PORT);
+	int y4 = analog_et(ET_SENSOR_PORT);
+	int y5 = analog_et(ET_SENSOR_PORT);
+	int y6 = analog_et(ET_SENSOR_PORT);
+	int y7 = analog_et(ET_SENSOR_PORT);
+	int y8 = analog_et(ET_SENSOR_PORT);
+	int y9 = analog_et(ET_SENSOR_PORT);
+	int y = (y0 + y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8 + y9)/10;
+	int mm = (39260.0728906327 - 371.9824845977579*y + 1.425078608047716*y*y - 0.0027381236237337633*y*y*y + 2.630538923295032*(pow(10,-6))*y*y*y*y - 1.0092632726758705*(pow(10,-9))*y*y*y*y*y) - 15;
+	return mm;
+}
+
+
 //------ CREATE MOVEMENT-----
 void moveStraight(int vel) {
 	create_drive_straight(-vel);
@@ -230,7 +247,7 @@ void turnWithSerial(int speed, int degrees) {
 		speed *= -1;
 	}
 	
-	double compensation = 3.7;
+	double compensation = 0.0; //3.7
 	
 	double angle1, angle2, speed1, speed2, counter1 = 0;
 	

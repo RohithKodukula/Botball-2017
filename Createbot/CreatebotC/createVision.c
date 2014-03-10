@@ -69,29 +69,33 @@ void centerCamera(int channel, int object) {
 	
 }
 
-
+int getBlobXCoord(int channel, int object) {
+	camera_update();
+	camera_update();
+	point2 center = get_object_centroid(channel, object);
+	return center.x;
+}
 //camera width is 320 with MED_RES
-void centerCameraFast(int channel, int object) {
-	point2 obj;
+void centerCameraFast(int channel) {
+	int x;
 	int angle;
 	int blob;
 	int i = 0;
-	for (i = 0; i < 2; i++){
-		camera_update();
-		printf("\ncamera_update: %d", camera_update());
-		msleep(200);
-		blob = getLargestBlob(channel);
-		printf("\nlargest blob: %d", blob);
-		obj = get_object_center(channel, blob);
-		printf("\nx coordinate: %d", obj.x);
-		angle = (int)(((obj.x-160.0)/160.0) * (double)CAMERA_VIEW_ANGLE/2);
-		printf("\ncalculated angle: %d",angle);
-		turnWithSerial(150, angle);
-		msleep(2000);
-	}	
-	camera_update();
-	camera_update();
-	printf("\nx coordinate: %d", get_object_center(channel,blob).x);
+	for (i = 0; i < 3; i++){
+		blob = 0; //largest blob
+		x = getBlobXCoord(channel, blob);
+		x = getBlobXCoord(channel, blob);
+		x = getBlobXCoord(channel, blob);
+		printf("\n X Location of object %d: (%d)", blob, x);
+		angle = (int)(((x-160.0)/160.0) * (double)CAMERA_VIEW_ANGLE/2);
+		printf("\n angle: %d", angle);
+		if (angle == 0) {
+			break;
+		}
+		//printf("\ncalculated angle: %d",angle);
+		turnWithSerial(50,angle);
+		msleep(1000);
+	}
 }
 
 //print x,y coordinates of a blob in a channel
@@ -114,5 +118,6 @@ int getLargestBlob(int channel){
 			largest = i;
 		}
 	}
+	printf("largest block is: %d", largest);
 	return largest;
 }
