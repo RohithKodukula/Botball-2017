@@ -81,7 +81,7 @@ void centerCameraFast(int channel) {
 	int angle;
 	int blob;
 	int i = 0;
-	for (i = 0; i < 3; i++){
+	for (i = 0; i < 2; i++){
 		blob = 0; //largest blob
 		x = getBlobXCoord(channel, blob);
 		x = getBlobXCoord(channel, blob);

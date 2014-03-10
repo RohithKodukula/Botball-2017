@@ -90,31 +90,26 @@ void serialTestingUtility(){
 }
 
 
-
-
-
-int main() {
-
-	void routine()
+void routine()
 	{
-		createInit();
-		initActuators();
 		turnWithSerial(TURN_MID_SPEED, -90);
 		moveToDist(600, MOVE_MID_SPEED);
 		turnWithSerial(TURN_MID_SPEED, -90);
 		moveToDist(250, MOVE_MID_SPEED);
 		msleep(100);
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
-		raiseArm(1000);
+		raiseArm(1500);//was 1000
 		moveToDist(500, MOVE_MID_SPEED);
 		turnWithSerial(TURN_MID_SPEED, -90);
 		moveToDist(700, MOVE_MID_SPEED);
-		moveToDist(-300,MOVE_MID_SPEED);
+		moveToDist(-300,MOVE_MID_SPEED);//was -300
+		lowerArmBySensor();
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(500);
-		lowerArmBySensor();
-		turnWithSerial(TURN_MID_SPEED, 90);
-		moveToDist(200, MOVE_MID_SPEED);
+		moveToDist(200,MOVE_MID_SPEED);//pushes block to edge
+		moveToDist(-400,MOVE_MID_SPEED);//
+		turnWithSerial(TURN_MID_SPEED, 70);//was 90
+		moveToDist(325, MOVE_MID_SPEED);
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
@@ -133,10 +128,14 @@ int main() {
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);
 	}
+
+
+int main() {
+	createInit();
+	initActuators();
 	cameraInitialize();
 	routine();
 	return 0;
-	
 }
 
 
