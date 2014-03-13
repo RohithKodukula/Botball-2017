@@ -82,6 +82,7 @@ double getMillimeterDistance() {
 	int y9 = analog_et(ET_SENSOR_PORT);
 	int y = (y0 + y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8 + y9)/10;
 	int mm = (39260.0728906327 - 371.9824845977579*y + 1.425078608047716*y*y - 0.0027381236237337633*y*y*y + 2.630538923295032*(pow(10,-6))*y*y*y*y - 1.0092632726758705*(pow(10,-9))*y*y*y*y*y) - 15;
+	printf("mm = %f\n", mm);
 	return mm;
 }
 
@@ -117,13 +118,105 @@ void moveToDist(int dist, int speed) {
 }
 //speed of -500 to 500mm/sec
 //0 to 359 degrees
-void rotate(int degrees, int speed) {
+void rotate(int speed, int degrees) {
 	set_create_normalized_angle(0);
 	
+	int absSpeed = speed;
+	if(absSpeed < 0)
+	{
+		absSpeed = -absSpeed;
+	}
+	
+	int absDegrees = degrees;
+	if(absDegrees < 0){absDegrees = -absDegrees;}
+	
+	if(absSpeed >= 0 && absSpeed < 50)
+	{
+		degrees = 0.96 * degrees;
+	}
+	else if(absSpeed >= 50 && absSpeed < 150)
+	{
+		if(absDegrees < 90)
+		{
+			degrees = 0.98 * degrees;
+		}
+		else if(absDegrees >=90 && absDegrees < 180)
+		{
+			degrees = 0.94 * degrees; //works
+		}
+		else if(absDegrees >= 180 && absDegrees < 270)
+		{
+			degrees = 0.95 * degrees; //works
+		}
+		else if(absDegrees >= 270)
+		{
+			degrees = 0.96 * degrees; //works ---
+		}
+	}
+	else if(absSpeed >= 150 && absSpeed < 250)
+	{
+		if(absDegrees < 90)
+		{
+			degrees = 0.98 * degrees;
+		}
+		else if(absDegrees >=90 && absDegrees < 180)
+		{
+			degrees = 0.82 * degrees; //works
+		}
+		else if(absDegrees >= 180 && absDegrees < 270)
+		{
+			degrees = 0.89 * degrees; //works
+		}
+		else if(absDegrees >= 270)
+		{
+			degrees = 0.95 * degrees; //okay
+		}
+	}
+	else if(absSpeed >= 250 && absSpeed < 350)
+	{
+		if(absDegrees < 90)
+		{
+			degrees = 0.98 * degrees;
+		}
+		else if(absDegrees >=90 && absDegrees < 180)
+		{
+			degrees = 0.76 * degrees; //works
+		}
+		else if(absDegrees >= 180 && absDegrees < 270)
+		{
+			degrees = 0.81 * degrees; //works
+		}
+		else if(absDegrees >= 270)
+		{
+			degrees = 0.90 * degrees; //okay
+		}
+	}
+	else if(absSpeed >= 350 && absSpeed < 500) //bad
+	{
+		if(absDegrees < 90)
+		{
+			degrees = 0.98 * degrees;
+		}
+		else if(absDegrees >=90 && absDegrees < 180)
+		{
+			degrees = 0.76 * degrees; 
+		}
+		else if(absDegrees >= 180 && absDegrees < 270)
+		{
+			degrees = 0.81 * degrees; 
+		}
+		else if(absDegrees >= 270)
+		{
+			degrees = 0.88 * degrees; //okay
+		}
+	}
+	
+	//change degrees based on speed and value
+	
 	//speed degree compensation
-	if(speed >= 200){degrees = degrees - (2.6 * (degrees * 0.1));} //fast speed
+	//if(speed >= 200){degrees = degrees - (2.3 * (degrees * 0.1));} //fast speed
 	//else if(speed > 40 && speed < 200){degrees = degrees;} //mid speed
-	else if(speed <= 40 && speed > 8){degrees = degrees - (1.1 * (degrees * 0.1));} //slow speed
+	//else if(speed <= 40 && speed > 8){degrees = degrees - (1.1 * (degrees * 0.1));} //slow speed
 	
 	//printf("rotating %d degrees at speed %d\n", degrees, speed);
 	
