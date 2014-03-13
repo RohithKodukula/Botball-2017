@@ -36,34 +36,41 @@ int main() {
 	//printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
 	while(1) {
 		if (a_button()) {
-			mav(SPINNER_MOTOR, 500);
-			msleep(2000);
-			ao();
 			
+			arcToWallAlign(NORMAL_SPEED, 1,1);
+			
+			//pivotOnLeft(NORMAL_SPEED, 45);
+			//pivotOnRight(NORMAL_SPEED, 45);
+			//pivotOnLeft(NORMAL_SPEED, -45);
+			//pivotOnRight(NORMAL_SPEED, -45);
 		}
 		else if (b_button()) {
-			//raiseArm();
-			//turnTest(-88.3);
-			//printf("Moving to distance of: 25");
-			//turnTest(91.2);
-			//turn(90.0);
+			int i;
+			for (i = 0; i < 8; i++) {
+				turnTest(42.2);
+			}
+
 		}
 		else if (c_button()) {
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
-			motor(SPINNER_MOTOR, 50);
-			arcToWallAlign(NORMAL_SPEED, 1);
-			moveToDist(NORMAL_SPEED,-30);
-			turnTest(-87.75);
+			arcToWallAlign(NORMAL_SPEED, 1, 1);
+			pivotOnLeft(NORMAL_SPEED, -60);
+			pivotOnRight(NORMAL_SPEED, -55);
+			moveToDist(NORMAL_SPEED,-9.5);
+			turnTest(-86.4);
 			
-			moveToDistWithDipstick(SLOW_SPEED, 40);
-			turnTest(-87.75);
+			moveToDistWithDipstick(SLOW_SPEED, 50);
+			turnTest(-86.4);
 			moveToDistWithDipstick(SLOW_SPEED, 60);
-			turnTest(88.4);
+			turnTest(88.36);
+			msleep(1000);
+			raiseArm();
+			setHangerClawPosition(HANGER_FORWARD);
+			moveToDist(NORMAL_SPEED, 20);
 			thread_destroy(spinnerThread);
 			off(SPINNER_MOTOR);
-			msleep(1000);
-			ao();
+			
 		
 		}
 		msleep(100);

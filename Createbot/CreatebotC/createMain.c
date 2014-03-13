@@ -98,7 +98,7 @@ void routine()
 		moveToDist(250, MOVE_MID_SPEED);
 		msleep(100);
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
-		raiseArm(1500);//was 1000
+		raiseArm(1500);	//was 1000
 		moveToDist(500, MOVE_MID_SPEED);
 		rotate(TURN_MID_SPEED, -90);
 		moveToDist(700, MOVE_MID_SPEED);
@@ -106,24 +106,34 @@ void routine()
 		lowerArmBySensor();
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(500);
-		moveToDist(200,MOVE_MID_SPEED);//pushes block to edge
+		moveToDist(180,MOVE_MID_SPEED);//pushes block to edge
 		moveToDist(-400,MOVE_MID_SPEED);//
 		rotate(TURN_MID_SPEED, 70);//was 90
-		moveToDist(325, MOVE_MID_SPEED);
+		moveToDist(215, MOVE_MID_SPEED);
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		rotate(TURN_SLOW_SPEED, 90);
 		thread_destroy(t);
 		printf("continuing");
-		msleep(1000);
+		msleep(1500);
 		printf("continuing");
 		centerCameraFast(0);
-		msleep(500);
+		msleep(1000);
 		int x;
 		x = getMillimeterDistance();
-		x = getMillimeterDistance();
-		printf("distance to move: %d", x);
+		while (x > 150) {
+			moveToDist(50, MOVE_MID_SPEED);
+			x = getMillimeterDistance();
+			msleep(500);
+		}
+		moveToDist(x-30, MOVE_SLOW_SPEED); //move until 3 cm away
+		msleep(1000);
+		setUpperClaw(UPPER_CLAW_CLOSED);
+		msleep(1000);
+		moveToDist(-400, MOVE_MID_SPEED);
+		lowerArmBySensor();
+		
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -131,9 +141,10 @@ void routine()
 	
 int main() {
 	createInit();
-	//initActuators();
+	initActuators();
 	cameraInitialize();
-	
+	//raiseArm(ARM_TOP_POS);
+	//centerCameraFast(0);
 	//rotate(TURN_MID_SPEED, -90);
 	
 	routine();

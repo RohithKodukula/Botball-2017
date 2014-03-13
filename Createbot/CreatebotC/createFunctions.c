@@ -14,7 +14,7 @@ void createInit() {
 }
 
 void initActuators() {
-	raiseArm(500);
+	raiseArm(700);
 	lowerArmBySensor();
 	setUpperClaw(UPPER_CLAW_OPEN);
 	setLowerClaw(LOWER_CLAW_OPEN);
@@ -69,21 +69,18 @@ void lowerArmBySensor() {
 	off(ARM_PORT);
 }
 
-double getMillimeterDistance() {
-	int y0 = analog_et(ET_SENSOR_PORT);
-	int y1 = analog_et(ET_SENSOR_PORT);
-	int y2 = analog_et(ET_SENSOR_PORT);
-	int y3 = analog_et(ET_SENSOR_PORT);
-	int y4 = analog_et(ET_SENSOR_PORT);
-	int y5 = analog_et(ET_SENSOR_PORT);
-	int y6 = analog_et(ET_SENSOR_PORT);
-	int y7 = analog_et(ET_SENSOR_PORT);
-	int y8 = analog_et(ET_SENSOR_PORT);
-	int y9 = analog_et(ET_SENSOR_PORT);
-	int y = (y0 + y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8 + y9)/10;
-	int mm = (39260.0728906327 - 371.9824845977579*y + 1.425078608047716*y*y - 0.0027381236237337633*y*y*y + 2.630538923295032*(pow(10,-6))*y*y*y*y - 1.0092632726758705*(pow(10,-9))*y*y*y*y*y) - 15;
-	printf("mm = %f\n", mm);
-	return mm;
+int getMillimeterDistance() {
+	int i;
+	double sum = 0;
+	int n = 10;
+	for (i = 0; i < n; i++) {
+		sum += analog_et(2);
+	}
+	double y = sum/n;
+	double mm = 10*(2213.1614337305136 - 20.725917486966626*y + 0.07920950330177698*y*y - 0.0001526660102098271*y*y*y 
+			+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
+	printf("cm = %f\n", mm/10);
+	return (int)mm;
 }
 
 

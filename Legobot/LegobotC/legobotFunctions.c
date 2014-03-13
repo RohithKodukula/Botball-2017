@@ -86,7 +86,7 @@ void dipstickDoesShit(){
 		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
 		msleep(1000);
 	}
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
 }
 
 
@@ -108,6 +108,7 @@ void moveToDistWithDipstick(int power, int dist) {
 	}
 	halt();
 	thread_destroy(dipstickThread);
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
 
 }
 
@@ -123,13 +124,13 @@ void moveToWallAlign(int power) {
 	int leftTriggered = 0;
 	while (1) {
 		if (getLeftTouchSensor()) {
-			freeze(LEFT_MOTOR);
+			motor(LEFT_MOTOR,-15);
 			leftTriggered = 1;
 			//if we don't set anything then the touch sensors could un-trigger
 			//we might never escape loop
 		}
 		if (getRightTouchSensor()) {
-			freeze(RIGHT_MOTOR);
+			motor(RIGHT_MOTOR,-15 * R_WHEEL_CALIBRATION_CONSTANT);
 			rightTriggered = 1;
 		}
 		if (rightTriggered && leftTriggered) {
@@ -147,13 +148,15 @@ void moveToWallAlign(int power) {
 //arcLeft is a boolean
 //extremeArc is a boolean that says whether or not to increase the difference (more arc)
 void arcToWallAlign(int power, int arcLeft, int extremeArc) {
+	int leftPower;
+	int rightPower;
 	if (extremeArc) {
-		int leftPower = arcLeft ? power/3 : power*1.5;
-		int rightPower = arcLeft ? power*1.5 : power/3;
+		leftPower = arcLeft ? power/3.5 : power*1.35;
+		rightPower = arcLeft ? power*1.35 : power/3.5;
 	}
 	else {
-		int leftPower = arcLeft ? power/2 : power;
-		int rightPower = arcLeft ? power : power/2;
+		leftPower = arcLeft ? power/2 : power;
+		rightPower = arcLeft ? power : power/2;
 	}
 	motor(LEFT_MOTOR, leftPower);
 	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
@@ -331,6 +334,12 @@ void spinnerStart(){
 }
 
 
+
+//Servos
+void setHangerClawPosition(int position){
+	set_servo_position(HANGER_SERVO, position);
+}
+
 //Sensors
 int getArmDownSensorValue() {
 	return analog10(ARM_DOWN_SENSOR);
@@ -347,6 +356,7 @@ int getLeftTouchSensor() {
 int getRightTouchSensor() {
 	return digital(RIGHT_TOUCH_SENSOR);
 }
+
 
 
 //Vision

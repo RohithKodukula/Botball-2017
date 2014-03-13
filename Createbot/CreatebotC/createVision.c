@@ -75,17 +75,18 @@ int getBlobXCoord(int channel, int object) {
 	point2 center = get_object_centroid(channel, object);
 	return center.x;
 }
+
 //camera width is 320 with MED_RES
 void centerCameraFast(int channel) {
 	int x;
-	int angle;
-	int blob;
-	int i = 0;
-	for (i = 0; i < 2; i++){
-		blob = 0; //largest blob
+	int angle = 999;
+	int blob = 0; //largest blob
+	int counter = 0;
+	while ( (angle >= -1 && angle <= 1) || counter < 5){
 		x = getBlobXCoord(channel, blob);
 		x = getBlobXCoord(channel, blob);
 		x = getBlobXCoord(channel, blob);
+
 		printf("\n X Location of object %d: (%d)", blob, x);
 		angle = (int)(((x-160.0)/160.0) * (double)CAMERA_VIEW_ANGLE/2);
 		printf("\n angle: %d", angle);
@@ -94,7 +95,8 @@ void centerCameraFast(int channel) {
 		}
 		//printf("\ncalculated angle: %d",angle);
 		rotate(50,angle);
-		msleep(1000);
+		msleep(1300);
+		counter++;
 	}
 }
 
