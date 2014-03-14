@@ -158,7 +158,7 @@ void rotate(int speed, int degrees) {
 		}
 		else if(absDegrees >=90 && absDegrees < 180)
 		{
-			degrees = 0.82 * degrees; //works
+			degrees = 0.87 * degrees; //works
 		}
 		else if(absDegrees >= 180 && absDegrees < 270)
 		{

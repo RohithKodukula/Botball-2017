@@ -95,7 +95,7 @@ void routine()
 		rotate(TURN_MID_SPEED, -90);
 		moveToDist(600, MOVE_MID_SPEED);
 		rotate(TURN_MID_SPEED, -90);
-		moveToDist(250, MOVE_MID_SPEED);
+		moveToDist(270, MOVE_MID_SPEED);
 		msleep(100);
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
 		raiseArm(1500);	//was 1000
@@ -109,7 +109,7 @@ void routine()
 		moveToDist(180,MOVE_MID_SPEED);//pushes block to edge
 		moveToDist(-400,MOVE_MID_SPEED);//
 		rotate(TURN_MID_SPEED, 70);//was 90
-		moveToDist(215, MOVE_MID_SPEED);
+		moveToDist(180, MOVE_MID_SPEED);//was 215
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
@@ -133,7 +133,8 @@ void routine()
 		msleep(1000);
 		moveToDist(-400, MOVE_MID_SPEED);
 		lowerArmBySensor();
-		
+		rotate(TURN_SLOW_SPEED, -90);
+		moveToDist(550, MOVE_MID_SPEED);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -141,10 +142,10 @@ void routine()
 	
 int main() {
 	createInit();
-	//initActuators();
+	initActuators();
 	cameraInitialize();
 
-	sweepToFindLargestBlock(0,45);
+	//sweepToFindLargestBlock(0,45);
 	//raiseArm(ARM_TOP_POS);
 	//centerCameraFast(0);
 	/*while (1) {
@@ -154,7 +155,7 @@ int main() {
 	*/
 	//rotate(TURN_MID_SPEED, -90);
 	
-	//routine();
+	routine();
 	
 	/*while(1)
 	{
