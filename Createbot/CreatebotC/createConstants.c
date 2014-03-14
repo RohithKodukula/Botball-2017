@@ -8,7 +8,7 @@ const int ET_SENSOR_PORT = 2;
 const int ARM_TOP_POS = 4740;
 
 //claw position constants
-const int UPPER_CLAW_OPEN = 1500;
+const int UPPER_CLAW_OPEN = 1350;
 const int UPPER_CLAW_CLOSED = 1930;
 const int LOWER_CLAW_OPEN = 2000;
 const int LOWER_CLAW_CLOSED_PIPE = 1400;

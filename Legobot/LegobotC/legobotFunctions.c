@@ -313,6 +313,7 @@ void raiseArm() {
 	while (getArmUpSensorValue() > 100) {
 		msleep(30);
 	}
+	msleep(200);
 	motor(ARM_MOTOR, ARM_HOLDING_POWER);
 }
 	
@@ -330,7 +331,7 @@ void spinnerStop(){
 }
 
 void spinnerStart(){
-	mav(SPINNER_MOTOR, 500);
+	mav(SPINNER_MOTOR, 530);
 }
 
 

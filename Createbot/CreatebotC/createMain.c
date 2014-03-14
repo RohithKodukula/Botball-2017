@@ -123,7 +123,7 @@ void routine()
 		int x;
 		x = getMillimeterDistance();
 		while (x > 150) {
-			moveToDist(50, MOVE_MID_SPEED);
+			moveToDist(50, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
@@ -141,13 +141,20 @@ void routine()
 	
 int main() {
 	createInit();
-	initActuators();
+	//initActuators();
 	cameraInitialize();
+
+	sweepToFindLargestBlock(0,45);
 	//raiseArm(ARM_TOP_POS);
 	//centerCameraFast(0);
+	/*while (1) {
+		printf("\n%d",getLargestBlobArea(0));
+
+	}
+	*/
 	//rotate(TURN_MID_SPEED, -90);
 	
-	routine();
+	//routine();
 	
 	/*while(1)
 	{

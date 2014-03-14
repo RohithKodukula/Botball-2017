@@ -57,7 +57,7 @@ int main() {
 			arcToWallAlign(NORMAL_SPEED, 1, 1);
 			pivotOnLeft(NORMAL_SPEED, -60);
 			pivotOnRight(NORMAL_SPEED, -55);
-			moveToDist(NORMAL_SPEED,-9.5);
+			moveToDist(NORMAL_SPEED,-9);
 			turnTest(-86.4);
 			
 			moveToDistWithDipstick(SLOW_SPEED, 50);
@@ -66,8 +66,9 @@ int main() {
 			turnTest(88.36);
 			msleep(1000);
 			raiseArm();
+			setHangerClawPosition(HANGER_UP);
+			moveToDist(NORMAL_SPEED, 30);
 			setHangerClawPosition(HANGER_FORWARD);
-			moveToDist(NORMAL_SPEED, 20);
 			thread_destroy(spinnerThread);
 			off(SPINNER_MOTOR);
 			
