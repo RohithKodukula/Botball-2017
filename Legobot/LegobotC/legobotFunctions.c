@@ -1,4 +1,4 @@
-#include "legobotConstants.h"
+#include "legoBotConstants.h"
 #include <math.h>
 
 void legobotInit(){
@@ -320,7 +320,10 @@ void raiseArm() {
 
 void moveArm(int pos) {
 	clear_motor_position_counter(ARM_MOTOR);
-	mtp(ARM_MOTOR, FAST_SPEED, pos);	
+	mtp(ARM_MOTOR, NORMAL_SPEED, pos);
+	msleep(500);
+	motor(ARM_MOTOR, ARM_HOLDING_POWER);
+	
 }
 
 

@@ -1,6 +1,6 @@
-#include "legobotConstants.h"
+#include "legoBotConstants.h"
 #include "legobotFunctions.h"
-
+//192.168.0.148
 
 void tribbleCollectTest() {
 	printf("collecting test");
@@ -37,7 +37,29 @@ int main() {
 	while(1) {
 		if (a_button()) {
 			
-			arcToWallAlign(NORMAL_SPEED, 1,1);
+			enable_servo(HANGER_SERVO);
+			set_servo_position(HANGER_SERVO,HANGER_FORWARD);
+			msleep(1500);
+			moveToDist(NORMAL_SPEED,-25);
+			msleep(100);
+			pivotOnRight(NORMAL_SPEED,5);
+			msleep(1000);
+			raiseArm();
+			msleep(500);
+			moveArm(-90);
+			moveToDist(NORMAL_SPEED,26);
+			msleep(100);
+			raiseArm();
+			msleep(200);
+			moveArm(-100);
+			msleep(100);
+			set_servo_position(HANGER_SERVO,HANGER_BACK);
+			msleep(1000);
+			
+
+			
+			
+			//arcToWallAlign(NORMAL_SPEED, 1,1);
 			
 			//pivotOnLeft(NORMAL_SPEED, 45);
 			//pivotOnRight(NORMAL_SPEED, 45);
@@ -45,11 +67,26 @@ int main() {
 			//pivotOnRight(NORMAL_SPEED, -45);
 		}
 		else if (b_button()) {
-			int i;
-			for (i = 0; i < 8; i++) {
-				turnTest(42.2);
-			}
+			raiseArm();
+			msleep(500);
+			moveArm(-600);
+			sleep(500);
 
+			/*enable_servo(HANGER_SERVO);
+			set_servo_position(HANGER_SERVO,HANGER_BACK);
+			msleep(2000);
+			moveToDist(NORMAL_SPEED,-13);
+			raiseArm();
+			msleep(2000);
+			pivotOnRight(NORMAL_SPEED,5);
+			moveToDist(NORMAL_SPEED,15);
+			msleep(1000);
+			set_servo_position(HANGER_SERVO,HANGER_FORWARD);
+			msleep(200);
+			pivotOnRight(NORMAL_SPEED,10);
+			msleep(200);
+			moveToDist(NORMAL_SPEED,-13);*/
+			
 		}
 		else if (c_button()) {
 			thread spinnerThread = thread_create(spinnerStart);
@@ -62,16 +99,20 @@ int main() {
 			
 			moveToDistWithDipstick(SLOW_SPEED, 50);
 			turnTest(-86.4);
-			moveToDistWithDipstick(SLOW_SPEED, 60);
+			moveToDistWithDipstick(SLOW_SPEED, 61);
 			turnTest(88.36);
 			msleep(1000);
 			raiseArm();
 			setHangerClawPosition(HANGER_UP);
-			moveToDist(NORMAL_SPEED, 30);
+			moveToDist(NORMAL_SPEED, 29.5);
 			setHangerClawPosition(HANGER_FORWARD);
 			thread_destroy(spinnerThread);
 			off(SPINNER_MOTOR);
-			
+			moveArm(-100);
+			msleep(100);
+			moveToDist(NORMAL_SPEED, -5);
+			msleep(100);
+			pivotOnLeft(NORMAL_SPEED, -90);
 		
 		}
 		msleep(100);
