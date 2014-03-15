@@ -71,22 +71,33 @@ void centerCamera(int channel, int object) {
 
 
 //camera width is 320 with MED_RES
-void centerCameraFast(int channel) {
+int centerCameraFast(int channel) {
 	int x;
+	int accumulatedAngle = 0;
 	int angle = 999;
 	int blob = 0; //largest blob
 	int counter = 0;
 	while ( (angle < -1 || angle > 1) && counter < 5){
 		angle = getAngleToBlob(channel, blob);
+		if (counter == 0) {
+			accumulatedAngle = angle;
+		}
+		else {
+			accumulatedAngle += angle;
+		}
 		printf("\n angle: %d", angle);
 		if (angle == 0) {
 			break;
 		}
 		//printf("\ncalculated angle: %d",angle);
-		rotate(50,angle);
+		
+		//rotate(50,angle);
+		turnWithSerial(50, angle);
 		msleep(1300);
 		counter++;
 	}
+	printf("Angle from original: %d", accumulatedAngle);
+	return accumulatedAngle;
 }
 
 
@@ -172,7 +183,7 @@ int getLargestBlobArea(int channel){
 	int area = get_object_area(channel, 0);
 	
 	while ((area == -1 || area > 10000) && counter < 10) { //nothing found in this channel, or way too huge...
-		printf("\something wrong getting new image...");
+		printf("\nsomething wrong getting new image...");
 		camera_update();
 		camera_update();
 		area = get_object_area(channel, 0);

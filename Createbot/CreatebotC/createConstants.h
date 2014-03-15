@@ -14,6 +14,7 @@ const int ARM_TOP_POS;
 //claw position constants
 const int UPPER_CLAW_OPEN;
 const int UPPER_CLAW_CLOSED;
+const int UPPER_CLOAW_MID;
 const int LOWER_CLAW_OPEN;
 const int LOWER_CLAW_CLOSED_PIPE;
 const int LOWER_CLAW_CLOSED_BLOCK;

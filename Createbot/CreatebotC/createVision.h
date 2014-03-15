@@ -3,7 +3,7 @@
 
 //camera
 void centerCamera(int channel, int object);
-void centerCameraFast(int channel);
+int centerCameraFast(int channel);
 
 void cameraInitialize();
 

@@ -113,6 +113,37 @@ void moveToDist(int dist, int speed) {
 	
 	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
 }
+
+void moveToWallAlign(int dist, int speed, double secondTimeout) {
+	//copy body of moveToDist
+	//update when new moveToDist is made
+	set_create_distance(0); 
+	
+	double startTime = seconds();
+	
+	//speed distance compensation
+	if(speed >= 400){dist = dist - (22 * (dist * 0.01));} //fast speed
+	else if(speed > 300 && speed < 400){dist = dist - (8 * (dist * 0.01));} //mid speed
+	else if(speed <= 300){dist = dist - (6 * (dist * 0.01));} //slow speed
+
+	if (dist > 0) {   
+		moveStraight(speed); 
+		while (-get_create_distance() < dist && seconds() - startTime < secondTimeout) { msleep(10); }
+	}
+	
+	else if (dist < 0) { 
+		moveStraight(-speed); 
+		while (-get_create_distance() > dist && seconds() - startTime < secondTimeout) { msleep(10); }
+	}
+	
+	createStop();
+	
+	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
+
+	
+}
+
+
 //speed of -500 to 500mm/sec
 //0 to 359 degrees
 void rotate(int speed, int degrees) {
@@ -329,17 +360,43 @@ void moveWithSerial(int speed, int distance) {
 
 void turnWithSerial(int speed, int degrees) {
 	
-	printf("\nspeed value recieved: %d\nangle value recieved: %d\n",
-	speed, degrees
-	);
-	
 	if (speed < 1) {
 		speed *= -1;
 	}
 	
-	double compensation = 0.0; //3.7
+	int compensation = 0;
 	
-	double angle1, angle2, speed1, speed2, counter1 = 0;
+	if (degrees < 0) {
+		
+	if (degrees >= -15) {
+		compensation = 0;
+	} else if (degrees >= -45) {
+		compensation = 4;
+	} else if (degrees >= -90) {
+		compensation = 5;
+	} else if (degrees >= -180) {
+		compensation = 8;
+	} else {
+		compensation = 0;
+	}
+	
+	} else {
+		
+	if (degrees <= 15) {
+		compensation = 0;
+	} else if (degrees <= 45) {
+		compensation = 4;
+	} else if (degrees <= 90) {
+		compensation = 5;
+	} else if (degrees <= 180) {
+		compensation = 8;
+	} else {
+		compensation = 0;
+	}
+	
+	}
+	
+	int angle1, angle2, speed1, speed2, counter1 = 0;
 	
 	if (degrees < 0) {
 		
@@ -370,32 +427,20 @@ void turnWithSerial(int speed, int degrees) {
 			angle1++;
 			angle2 -= 255;
 		}
+		
 		angle2 -= compensation;
-		if (angle2 < 0) {
-			angle2 += compensation;
-		}
-		if (angle2 > 255) {
-			angle2 = 255;
-		}
 		
 	} else {
+		
 		angle1 = 255;
 		angle2 = degrees;
+		
 		while (angle2 > 255) {
 			angle1--;
 			angle2 -= 255;
 		}
 		
 		angle2 -= compensation;
-		
-		if (angle2 < 0) {
-			angle2 = 0;
-		}
-		
-		if (angle2 > 255) {
-			angle2 = 255;
-		}
-		
 		angle2 = 255 - angle2; 
 		
 	}
@@ -419,7 +464,7 @@ void turnWithSerial(int speed, int degrees) {
 	}
 	 
 	create_disconnect();
-	msleep(50);
+	msleep(75);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -446,10 +491,15 @@ void turnWithSerial(int speed, int degrees) {
 			
 	create_disconnect();
 	
+	msleep(75);
 	create_connect();
+	msleep(75);
 	create_write_byte(153);
 	create_disconnect();
+	msleep(75);
 	create_connect();
+	msleep(75);
 	
 }
+
 

@@ -92,33 +92,34 @@ void serialTestingUtility(){
 
 void routine()
 	{
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -90);
 		moveToDist(600, MOVE_MID_SPEED);
-		rotate(TURN_MID_SPEED, -90);
-		moveToDist(270, MOVE_MID_SPEED);
+		turnWithSerial(TURN_MID_SPEED, -90);
+		moveToDist(300, MOVE_MID_SPEED);
 		msleep(100);
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
 		raiseArm(1500);	//was 1000
-		moveToDist(500, MOVE_MID_SPEED);
+		moveToDist(460, MOVE_MID_SPEED);
 		rotate(TURN_MID_SPEED, -90);
-		moveToDist(700, MOVE_MID_SPEED);
+		//moveToDist(730, MOVE_MID_SPEED);
+		moveToWallAlign(780, MOVE_MID_SPEED, 4.5);
 		moveToDist(-300,MOVE_MID_SPEED);//was -300
 		lowerArmBySensor();
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(500);
-		moveToDist(180,MOVE_MID_SPEED);//pushes block to edge
-		moveToDist(-400,MOVE_MID_SPEED);//
-		rotate(TURN_MID_SPEED, 70);//was 90
-		moveToDist(180, MOVE_MID_SPEED);//was 215
+		moveToDist(140,MOVE_MID_SPEED);//pushes block to edge
+		moveToDist(-300,MOVE_MID_SPEED);//
+		rotate(TURN_MID_SPEED, 75);//was 90
+		moveToDist(150, MOVE_MID_SPEED);//was 215
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		rotate(TURN_SLOW_SPEED, 90);
+		rotate(TURN_SLOW_SPEED, 75);
 		thread_destroy(t);
 		printf("continuing");
 		msleep(1500);
 		printf("continuing");
-		centerCameraFast(0);
+		int angle = centerCameraFast(0);
 		msleep(1000);
 		int x;
 		x = getMillimeterDistance();
@@ -131,13 +132,21 @@ void routine()
 		msleep(1000);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(1000);
-		moveToDist(-400, MOVE_MID_SPEED);
+		moveToDist(-300, MOVE_MID_SPEED);
+		rotate(TURN_SLOW_SPEED, -angle); //compensate for camera turn
 		lowerArmBySensor();
-		rotate(TURN_SLOW_SPEED, -90);
-		moveToDist(550, MOVE_MID_SPEED);
+		rotate(TURN_MID_SPEED, -90);
+		moveToDist(400, MOVE_SLOW_SPEED);//wall align
+		moveToDist(-90, MOVE_SLOW_SPEED);
+		rotate(TURN_MID_SPEED, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
+		moveToWallAlign(1000, MOVE_SLOW_SPEED, 4.5);
+		msleep(500);
+		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
+		msleep(1000);
+		setUpperClaw(UPPER_CLAW_OPEN);
 	}
 	
 int main() {

@@ -8,11 +8,12 @@ const int ET_SENSOR_PORT = 2;
 const int ARM_TOP_POS = 4740;
 
 //claw position constants
-const int UPPER_CLAW_OPEN = 1350;
-const int UPPER_CLAW_CLOSED = 2000;//was 1930
+const int UPPER_CLAW_OPEN = 1700;
+const int UPPER_CLAW_CLOSED = 2030;//was 1930
+const int UPPER_CLAW_MID = 1600; //for grabbing between one block apart
 const int LOWER_CLAW_OPEN = 2000;
-const int LOWER_CLAW_CLOSED_PIPE = 1400;
-const int LOWER_CLAW_CLOSED_BLOCK = 1320;
+const int LOWER_CLAW_CLOSED_PIPE = 1100;
+const int LOWER_CLAW_CLOSED_BLOCK = 1300;
 //turn speeds
 const int TURN_SLOW_SPEED = 20;
 const int TURN_MID_SPEED = 150;
