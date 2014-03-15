@@ -9,7 +9,7 @@ const int ARM_TOP_POS = 4740;
 
 //claw position constants
 const int UPPER_CLAW_OPEN = 1700;
-const int UPPER_CLAW_CLOSED = 2030;//was 1930
+const int UPPER_CLAW_CLOSED = 2040;//was 1930
 const int UPPER_CLAW_MID = 1600; //for grabbing between one block apart
 const int LOWER_CLAW_OPEN = 2000;
 const int LOWER_CLAW_CLOSED_PIPE = 1100;

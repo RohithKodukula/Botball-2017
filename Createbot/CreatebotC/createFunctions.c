@@ -373,7 +373,7 @@ void turnWithSerial(int speed, int degrees) {
 	} else if (degrees >= -45) {
 		compensation = 4;
 	} else if (degrees >= -90) {
-		compensation = 5;
+		compensation = 2;
 	} else if (degrees >= -180) {
 		compensation = 8;
 	} else {
@@ -387,7 +387,7 @@ void turnWithSerial(int speed, int degrees) {
 	} else if (degrees <= 45) {
 		compensation = 4;
 	} else if (degrees <= 90) {
-		compensation = 5;
+		compensation = 2;
 	} else if (degrees <= 180) {
 		compensation = 8;
 	} else {
@@ -444,10 +444,6 @@ void turnWithSerial(int speed, int degrees) {
 		angle2 = 255 - angle2; 
 		
 	}
-	
-	printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
-	speed1, speed2, angle1, angle2
-	);
 	
 	if (degrees = 0) {
 		angle1 = 0;
