@@ -116,9 +116,7 @@ void routine()
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		rotate(TURN_SLOW_SPEED, 75);
 		thread_destroy(t);
-		printf("continuing");
 		msleep(1500);
-		printf("continuing");
 		int angle = centerCameraFast(0);
 		msleep(1000);
 		int x;
@@ -147,6 +145,44 @@ void routine()
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
 		msleep(1000);
 		setUpperClaw(UPPER_CLAW_OPEN);
+		
+		setLowerClaw(LOWER_CLAW_OPEN);
+		moveToDist(-300, MOVE_MID_SPEED);
+	
+		thread t = thread_create(raiseArmToTop);
+		thread_start(t);
+		turnWithSerial(TURN_SLOW_SPEED+50, 180);
+		thread_destroy(t);
+		int angle = centerCameraFast(0);
+		msleep(1000);
+		int x;
+		x = getMillimeterDistance();
+		while (x > 150) {
+			moveToDist(50, MOVE_SLOW_SPEED);
+			x = getMillimeterDistance();
+			msleep(500);
+		}
+		moveToDist(x-30, MOVE_SLOW_SPEED); //move until 3 cm away
+		msleep(1000);
+		setUpperClaw(UPPER_CLAW_CLOSED);
+		msleep(1000);
+		moveToDist(-300, MOVE_MID_SPEED);
+		rotate(TURN_SLOW_SPEED, -angle); //compensate for camera turn
+		lowerArmBySensor();
+		rotate(TURN_MID_SPEED, -90);
+		moveToDist(400, MOVE_SLOW_SPEED);//wall align
+		moveToDist(-90, MOVE_SLOW_SPEED);
+		rotate(TURN_MID_SPEED, -90);
+		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
+		setUpperClaw(UPPER_CLAW_CLOSED);
+		moveToDist(-300,MOVE_MID_SPEED);*/
+		moveToWallAlign(1000, MOVE_SLOW_SPEED, 4.5);
+		msleep(500);
+		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
+		msleep(1000);
+		setUpperClaw(UPPER_CLAW_OPEN);
+		
+		
 	}
 	
 int main() {
