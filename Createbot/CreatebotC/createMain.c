@@ -106,7 +106,7 @@ void routine()
 		raiseArm(1500);
 		moveToDist(460, MOVE_MID_SPEED);
 		//turn to face wide side of game board
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED,-90);
 		//moveToDist(730, MOVE_MID_SPEED);
 		//wall align
 		moveToWallAlign(780, MOVE_MID_SPEED, 4.5);
@@ -117,17 +117,17 @@ void routine()
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(500);
 		//push blue box to wall
-		moveToDist(115,MOVE_MID_SPEED);
+		moveToDist(122,MOVE_MID_SPEED);
 		//back up after pushing blue box to wall
-		moveToDist(-300,MOVE_MID_SPEED);
+		moveToDist(-250,MOVE_MID_SPEED);
 		//turn to face left wall
-		rotate(TURN_MID_SPEED, 75);
+		turnWithSerial(TURN_MID_SPEED, 90);
 		moveToDist(150, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		rotate(TURN_SLOW_SPEED, 75);
+		turnWithSerial(TURN_SLOW_SPEED, 80);
 		thread_destroy(t);
 		msleep(1500);
 		int angle = centerCameraFast(0);
@@ -150,17 +150,17 @@ void routine()
 		rotate(TURN_SLOW_SPEED, -angle);
 		lowerArmBySensor();
 		//turn to face left wall
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -90);
 		//wall align
-		moveToDist(400, MOVE_SLOW_SPEED);
+		moveToWallAlign(800, MOVE_SLOW_SPEED, 4.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//turn to face tubes
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
 		//wall align on tube wall
-		moveToWallAlign(1000, MOVE_SLOW_SPEED, 4.5);
+		moveToWallAlign(900, MOVE_SLOW_SPEED, 4.5);
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
@@ -173,8 +173,8 @@ void routine()
 		moveToDist(-300, MOVE_MID_SPEED);
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
-		//advance to left wall
-		moveToDist(-150, MOVE_MID_SPEED);
+		//back up to position to turn to view orange block
+		moveToDist(-190, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t2 = thread_create(raiseArmToTop);
 		thread_start(t2);
@@ -200,13 +200,13 @@ void routine()
 		rotate(TURN_SLOW_SPEED, -angle);
 		lowerArmBySensor();
 		//rotate to face left wall
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -90);
 		//wall align on left wall
-		moveToDist(400, MOVE_SLOW_SPEED);
+		moveToWallAlign(800, MOVE_SLOW_SPEED, 4.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//rotate to face tubes
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -218,6 +218,69 @@ void routine()
 		msleep(1000);
 		//drop orange box into pipe
 		setUpperClaw(UPPER_CLAW_OPEN);
+		msleep(1000);
+		//release tube in lower claw
+		setLowerClaw(LOWER_CLAW_OPEN);
+		//back up from tube wall
+		moveToDist(-300, MOVE_MID_SPEED);
+		//rotate towards wall
+		turnWithSerial(TURN_MID_SPEED, 90);
+		//wall align
+		moveToWallAlign(700, MOVE_MID_SPEED, 3.0);
+		//backup
+		moveToDist(-300, MOVE_MID_SPEED);
+		//rotate to center of board
+		turnWithSerial(TURN_MID_SPEED, -180);
+		//move to center of board
+		moveToDist(650, MOVE_MID_SPEED);
+		//turn to bot guy
+		turnWithSerial(TURN_MID_SPEED, -90);
+		//center camera on bot guy
+		angle = centerCameraFast(1);
+		//move to bot guy
+		moveToDist(300, MOVE_SLOW_SPEED);
+		//str4ngle bot guy
+		setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
+		//back up from bot guy
+		moveToDist(-100, MOVE_MID_SPEED);
+		//raise arm so botguy doesn't drag
+		raiseArm(1600);
+		//turn -90
+		turnWithSerial(TURN_MID_SPEED, -90);
+		//move to block
+		moveToDist(300, MOVE_MID_SPEED);
+		//turn -90
+		turnWithSerial(TURN_MID_SPEED, -90);
+		//center on blue block
+		angle = centerCameraFast(2);
+		//wall align with block
+		moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
+		//lower botguy hopefully on block
+		lowerArm(1200);
+		//release botguy on block
+		setLowerClaw(LOWER_CLAW_OPEN);
+		//move back after putting botguy on block
+		moveToDist(-100, MOVE_SLOW_SPEED);
+		//lowers arm to bottom
+		lowerArmBySensor();
+		//moves toward botguy/block
+		moveToDist(100, MOVE_SLOW_SPEED);
+		//str4ngles botguy with upper claw
+		setUpperClaw(UPPER_CLAW_STRANGLE_BOT_GUY);
+		//grabs block with lower claw
+		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
+		//raises arm to prevent dragging
+		raiseArm(1500);
+		//turns toward pink tape
+		turnWithSerial(TURN_SLOW_SPEED, 90);
+		//moves to pink tape
+		moveToDist(200, MOVE_SLOW_SPEED);
+		//lowers arm to place botguy/cube on ground
+		lowerArmBySensor();
+		
+		
+		
+		
 		
 		
 	}

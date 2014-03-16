@@ -9,4 +9,5 @@ void cameraInitialize();
 
 void blobTrack(int channel, int object);
 int getLargestBlob(int channel);
+
 #endif
