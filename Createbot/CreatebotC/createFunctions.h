@@ -8,6 +8,7 @@ void createInit();
 void raiseArm(int position);
 void raiseArmToTop();
 void lowerArm(int position);
+void lowerArmBySensor();
 
 //create movement
 void moveStraight(int vel);
