@@ -67,11 +67,7 @@ int main() {
 			//pivotOnRight(NORMAL_SPEED, -45);
 		}
 		else if (b_button()) {
-			raiseArm();
-			msleep(500);
-			moveArm(-600);
-			sleep(500);
-
+			arcToWallAlign(NORMAL_SPEED, 1, 1);
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(2000);
@@ -91,7 +87,9 @@ int main() {
 		else if (c_button()) {
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
-			arcToWallAlign(NORMAL_SPEED, 1, 1);
+			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
+			arcToTouch(NORMAL_SPEED, 1, 1);
+			pivotOnRightTillLeftTouch(NORMAL_SPEED);
 			pivotOnLeft(NORMAL_SPEED, -60);
 			pivotOnRight(NORMAL_SPEED, -55);
 			moveToDist(NORMAL_SPEED,-9);
@@ -105,7 +103,7 @@ int main() {
 			raiseArm();
 			msleep(500);
 			setHangerClawPosition(HANGER_UP);
-			moveToDist(NORMAL_SPEED, 33.5);
+			moveToWallAlign(NORMAL_SPEED);
 			msleep(500);
 			setHangerClawPosition(HANGER_FORWARD);
 			msleep(500);
@@ -115,7 +113,13 @@ int main() {
 			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
 			msleep(100);
-			pivotOnLeft(NORMAL_SPEED, -90);
+			pivotOnLeft(NORMAL_SPEED, -95);
+			turnTest(-86.4);
+			
+			//moveToDist(NORMAL_SPEED,-5);
+			//pivotOnleft(NORMAL_SPEED, -30);
+			//pivotOnRight(NORMAL_SPEED, 90);
+			
 		
 		}
 		msleep(100);
