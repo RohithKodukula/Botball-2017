@@ -109,7 +109,7 @@ void routine()
 		turnWithSerial(TURN_MID_SPEED,-90);
 		//moveToDist(730, MOVE_MID_SPEED);
 		//wall align
-		moveToWallAlign(780, MOVE_MID_SPEED, 4.5);
+		moveToWallAlign(780, MOVE_MID_SPEED, 3.75);
 		//back up after wall align
 		moveToDist(-300,MOVE_MID_SPEED);
 		lowerArmBySensor();
@@ -119,17 +119,18 @@ void routine()
 		//push blue box to wall
 		moveToDist(122,MOVE_MID_SPEED);
 		//back up after pushing blue box to wall
-		moveToDist(-250,MOVE_MID_SPEED);
+		moveToDist(-200,MOVE_MID_SPEED);
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
-		moveToDist(150, MOVE_MID_SPEED);
+		moveToDist(220, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_SLOW_SPEED, 80);
+		msleep(1000);
 		thread_destroy(t);
-		msleep(1500);
+		msleep(500);
 		int angle = centerCameraFast(0);
 		msleep(1000);
 		int x;
@@ -147,12 +148,13 @@ void routine()
 		//back up from orange boxes
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
-		rotate(TURN_SLOW_SPEED, -angle);
-		lowerArmBySensor();
-		//turn to face left wall
-		turnWithSerial(TURN_MID_SPEED, -90);
+		thread t2 = thread_create(lowerArmBySensor);
+		thread_start(t2);
+		//turnWithSerial(TURN_SLOW_SPEED, 90);
+		turnWithSerial(TURN_MID_SPEED - 10, -90 - angle);
+		//thread_destroy(t2);		//turn to face left wall
 		//wall align
-		moveToWallAlign(800, MOVE_SLOW_SPEED, 4.0);
+		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//turn to face tubes
 		turnWithSerial(TURN_MID_SPEED, -90);
@@ -160,11 +162,11 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
 		//wall align on tube wall
-		moveToWallAlign(900, MOVE_SLOW_SPEED, 4.5);
+		moveToWallAlign(900, MOVE_MID_SPEED, 1.5);
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
-		msleep(1000);
+		msleep(500);
 		//drop orange box into tube below
 		setUpperClaw(UPPER_CLAW_OPEN);
 		//release tube in lower claw
@@ -176,13 +178,13 @@ void routine()
 		//back up to position to turn to view orange block
 		moveToDist(-190, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
-		thread t2 = thread_create(raiseArmToTop);
-		thread_start(t2);
+		thread t3 = thread_create(raiseArmToTop);
+		thread_start(t3);
 		turnWithSerial(TURN_SLOW_SPEED, 90);
-		msleep(2000);
-		thread_destroy(t2);
+		msleep(500);
+		thread_destroy(t3);
 		angle = centerCameraFast(0);
-		msleep(1000);
+		msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
 			moveToDist(50, MOVE_SLOW_SPEED);
@@ -193,16 +195,16 @@ void routine()
 		msleep(1000);
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(1000);
+		msleep(500);
 		//pull away from orange box starting position
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
-		rotate(TURN_SLOW_SPEED, -angle);
-		lowerArmBySensor();
-		//rotate to face left wall
-		turnWithSerial(TURN_MID_SPEED, -90);
-		//wall align on left wall
-		moveToWallAlign(800, MOVE_SLOW_SPEED, 4.0);
+		thread t4 = thread_create(lowerArmBySensor);
+		thread_start(t4);
+		//turnWithSerial(TURN_SLOW_SPEED, 90);
+		turnWithSerial(TURN_MID_SPEED -10, -90 - angle);
+		//thread_destroy(t4);
+		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//rotate to face tubes
@@ -211,7 +213,7 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
 		//wall align on tube wall
-		moveToWallAlign(1000, MOVE_SLOW_SPEED, 4.5);
+		moveToWallAlign(1000, MOVE_MID_SPEED, 1.5);
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
@@ -219,6 +221,7 @@ void routine()
 		//drop orange box into pipe
 		setUpperClaw(UPPER_CLAW_OPEN);
 		msleep(1000);
+		/*
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
@@ -277,7 +280,7 @@ void routine()
 		moveToDist(200, MOVE_SLOW_SPEED);
 		//lowers arm to place botguy/cube on ground
 		lowerArmBySensor();
-		
+		*/
 		
 		
 		
