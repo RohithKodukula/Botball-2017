@@ -131,7 +131,9 @@ void routine()
 		msleep(1000);
 		thread_destroy(t);
 		msleep(500);
+		printf("test 0\n");
 		int angle = centerCameraFast(0);
+		printf("test 2\n");
 		msleep(1000);
 		int x;
 		x = getMillimeterDistance();
@@ -153,6 +155,9 @@ void routine()
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED - 10, -90 - angle);
 		//thread_destroy(t2);		//turn to face left wall
+		msleep(1000);
+		/*thread_destroy(t2);
+		printf("SHOULD BE D-STROYED\n");*/
 		//wall align
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
@@ -203,7 +208,7 @@ void routine()
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED -10, -90 - angle);
-		//thread_destroy(t4);
+		thread_destroy(t4);
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
@@ -293,15 +298,10 @@ int main() {
 	initActuators();
 	cameraInitialize();
 
-	//sweepToFindLargestBlock(0,45);
-	//raiseArm(ARM_TOP_POS);
-	//centerCameraFast(0);
-	/*while (1) {
-		printf("\n%d",getLargestBlobArea(0));
-
-	}
-	*/
-	//rotate(TURN_MID_SPEED, -90);
+	/*while(1)
+	{
+	printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
+	}*/
 	
 	routine();
 	

@@ -387,7 +387,7 @@ void spinnerStop(){
 }
 
 void spinnerStart(){
-	mav(SPINNER_MOTOR, 530);
+	motor(SPINNER_MOTOR, 50);
 }
 
 

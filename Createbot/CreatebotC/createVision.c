@@ -78,6 +78,7 @@ int centerCameraFast(int channel) {
 	int blob = 0; //largest blob
 	int counter = 0;
 	while ( (angle < -1 || angle > 1) && counter < 5){
+		printf("test 1, %d\n", counter);
 		angle = getAngleToBlob(channel, blob);
 		if (counter == 0) {
 			accumulatedAngle = angle;
