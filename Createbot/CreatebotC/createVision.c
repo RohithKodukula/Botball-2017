@@ -19,7 +19,6 @@ void cameraInitialize() {
 }
 
 void centerCamera(int channel, int object) {
-	//printf("channel count = %d\n", get_channel_count());
 	
 	//Objects are sorted by area, largest first
 	printf("\ncentering camera on orange\n");
@@ -43,12 +42,12 @@ void centerCamera(int channel, int object) {
 		camera_update();
 		camera_update();
 		if(get_object_centroid(channel, object).x > camCenter.x) {
-			rotate(2, TURN_SLOW_SPEED);
+			turnWithSerial(2, TURN_SLOW_SPEED);
 		}
 		else if(get_object_centroid(channel, object).x < camCenter.x) {
-			rotate(-2, TURN_SLOW_SPEED);
+			turnWithSerial(-2, TURN_SLOW_SPEED);
 		}
-		msleep(167);
+		msleep(200);
 		camera_update();
 		camera_update();
 		
@@ -78,7 +77,7 @@ int centerCameraFast(int channel) {
 	int blob = 0; //largest blob
 	int counter = 0;
 	while ( (angle < -1 || angle > 1) && counter < 5){
-		printf("test 1, %d\n", counter);
+		printf("\ntest 1, %d\n", counter);
 		angle = getAngleToBlob(channel, blob);
 		if (counter == 0) {
 			accumulatedAngle = angle;
@@ -86,18 +85,18 @@ int centerCameraFast(int channel) {
 		else {
 			accumulatedAngle += angle;
 		}
-		printf("\n angle: %d", angle);
+		printf("\nangle: %d\n", angle);
 		if (angle == 0) {
 			break;
 		}
 		//printf("\ncalculated angle: %d",angle);
 		
 		//rotate(50,angle);
-		rotate(50, angle);
+		turnWithSerial(50, angle);
 		msleep(1300);
 		counter++;
 	}
-	printf("Angle from original: %d", accumulatedAngle);
+	//printf("Angle from original: %d", accumulatedAngle);
 	return accumulatedAngle;
 }
 
@@ -113,7 +112,7 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 	int largestBlobArea;
 	int bestAngle = 0;
 	if ((double)sweepAngle > CAMERA_VIEW_ANGLE/2) {
-		rotate(MOVE_SLOW_SPEED, (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2);
+		turnWithSerial(MOVE_SLOW_SPEED, (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2);
 		currentAngle = (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2; //turn until seeing the leftmost camera frame
 		largestBlobArea = getLargestBlobArea(channel);
 		bestAngle = currentAngle + getAngleToBlob(channel, 0);
@@ -121,7 +120,7 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 		msleep(5000);
 		while (currentAngle < (sweepAngle-(int)CAMERA_VIEW_ANGLE)) {
 			printf("\n rotating forward one...\n");
-			rotate(MOVE_SLOW_SPEED, (int)CAMERA_VIEW_ANGLE/2);
+			turnWithSerial(MOVE_SLOW_SPEED, (int)CAMERA_VIEW_ANGLE/2);
 			currentAngle += (int)CAMERA_VIEW_ANGLE/2;
 			if (getLargestBlobArea(channel) > largestBlobArea) {
 				bestAngle = currentAngle + getAngleToBlob(channel, 0);
@@ -145,6 +144,7 @@ int getAngleToBlob(channel, blob) {
 	int xCoords[5];
 	camera_update(); //2 are required to clear for some reason...
 	camera_update();
+	msleep(200);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);

@@ -122,6 +122,7 @@ void routine()
 		moveToDist(-200,MOVE_MID_SPEED);
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
+		//move to position to capture cubes
 		moveToDist(220, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
@@ -131,22 +132,26 @@ void routine()
 		msleep(1000);
 		thread_destroy(t);
 		msleep(500);
-		printf("test 0\n");
 		int angle = centerCameraFast(0);
-		printf("test 2\n");
+		angle = centerCameraFast(0);
+		angle = centerCameraFast(0);
 		msleep(1000);
 		int x;
 		x = getMillimeterDistance();
+		
 		while (x > 150) {
 			moveToDist(50, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
+		
 		moveToDist(x-30, MOVE_SLOW_SPEED); //move until 3 cm away
 		msleep(1000);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(1000);
+		//Raise arm slightly to pull away from surface
+		raiseArm(500);
 		//back up from orange boxes
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
@@ -155,7 +160,7 @@ void routine()
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED - 10, -90 - angle);
 		//thread_destroy(t2);		//turn to face left wall
-		msleep(1000);
+		msleep(3000);
 		/*thread_destroy(t2);
 		printf("SHOULD BE D-STROYED\n");*/
 		//wall align
@@ -174,6 +179,7 @@ void routine()
 		msleep(500);
 		//drop orange box into tube below
 		setUpperClaw(UPPER_CLAW_OPEN);
+		msleep(500);
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
@@ -201,6 +207,8 @@ void routine()
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(500);
+		//Raise arm slightly to pull away from surface
+		raiseArm(500);
 		//pull away from orange box starting position
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
@@ -294,22 +302,19 @@ void routine()
 	}
 	
 int main() {
+	
 	createInit();
 	initActuators();
 	cameraInitialize();
-
-	/*while(1)
-	{
-	printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
-	}*/
 	
-	routine();
+	//routine();
 	
-	/*while(1)
-	{
-		printf("distance = %f\n", getMillimeterDistance());
-	}*/
+	raiseArmToTop();
+	
+	sweepToFindLargestBlock(0, 45);
+	
 	return 0;
+	
 }
 
 

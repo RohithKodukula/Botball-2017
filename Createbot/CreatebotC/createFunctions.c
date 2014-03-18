@@ -81,7 +81,7 @@ int getMillimeterDistance() {
 	double y = sum/n;
 	double mm = 10*(2213.1614337305136 - 20.725917486966626*y + 0.07920950330177698*y*y - 0.0001526660102098271*y*y*y 
 			+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
-	printf("cm = %f\n", mm/10);
+	//printf("cm = %f\n", mm/10);
 	return (int)mm;
 }
 
@@ -113,7 +113,7 @@ void moveToDist(int dist, int speed) {
 	
 	createStop();
 	
-	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
+	//printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
 }
 
 void moveToWallAlign(int dist, int speed, double secondTimeout) {
@@ -140,7 +140,7 @@ void moveToWallAlign(int dist, int speed, double secondTimeout) {
 	
 	createStop();
 	
-	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
+	//printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
 
 	
 }

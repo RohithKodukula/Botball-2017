@@ -10,7 +10,7 @@ const int ET_SENSOR_PORT = 2;
 const int ARM_TOP_POS = 4740;
 
 //claw position constants
-const int UPPER_CLAW_OPEN = 437;
+const int UPPER_CLAW_OPEN = 425;
 const int UPPER_CLAW_OPEN_BOT_GUY = 30;
 const int UPPER_CLAW_CLOSED = 755; //was 1930
 const int UPPER_CLAW_STRANGLE_BOT_GUY = 1250;
