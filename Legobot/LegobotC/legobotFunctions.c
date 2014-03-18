@@ -331,13 +331,17 @@ void pivotOnRight(int power, int degrees) {
 	freeze(LEFT_MOTOR);
 }
 
-void pivotOnRightTillLeftTouch(int power) {
+void pivotOnRightTillLeftTouch(int power, int slightReverse) {
 	clear_motor_position_counter(LEFT_MOTOR);
 	freeze(RIGHT_MOTOR);
 	motor(LEFT_MOTOR, power);
+	if (slightReverse) {
+		motor(RIGHT_MOTOR, -2);
+	}
 	while (!getLeftTouchSensor()) {
 		msleep(30);
 	}
+	freeze(RIGHT_MOTOR);
 	freeze(LEFT_MOTOR);
 }
 
@@ -363,10 +367,10 @@ void resetArm() {
 
 void raiseArm() {
 	motor(ARM_MOTOR, FAST_SPEED);
-	while (getArmUpSensorValue() > 100) {
+	while (getArmUpSensorValue() > 280) {
 		msleep(30);
 	}
-	msleep(200);
+	msleep(10);
 	motor(ARM_MOTOR, ARM_HOLDING_POWER);
 }
 	
