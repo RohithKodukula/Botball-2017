@@ -140,12 +140,12 @@ void routine()
 		x = getMillimeterDistance();
 		
 		while (x > 150) {
-			moveToDist(40, MOVE_SLOW_SPEED);
+			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
 		
-		moveToDist(x-30, MOVE_SLOW_SPEED); //move until 3 cm away
+		moveToDist(x-60, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
@@ -198,11 +198,11 @@ void routine()
 		msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
-			moveToDist(40, MOVE_SLOW_SPEED);
+			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
-		moveToDist(x-30, MOVE_SLOW_SPEED); //move until 3 cm away
+		moveToDist(x-60, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);

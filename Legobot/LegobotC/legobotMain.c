@@ -88,14 +88,16 @@ int main() {
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
 			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
-			arcToTouch(NORMAL_SPEED, 1, 1);
-			pivotOnRightTillLeftTouch(NORMAL_SPEED, 1);
+			//arcToTouch(NORMAL_SPEED, 1, 1);
+			//pivotOnRightTillLeftTouch(NORMAL_SPEED, 1);
+			moveToTouch(NORMAL_SPEED);
 			pivotOnLeft(NORMAL_SPEED, -60);
+			moveToDist(NORMAL_SPEED, -5);
 			pivotOnRight(NORMAL_SPEED, -60);
 			moveToDist(NORMAL_SPEED,-9);
 			turnTest(-87.5);
 			
-			moveToDistWithDipstick(SLOW_SPEED, 50);
+			moveToDistWithDipstick(SLOW_SPEED, 55);
 			turnTest(-87.5);
 			moveToDistWithDipstick(SLOW_SPEED, 68);
 			turnTest(88.4);
@@ -113,10 +115,10 @@ int main() {
 			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
 			msleep(100);
-			pivotOnLeft(NORMAL_SPEED, -47);
-			moveToDist(NORMAL_SPEED, -10);
-			pivotOnLeft(NORMAL_SPEED, -47);
+			pivotOnLeft(NORMAL_SPEED, -90);
+			moveToDist(NORMAL_SPEED, 5);
 			resetArm();
+			pivotOnLeft(NORMAL_SPEED, 90);
 			//turnTest(-87.5);
 			
 			//moveToDist(NORMAL_SPEED,-5);
