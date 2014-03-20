@@ -92,7 +92,7 @@ int centerCameraFast(int channel) {
 		//printf("\ncalculated angle: %d",angle);
 		
 		//rotate(50,angle);
-		turnWithSerial(50, angle);
+		rotate(50, angle);
 		msleep(1300);
 		counter++;
 	}

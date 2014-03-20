@@ -7,7 +7,7 @@ const int ARM_DOWN_SENSOR_PORT = 1;
 const int ET_SENSOR_PORT = 2;
 
 //arm positions in ticks
-const int ARM_TOP_POS = 4740;
+const int ARM_TOP_POS = 4690;
 
 //claw position constants
 const int UPPER_CLAW_OPEN = 425;

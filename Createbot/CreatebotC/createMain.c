@@ -119,7 +119,7 @@ void routine()
 		//push blue box to wall
 		moveToDist(122,MOVE_MID_SPEED);
 		//back up after pushing blue box to wall
-		moveToDist(-200,MOVE_MID_SPEED);
+		moveToDist(-80,MOVE_MID_SPEED);
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
 		//move to position to capture cubes
@@ -128,7 +128,7 @@ void routine()
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_SLOW_SPEED, 80);
+		turnWithSerial(TURN_SLOW_SPEED, 90);
 		msleep(1000);
 		thread_destroy(t);
 		msleep(500);
@@ -140,7 +140,7 @@ void routine()
 		x = getMillimeterDistance();
 		
 		while (x > 150) {
-			moveToDist(50, MOVE_SLOW_SPEED);
+			moveToDist(40, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
@@ -151,7 +151,7 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(1000);
 		//Raise arm slightly to pull away from surface
-		raiseArm(500);
+		//raiseArm(500);
 		//back up from orange boxes
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
@@ -176,14 +176,14 @@ void routine()
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
-		msleep(500);
+		msleep(1000);
 		//drop orange box into tube below
 		setUpperClaw(UPPER_CLAW_OPEN);
 		msleep(500);
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
-		moveToDist(-300, MOVE_MID_SPEED);
+		moveToDist(-120, MOVE_MID_SPEED);
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
@@ -198,7 +198,7 @@ void routine()
 		msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
-			moveToDist(50, MOVE_SLOW_SPEED);
+			moveToDist(40, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
 			msleep(500);
 		}
@@ -208,7 +208,7 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(500);
 		//Raise arm slightly to pull away from surface
-		raiseArm(500);
+		//raiseArm(500);
 		//pull away from orange box starting position
 		moveToDist(-300, MOVE_MID_SPEED);
 		//compensate for camera turn
@@ -216,7 +216,9 @@ void routine()
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED -10, -90 - angle);
-		thread_destroy(t4);
+		msleep(3000);
+		//thread_destroy(t4);
+		//adding more comments for fun
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
@@ -307,11 +309,11 @@ int main() {
 	initActuators();
 	cameraInitialize();
 	
-	//routine();
+	routine();
 	
-	raiseArmToTop();
+	//raiseArmToTop();
 	
-	sweepToFindLargestBlock(0, 45);
+	//sweepToFindLargestBlock(0, 45);
 	
 	return 0;
 	
