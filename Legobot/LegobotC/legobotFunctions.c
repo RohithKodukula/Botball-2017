@@ -403,6 +403,9 @@ void setHangerClawPosition(int position){
 
 void kick() {
 	set_servo_position(KICKER_SERVO, KICKER_KICKED);
+	//not necessary, only 1 pink tribble
+	/*msleep(300);
+	set_servo_position(KICKER_SERVO, KICKER_BACK);*/
 }
 
 //Sensors

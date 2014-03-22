@@ -29,7 +29,7 @@ void moveToDistWithKicker(int power, int dist, int channelToKick) {
 			camera_update();
 
 			printf("moving backwards!");
-			if (channelToLookFor == getRightMostBlock(get_channel_count())) {
+			if (channelToKick == getRightMostBlock(get_channel_count())) {
 				kick();
 			}
 		}
@@ -37,12 +37,17 @@ void moveToDistWithKicker(int power, int dist, int channelToKick) {
 	else {
 		printf("dist more than 0\n");
 		printf("motor: %d, target ticks: %d", get_motor_position_counter(LEFT_MOTOR), ticks);
+		int pinkCount = 0;
 		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
 			camera_update();
 			camera_update();
 			printf("moving!");
-			if (channelToLookFor == getRightMostBlock(get_channel_count())) {
+			if (channelToKick == getRightMostBlock(get_channel_count()) && pinkCount == 0) {
+				printf("See pink blob\n");
+				msleep(350);
+				printf("kicking\n");
 				kick();
+				pinkCount++;
 			}
 			msleep(10);
 		}

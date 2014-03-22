@@ -2,7 +2,7 @@
 #define _LEGOBOTVISION_H_
 
 void cameraInitialize();
-void moveToDistWithKicker(int power, int dist, int channelToLookFor);
+void moveToDistWithKicker(int power, int dist, int channelToKick);
 int getRightMostBlock(int numChannels);
 
 

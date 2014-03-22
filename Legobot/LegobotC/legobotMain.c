@@ -34,7 +34,7 @@ void tribbleCollectTest() {
 int main() {
 	legobotInit();
 	
-	//printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
+	printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
 	while(1) {
 		if (a_button()) {
 			
