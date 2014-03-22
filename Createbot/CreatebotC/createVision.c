@@ -101,7 +101,60 @@ int centerCameraFast(int channel) {
 }
 
 
+//returns angle from original position that has the largest block
+//sweepAngle is angle to the left and then to the right (total sweep angle is 2*)
+int sweepToFindLargestBlock(int channel, int sweepAngle) {
+	
+	//SOMETIMES THIS DOENS'T CHECK EACH POSITION, why?
+	int currentAngle = 0;
+	int largestBlobArea;
+	int bestAngle = 0;
+	if ((double)sweepAngle > CAMERA_VIEW_ANGLE/2) 
+	{
+		currentAngle = (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2; //set current angle to be the leftmost camera frame
+		//turn to current angle
+		turnWithSerial(MOVE_SLOW_SPEED, currentAngle);
+		
+		//find largest blob and save as largestBlobArea
+		largestBlobArea = getLargestBlobArea(channel);
+		
+		//bestAngle should be set to the where the blob is
+		bestAngle = currentAngle + getAngleToBlob(channel, 0);
+		printf("\n Blob area %d at angle %d", largestBlobArea, bestAngle);
+		msleep(5000);
+		
+		//while current angle is less than 
+		while (currentAngle < (sweepAngle-(int)CAMERA_VIEW_ANGLE)) 
+		{
+			printf("\n rotating forward one...\n");
+			turnWithSerial(MOVE_SLOW_SPEED, (int)CAMERA_VIEW_ANGLE/2);
+			
+			//currentAngle 
+			currentAngle += (int)CAMERA_VIEW_ANGLE/2;
+			
+			newLargestblockArea = getLargestBlobArea(channel);
+			if (newLargestBlcokArea > largestBlobArea) 
+			{
+				bestAngle = currentAngle + getAngleToBlob(channel, 0);
+				largestBlobArea = getLargestBlobArea(channel);
+				printf("\nNew best blob area %d at angle %d\n", largestBlobArea, bestAngle);
 
+			}
+		msleep(5000);
+		}
+	}
+	else 
+	{
+		return getAngleToBlob(channel, 0);
+	}
+	printf("\ncurrent angle: %d, best angle: %d", currentAngle, bestAngle);
+	printf("\n turning %d", bestAngle- currentAngle);
+	turnWithSerial(MOVE_SLOW_SPEED, bestAngle-currentAngle); //align with that block approximately
+	return bestAngle;
+}
+
+
+/*
 
 //returns angle from original position that has the largest block
 //sweepAngle is angle to the left and then to the right (total sweep angle is 2*)
@@ -139,6 +192,7 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 	turnWithSerial(MOVE_SLOW_SPEED, bestAngle-currentAngle); //align with that block approximately
 	return bestAngle;
 }
+*/
 
 int getAngleToBlob(channel, blob) {
 	int xCoords[5];
