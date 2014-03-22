@@ -40,6 +40,10 @@ void raiseArm(int position) {
 	off(ARM_PORT);
 }
 
+void raiseArmTo1500() {
+	raiseArm(1500);
+}
+
 void raiseArmToTop() {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) < ARM_TOP_POS) {
@@ -61,7 +65,7 @@ void lowerArm(int position) {
 }
 
 void lowerArmBySensor() {
-	motor(ARM_PORT, -30);
+	motor(ARM_PORT, -40);
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
 		msleep(100);
 		printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
@@ -504,4 +508,84 @@ void turnWithSerial(int speed, int degrees) {
 	
 }
 
+void arcToPinkTape() {
+	 
+	create_disconnect();
+	msleep(75);
+	create_connect();
+	
+			create_write_byte(128); //initializes mode to full
+			create_write_byte(132);
 
+			create_write_byte(152); // script size
+			create_write_byte(13);
+	
+			create_write_byte(137); //arc with radius -45 cm at speed -200 mm/s
+			create_write_byte(255);
+			create_write_byte(55);
+			create_write_byte(253);
+			create_write_byte(41);
+	
+			create_write_byte(156); //wait -80 cm
+			create_write_byte(253);
+			create_write_byte(15);
+
+			create_write_byte(137); //stop
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			
+	create_disconnect();
+	
+	msleep(75);
+	create_connect();
+	msleep(75);
+	create_write_byte(153);
+	create_disconnect();
+	msleep(75);
+	create_connect();
+	msleep(75);
+	
+}
+
+void arcToBlockCapturePosition() {
+	
+	create_disconnect();
+	msleep(75);
+	create_connect();
+	
+			create_write_byte(128); //initializes mode to full
+			create_write_byte(132);
+
+			create_write_byte(152); // script size
+			create_write_byte(13);
+	
+			create_write_byte(137); //arc with radius 10 cm at speed 150 mm/s
+			create_write_byte(0);
+			create_write_byte(80);
+			create_write_byte(0);
+			create_write_byte(95);
+	
+			create_write_byte(156); //wait 30 cm
+			create_write_byte(1);
+			create_write_byte(96);
+
+			create_write_byte(137); //stop
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			create_write_byte(0);
+			
+	create_disconnect();
+	
+	msleep(75);
+	create_connect();
+	msleep(75);
+	create_write_byte(153);
+	create_disconnect();
+	msleep(75);
+	create_connect();
+	msleep(75);
+	
+}

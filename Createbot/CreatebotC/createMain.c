@@ -103,14 +103,38 @@ void routine()
 		msleep(100);
 		//capture blue box with lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
+		thread t5 = thread_create(raiseArmTo1500);
+		thread_start(t5);
+		arcToPinkTape();
+		thread_destroy(t5);
 		raiseArm(1500);
 		moveToDist(460, MOVE_MID_SPEED);
 		//turn to face wide side of game board
-		turnWithSerial(TURN_MID_SPEED,-90);
+		//turnWithSerial(TURN_MID_SPEED,-90);
 		//moveToDist(730, MOVE_MID_SPEED);
 		//wall align
-		moveToWallAlign(780, MOVE_MID_SPEED, 3.75);
+		//moveToWallAlign(780, MOVE_MID_SPEED, 3.75);
 		//back up after wall align
+		//moveToDist(-2,MOVE_MID_SPEED);
+		//turn to face left wall
+		//turnWithSerial(TURN_MID_SPEED, 90);
+		//lower the claw
+		lowerArmBySensor();
+		//release blue box
+		setLowerClaw(LOWER_CLAW_OPEN);
+		msleep(200);
+		moveToDist(60, MOVE_SLOW_SPEED);
+		moveToDist(-60, MOVE_SLOW_SPEED);
+		//push blue box to pink tape
+		//moveToDist(50,MOVE_MID_SPEED);
+		//back up after pushing blue box to pink tape
+		//moveToDist(-30,MOVE_MID_SPEED);
+		//turn to face front
+		//turnWithSerial(TURN_MID_SPEED, 90);
+		//go forward after wall align
+		//moveToDist(200, MOVE_MID_SPEED);
+		//turn to face left wall
+		//turnWithSerial(TURN_MID_SPEED, -90);
 		moveToDist(-300,MOVE_MID_SPEED);
 		lowerArmBySensor();
 		//release blue box
@@ -123,19 +147,17 @@ void routine()
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
 		//move to position to capture cubes
-		moveToDist(220, MOVE_MID_SPEED);
+		//moveToDist(400, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
+		arcToBlockCapturePosition();
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_SLOW_SPEED, 90);
 		msleep(1000);
 		thread_destroy(t);
-		msleep(500);
+		moveToDist(100, MOVE_SLOW_SPEED);
 		int angle = centerCameraFast(0);
-		angle = centerCameraFast(0);
-		angle = centerCameraFast(0);
-		msleep(1000);
+		msleep(500);
 		int x;
 		x = getMillimeterDistance();
 		
@@ -145,11 +167,13 @@ void routine()
 			msleep(500);
 		}
 		
+		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
+		msleep(500);
 		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(1000);
+		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//back up from orange boxes
@@ -159,8 +183,8 @@ void routine()
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED - 10, -90 - angle);
+		msleep(4000);
 		//thread_destroy(t2);		//turn to face left wall
-		msleep(3000);
 		/*thread_destroy(t2);
 		printf("SHOULD BE D-STROYED\n");*/
 		//wall align
@@ -176,7 +200,7 @@ void routine()
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
-		msleep(1000);
+		msleep(500);
 		//drop orange box into tube below
 		setUpperClaw(UPPER_CLAW_OPEN);
 		msleep(500);
@@ -187,11 +211,11 @@ void routine()
 		//turn to face left wall
 		turnWithSerial(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
-		moveToDist(-190, MOVE_MID_SPEED);
+		moveToDist(-150, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
-		turnWithSerial(TURN_SLOW_SPEED, 90);
+		turnWithSerial(TURN_SLOW_SPEED + 10, 90);
 		msleep(500);
 		thread_destroy(t3);
 		angle = centerCameraFast(0);
@@ -202,11 +226,13 @@ void routine()
 			x = getMillimeterDistance();
 			msleep(500);
 		}
+		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
+		msleep(500);
 		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(500);
+		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//pull away from orange box starting position
@@ -216,7 +242,7 @@ void routine()
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		turnWithSerial(TURN_MID_SPEED -10, -90 - angle);
-		msleep(3000);
+		msleep(4000);
 		//thread_destroy(t4);
 		//adding more comments for fun
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
@@ -232,10 +258,9 @@ void routine()
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
-		msleep(1000);
+		msleep(500);
 		//drop orange box into pipe
 		setUpperClaw(UPPER_CLAW_OPEN);
-		msleep(1000);
 		/*
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);

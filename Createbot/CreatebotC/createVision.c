@@ -102,7 +102,11 @@ int centerCameraFast(int channel) {
 
 
 //returns angle from original position that has the largest block
+//sweepAngle is angle to the left and then to the right (total sweep angle is 2*)
+/*
+=======
 //sweepAngle is angle to see the  left and then to the right (total sweep angle is 2*)
+>>>>>>> FETCH_HEAD
 int sweepToFindLargestBlock(int channel, int sweepAngle) {
 	
 	//SOMETIMES THIS DOENS'T CHECK EACH POSITION, why?
@@ -156,6 +160,47 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 	return bestAngle;
 }
 
+*/
+/*
+
+//returns angle from original position that has the largest block
+//sweepAngle is angle to the left and then to the right (total sweep angle is 2*)
+int sweepToFindLargestBlock(int channel, int sweepAngle) {
+	
+	//SOMETIMES THIS DOENS'T CHECK EACH POSITION, why?
+	int currentAngle = 0;
+	int largestBlobArea;
+	int bestAngle = 0;
+	if ((double)sweepAngle > CAMERA_VIEW_ANGLE/2) {
+		turnWithSerial(MOVE_SLOW_SPEED, (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2);
+		currentAngle = (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2; //turn until seeing the leftmost camera frame
+		largestBlobArea = getLargestBlobArea(channel);
+		bestAngle = currentAngle + getAngleToBlob(channel, 0);
+		printf("\n Blob area %d at angle %d", largestBlobArea, bestAngle);
+		msleep(5000);
+		while (currentAngle < (sweepAngle-(int)CAMERA_VIEW_ANGLE)) {
+			printf("\n rotating forward one...\n");
+			turnWithSerial(MOVE_SLOW_SPEED, (int)CAMERA_VIEW_ANGLE/2);
+			currentAngle += (int)CAMERA_VIEW_ANGLE/2;
+			if (getLargestBlobArea(channel) > largestBlobArea) {
+				bestAngle = currentAngle + getAngleToBlob(channel, 0);
+				largestBlobArea = getLargestBlobArea(channel);
+				printf("\nNew best blob area %d at angle %d\n", largestBlobArea, bestAngle);
+
+			}
+			msleep(5000);
+		}
+	}
+	else {
+		return getAngleToBlob(channel, 0);
+	}
+	printf("\ncurrent angle: %d, best angle: %d", currentAngle, bestAngle);
+	printf("\n turning %d", bestAngle- currentAngle);
+	turnWithSerial(MOVE_SLOW_SPEED, bestAngle-currentAngle); //align with that block approximately
+	return bestAngle;
+}
+*/
+
 
 /*
 
@@ -198,15 +243,13 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 */
 
 int getAngleToBlob(channel, blob) {
-	int xCoords[5];
+	int xCoords[3];
 	camera_update(); //2 are required to clear for some reason...
 	camera_update();
 	msleep(200);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);
-	xCoords[3] = getBlobXCoord(channel, blob);
-	xCoords[4] = getBlobXCoord(channel, blob);
 	int x = getMostLikelyCoord(xCoords, sizeof(xCoords)/sizeof(xCoords[0]),10); //second argument is length of array
 	return getAngle(x);
 }

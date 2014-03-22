@@ -6,6 +6,7 @@ void createInit();
 
 //arm
 void raiseArm(int position);
+void raiseArmTo1500();
 void raiseArmToTop();
 void lowerArm(int position);
 void lowerArmBySensor();
@@ -15,6 +16,8 @@ void moveStraight(int vel);
 void createStop();
 void moveToDist(int dist, int speed);
 void rotate(int degrees, int speed);
+void arcToPinkTape();
+void arcToBlockCapturePosition();
 
 //create serial movement
 void moveWithSerial(int speed, int distance);
