@@ -1,4 +1,4 @@
-#include "legoBotConstants.h"
+#include "legobotConstants.h"
 #include <math.h>
 
 void legobotInit(){
@@ -399,6 +399,10 @@ void spinnerStart(){
 //Servos
 void setHangerClawPosition(int position){
 	set_servo_position(HANGER_SERVO, position);
+}
+
+void kick() {
+	set_servo_position(KICKER_SERVO, KICKER_KICKED);
 }
 
 //Sensors

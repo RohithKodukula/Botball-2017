@@ -104,31 +104,24 @@ void routine()
 		//capture blue box with lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
 		raiseArm(1500);
-		moveToDist(400, MOVE_MID_SPEED);
+		moveToDist(460, MOVE_MID_SPEED);
 		//turn to face wide side of game board
 		turnWithSerial(TURN_MID_SPEED,-90);
 		//moveToDist(730, MOVE_MID_SPEED);
 		//wall align
 		moveToWallAlign(780, MOVE_MID_SPEED, 3.75);
 		//back up after wall align
-		moveToDist(-2,MOVE_MID_SPEED);
-		//turn to face left wall
-		turnWithSerial(TURN_MID_SPEED, 90);
-		//lower the claw
+		moveToDist(-300,MOVE_MID_SPEED);
 		lowerArmBySensor();
 		//release blue box
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(500);
-		//push blue box to pink tape
-		moveToDist(50,MOVE_MID_SPEED);
-		//back up after pushing blue box to pink tape
-		moveToDist(-30,MOVE_MID_SPEED);
-		//turn to face front
-		turnWithSerial(TURN_MID_SPEED, 90);
-		//go forward after wall align
-		moveToDist(200, MOVE_MID_SPEED);
+		//push blue box to wall
+		moveToDist(122,MOVE_MID_SPEED);
+		//back up after pushing blue box to wall
+		moveToDist(-80,MOVE_MID_SPEED);
 		//turn to face left wall
-		turnWithSerial(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, 90);
 		//move to position to capture cubes
 		moveToDist(220, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
@@ -152,7 +145,7 @@ void routine()
 			msleep(500);
 		}
 		
-		moveToDist(x-60, MOVE_SLOW_SPEED); //move until 6 cm away
+		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
@@ -209,7 +202,7 @@ void routine()
 			x = getMillimeterDistance();
 			msleep(500);
 		}
-		moveToDist(x-60, MOVE_SLOW_SPEED); //move until 6 cm away
+		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(1000);
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);

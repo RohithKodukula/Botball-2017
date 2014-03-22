@@ -4,31 +4,56 @@
 
 int main()
 {
+	legobotInit();
+	cameraInitialize();
 	
-	int x = 0;
-	
-	set_servo_position(DIPSTICK_SERVO_PORT, DIPSTICK_FLACID_POSITION);
-	set_servo_position(BASKET_SERVO_PORT, BASKET_UP_POSITION);
-	set_servo_position(FLICKER_SERVO_PORT, FLICKER_BACK_POSITION);
-	
-	enable_servos();
-	
-	motor(LEFT_WHEEL, LEFT_WHEEL_POWER);
-	motor(RIGHT_WHEEL, RIGHT_WHEEL_POWER);
-	move_at_velocity(SPINNER_MOTOR_PORT, SPINNER_MOTOR_VELOCITY);
-	
-	while (x < 10) {
-		
-		set_servo_position(DIPSTICK_SERVO_PORT, DIPSTICK_TAUGHT_POSITION);
-		msleep(350);
-		set_servo_position(DIPSTICK_SERVO_PORT, DIPSTICK_FLACID_POSITION);
-		msleep(550);
-		x++;
-		
+	camera_update();
+	camera_update();
+	while (1) {
+		camera_update();
+		printf("\nRightmost channel: %d", getRightMostBlock(2));
 	}
 	
-	alloff();
-	disable_servos();
-	
 	return 0;
+}
+
+void cameraInitialize() {
+	camera_open_at_res(LOW_RES);
+	camera_load_config("tribble.conf");
+
+}
+
+
+void legobotInit(){
+	//setting all servo positions and enabling.
+	set_servo_position(DUMPER_SERVO, DUMPER_UP);
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+	set_servo_position(HANGER_SERVO, HANGER_BACK);
+	set_servo_position(KICKER_SERVO, KICKER_BACK);
+	enable_servos();
+	//clear motor positions
+	//should use the link to move the motors to initial first
+	clear_motor_position_counter(LEFT_MOTOR);
+	clear_motor_position_counter(RIGHT_MOTOR);
+	clear_motor_position_counter(SPINNER_MOTOR);
+	clear_motor_position_counter(ARM_MOTOR);
+	//moveArm(500);
+	//resetArm();
+}
+
+
+//returns channel
+int getRightMostBlock(int numChannels) {
+	int xCoord = get_object_centroid(0,0).x;
+	int rightMostChannel = 0;
+	int i = 1;
+	int coord;
+	for (i = 1; i < numChannels; i++) {
+		coord = get_object_centroid(i,0).x;
+		if (xCoord < coord) {
+			xCoord = coord;
+			rightMostChannel = i;
+		}
+	}
+	return rightMostChannel;
 }

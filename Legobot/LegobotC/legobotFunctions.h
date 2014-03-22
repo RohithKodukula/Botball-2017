@@ -23,6 +23,10 @@ void dipstickDoesShit();
 void spinnerStop();
 void spinnerStart();
 
+
+void setHangerClawPosition(int position);
+void kick();
+	
 int getArmDownSensorValue();
 int getArmUpSensorValue();
 int getLeftTouchSensor();

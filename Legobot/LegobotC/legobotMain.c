@@ -1,6 +1,7 @@
 #include "legobotConstants.h"
 #include "legobotFunctions.h"
-//192.168.0.148
+#include "legobotVision.h"
+
 
 void tribbleCollectTest() {
 	printf("collecting test");
@@ -67,7 +68,12 @@ int main() {
 			//pivotOnRight(NORMAL_SPEED, -45);
 		}
 		else if (b_button()) {
-			arcToWallAlign(NORMAL_SPEED, 1, 1);
+			//arcToWallAlign(NORMAL_SPEED, 1, 1);
+			cameraInitialize();
+			while(1) {
+				//moveToDistWithKicker(NORMAL_SPEED, 100, 1);
+				printf("%d",getRightMostBlock(2));
+			}
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(2000);
@@ -126,7 +132,7 @@ int main() {
 			
 			moveToDist(NORMAL_SPEED, -20);
 			turnTest(-90);
-			moveToDist(30);
+			moveToDist(NORMAL_SPEED,30);
 			turnTest(90);
 			moveToDist(NORMAL_SPEED, 20);
 			setHangerClawPosition(HANGER_UP);

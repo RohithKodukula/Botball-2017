@@ -102,10 +102,12 @@ int centerCameraFast(int channel) {
 
 
 //returns angle from original position that has the largest block
-//sweepAngle is angle to the left and then to the right (total sweep angle is 2*)
+//sweepAngle is angle to see the  left and then to the right (total sweep angle is 2*)
 int sweepToFindLargestBlock(int channel, int sweepAngle) {
 	
 	//SOMETIMES THIS DOENS'T CHECK EACH POSITION, why?
+	const int LEFT_VIEW = (-sweepAngle) + (int)CAMERA_VIEW_ANGLE/2; //left view is end where furthest point left is displayed in view in far left corner 
+	const int RIGHT_VIEW = (sweepAngle) - (int)CAMERA_VIEW_ANGLE/2; //right view is end where furthest point right is displayed in view in far right corner 
 	int currentAngle = 0;
 	int largestBlobArea;
 	int bestAngle = 0;
@@ -123,20 +125,21 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 		printf("\n Blob area %d at angle %d", largestBlobArea, bestAngle);
 		msleep(5000);
 		
-		//while current angle is less than 
-		while (currentAngle < (sweepAngle-(int)CAMERA_VIEW_ANGLE)) 
+		//while current angle is less than opposite end of view (
+		while (currentAngle < RIGHT_VIEW) 
 		{
 			printf("\n rotating forward one...\n");
 			turnWithSerial(MOVE_SLOW_SPEED, (int)CAMERA_VIEW_ANGLE/2);
 			
-			//currentAngle 
+			//currentAngle updated
 			currentAngle += (int)CAMERA_VIEW_ANGLE/2;
 			
-			newLargestblockArea = getLargestBlobArea(channel);
-			if (newLargestBlcokArea > largestBlobArea) 
+			
+			newLargestBlobArea = getLargestBlobArea(channel);
+			if (newLargestBlobArea > largestBlobArea) 
 			{
 				bestAngle = currentAngle + getAngleToBlob(channel, 0);
-				largestBlobArea = getLargestBlobArea(channel);
+				largestBlobArea = newLargestBlobArea;
 				printf("\nNew best blob area %d at angle %d\n", largestBlobArea, bestAngle);
 
 			}

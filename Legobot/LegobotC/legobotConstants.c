@@ -7,11 +7,7 @@ const int ARM_MOTOR = 3;
 //motor constants
 const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 10.25;
-<<<<<<< HEAD
-const double R_WHEEL_CALIBRATION_CONSTANT = 1.005;
-=======
-const double R_WHEEL_CALIBRATION_CONSTANT = 1.03;
->>>>>>> f5416f8d80ea688b6c5714fb33a63a5f159d82ea
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.14;
 
 
 //servos
@@ -35,8 +31,8 @@ const int HANGER_BACK = 0;
 const int HANGER_UP = 1024;
 
 //kicker servo
-const int KICKER_KICKED = 700;
-const int KICKER_BACK = 1800;
+const int KICKER_KICKED = 1800;
+const int KICKER_BACK = 725;
 
 //dumper position constants
 const int DUMPER_DUMP = 900;

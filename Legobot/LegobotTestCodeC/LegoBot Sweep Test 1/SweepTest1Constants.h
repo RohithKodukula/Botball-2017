@@ -1,28 +1,52 @@
-// Created on Fri February 28 2014
+//motor ports
+const int LEFT_MOTOR = 2;
+const int RIGHT_MOTOR = 0;
+const int SPINNER_MOTOR = 1;
+const int ARM_MOTOR = 3;
 
-// Replace FILE with your file's name
-#ifndef _FILE_H_
-#define _FILE_H_
+//motor constants
+const int TICKS_PER_CM = 52;
+const double TICKS_PER_DEGREE = 10.25;
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.03;
 
-const int BASKET_SERVO_PORT = 0;
-const int DIPSTICK_SERVO_PORT = 2;
-const int FLICKER_SERVO_PORT = 1;
-const int SPINNER_MOTOR_PORT = 1;
-const int LEFT_WHEEL = 2;
-const int RIGHT_WHEEL = 0;
 
-const int LEFT_WHEEL_POWER = 50;
-const int RIGHT_WHEEL_POWER = 54;
+//servos
+const int DUMPER_SERVO = 0;
+const int KICKER_SERVO = 1;
+const int DIPSTICK_SERVO = 2;
+const int HANGER_SERVO = 3;
 
-const int DIPSTICK_TAUGHT_POSITION = 600;
-const int DIPSTICK_FLACID_POSITION = 1200;
+//sensor ports
+const int ARM_DOWN_SENSOR = 3;
+const int ARM_UP_SENSOR = 1;
+const int LEFT_TOUCH_SENSOR = 14;
+const int RIGHT_TOUCH_SENSOR = 12;
 
-const int BASKET_UP_POSITION = 2040;
-const int BASKET_DOWN_POSITION = 900;
+//arm positions in ticks
+const int ARM_TOP_POS = 2000;
 
-const int SPINNER_MOTOR_VELOCITY = 700;
+//hanger position constants
+const int HANGER_FORWARD = 2047;
+const int HANGER_BACK = 0;
+const int HANGER_UP = 1024;
 
-const int FLICKER_BACK_POSITION = 1400;
-const int FLICKER_FLICK_POSITION = 850;
+//kicker servo
+const int KICKER_KICKED = 700;
+const int KICKER_BACK = 1800;
 
-#endif
+//dumper position constants
+const int DUMPER_DUMP = 900;
+const int DUMPER_UP = 1960;
+
+//disturber position constants
+const int DIPSTICK_OPEN = 900;
+const int DIPSTICK_CLOSE = 200;
+const int DIPSTICK_PARALLEL = 860;
+
+//motor powers
+const int FAST_SPEED = 80;
+const int NORMAL_SPEED = 60;
+const int SLOW_SPEED = 40;
+const int SUPER_SLOW_SPEED = 20;
+
+const int ARM_HOLDING_POWER = 10;
