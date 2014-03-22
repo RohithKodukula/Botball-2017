@@ -94,6 +94,7 @@ int main() {
 			
 		}
 		else if (c_button()) {
+			cameraInitialize();
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
 			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
@@ -109,9 +110,14 @@ int main() {
 			moveToDist(NORMAL_SPEED,-9);
 			turnTest(-87.5);
 			
-			moveToDistWithDipstick(SLOW_SPEED, 46);
+			//move to black tape
+			//moveToDistWithDipstick(SLOW_SPEED, 46);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED, 46, 1);
+			//turn to center of board
 			turnTest(-87.5);
+			//move to center of board
 			moveToDistWithDipstick(SLOW_SPEED, 68);
+			//turnt to rack
 			turnTest(88.4);
 			msleep(1000);
 			raiseArm();
