@@ -8,7 +8,7 @@ void cameraInitialize() {
 }
 
 
-void moveToDistWithKicker(int power, int dist, int channelToLookFor) {
+void moveToDistWithKicker(int power, int dist, int channelToKick) {
 	printf("going to move %d\n", dist);
 	int ticks = dist*TICKS_PER_CM;
 	printf("ticks: %d\n", ticks);
@@ -26,6 +26,8 @@ void moveToDistWithKicker(int power, int dist, int channelToLookFor) {
 		printf("dist less than 0");
 		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
 			camera_update();
+			camera_update();
+
 			printf("moving backwards!");
 			if (channelToLookFor == getRightMostBlock(get_channel_count())) {
 				kick();
@@ -36,6 +38,7 @@ void moveToDistWithKicker(int power, int dist, int channelToLookFor) {
 		printf("dist more than 0\n");
 		printf("motor: %d, target ticks: %d", get_motor_position_counter(LEFT_MOTOR), ticks);
 		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			camera_update();
 			camera_update();
 			printf("moving!");
 			if (channelToLookFor == getRightMostBlock(get_channel_count())) {
@@ -50,13 +53,12 @@ void moveToDistWithKicker(int power, int dist, int channelToLookFor) {
 }
 
 int getRightMostBlock(int numChannels) {
-	int xCoord = get_object_centroid(0,0).x;
-	int rightMostChannel = 0;
-	int i = 1;
-	int coord;
-	for (i = 1; i < numChannels; i++) {
+	int rightMostChannel = -1; //none...
+	int xCoord = -999;
+	int i, coord;
+	for (i = 0; i < numChannels; i++) {
 		coord = get_object_centroid(i,0).x;
-		if (xCoord < coord) {
+		if (xCoord < coord && get_object_area(i,0) > 4500) {
 			xCoord = coord;
 			rightMostChannel = i;
 		}

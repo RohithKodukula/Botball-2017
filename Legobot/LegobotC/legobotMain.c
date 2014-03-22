@@ -70,10 +70,13 @@ int main() {
 		else if (b_button()) {
 			//arcToWallAlign(NORMAL_SPEED, 1, 1);
 			cameraInitialize();
-			while(1) {
-				//moveToDistWithKicker(NORMAL_SPEED, 100, 1);
-				printf("%d",getRightMostBlock(2));
-			}
+			//while(1) {
+				moveToDistWithKicker(NORMAL_SPEED, 100, 1);
+				//camera_update();
+				//camera_update();
+				//printf("\n%d, size: %d",getRightMostBlock(2), get_object_area(getRightMostBlock(2), 0));
+				//msleep(5);
+			//}
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(2000);
