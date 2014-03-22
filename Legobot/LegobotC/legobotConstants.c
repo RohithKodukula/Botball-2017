@@ -1,7 +1,3 @@
-
-
-
-
 //motor ports
 const int LEFT_MOTOR = 2;
 const int RIGHT_MOTOR = 0;
@@ -11,7 +7,11 @@ const int ARM_MOTOR = 3;
 //motor constants
 const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 10.25;
+<<<<<<< HEAD
 const double R_WHEEL_CALIBRATION_CONSTANT = 1.005;
+=======
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.03;
+>>>>>>> f5416f8d80ea688b6c5714fb33a63a5f159d82ea
 
 
 //servos

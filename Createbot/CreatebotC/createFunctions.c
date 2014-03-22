@@ -64,7 +64,13 @@ void lowerArmBySensor() {
 	motor(ARM_PORT, -30);
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
 		msleep(100);
+		printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	}
+	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
+		msleep(100);
+		printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
+	}
+	printf("arm sensor out = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	msleep(300);
 	off(ARM_PORT);
 }
@@ -79,7 +85,7 @@ int getMillimeterDistance() {
 	double y = sum/n;
 	double mm = 10*(2213.1614337305136 - 20.725917486966626*y + 0.07920950330177698*y*y - 0.0001526660102098271*y*y*y 
 			+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
-	printf("cm = %f\n", mm/10);
+	//printf("cm = %f\n", mm/10);
 	return (int)mm;
 }
 
@@ -111,8 +117,39 @@ void moveToDist(int dist, int speed) {
 	
 	createStop();
 	
-	printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
+	//printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
 }
+
+void moveToWallAlign(int dist, int speed, double secondTimeout) {
+	//copy body of moveToDist
+	//update when new moveToDist is made
+	set_create_distance(0); 
+	
+	double startTime = seconds();
+	
+	//speed distance compensation
+	if(speed >= 400){dist = dist - (22 * (dist * 0.01));} //fast speed
+	else if(speed > 300 && speed < 400){dist = dist - (8 * (dist * 0.01));} //mid speed
+	else if(speed <= 300){dist = dist - (6 * (dist * 0.01));} //slow speed
+
+	if (dist > 0) {   
+		moveStraight(speed); 
+		while (-get_create_distance() < dist && seconds() - startTime < secondTimeout) { msleep(10); }
+	}
+	
+	else if (dist < 0) { 
+		moveStraight(-speed); 
+		while (-get_create_distance() > dist && seconds() - startTime < secondTimeout) { msleep(10); }
+	}
+	
+	createStop();
+	
+	//printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
+
+	
+}
+
+
 //speed of -500 to 500mm/sec
 //0 to 359 degrees
 void rotate(int speed, int degrees) {
@@ -329,17 +366,43 @@ void moveWithSerial(int speed, int distance) {
 
 void turnWithSerial(int speed, int degrees) {
 	
-	printf("\nspeed value recieved: %d\nangle value recieved: %d\n",
-	speed, degrees
-	);
-	
 	if (speed < 1) {
 		speed *= -1;
 	}
 	
-	double compensation = 0.0; //3.7
+	int compensation = 0;
 	
-	double angle1, angle2, speed1, speed2, counter1 = 0;
+	if (degrees < 0) {
+		
+	if (degrees >= -15) {
+		compensation = 0;
+	} else if (degrees >= -45) {
+		compensation = 4;
+	} else if (degrees >= -90) {
+		compensation = 2;
+	} else if (degrees >= -180) {
+		compensation = 8;
+	} else {
+		compensation = 0;
+	}
+	
+	} else {
+		
+	if (degrees <= 15) {
+		compensation = 0;
+	} else if (degrees <= 45) {
+		compensation = 4;
+	} else if (degrees <= 90) {
+		compensation = 2;
+	} else if (degrees <= 180) {
+		compensation = 8;
+	} else {
+		compensation = 0;
+	}
+	
+	}
+	
+	int angle1, angle2, speed1, speed2, counter1 = 0;
 	
 	if (degrees < 0) {
 		
@@ -370,39 +433,23 @@ void turnWithSerial(int speed, int degrees) {
 			angle1++;
 			angle2 -= 255;
 		}
+		
 		angle2 -= compensation;
-		if (angle2 < 0) {
-			angle2 += compensation;
-		}
-		if (angle2 > 255) {
-			angle2 = 255;
-		}
 		
 	} else {
+		
 		angle1 = 255;
 		angle2 = degrees;
+		
 		while (angle2 > 255) {
 			angle1--;
 			angle2 -= 255;
 		}
 		
 		angle2 -= compensation;
-		
-		if (angle2 < 0) {
-			angle2 = 0;
-		}
-		
-		if (angle2 > 255) {
-			angle2 = 255;
-		}
-		
 		angle2 = 255 - angle2; 
 		
 	}
-	
-	printf("\nspeed1: %d\nspeed2:%d\nangle1: %d\nangle2: %d\n\n",
-	speed1, speed2, angle1, angle2
-	);
 	
 	if (degrees = 0) {
 		angle1 = 0;
@@ -419,7 +466,7 @@ void turnWithSerial(int speed, int degrees) {
 	}
 	 
 	create_disconnect();
-	msleep(50);
+	msleep(75);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -446,10 +493,15 @@ void turnWithSerial(int speed, int degrees) {
 			
 	create_disconnect();
 	
+	msleep(75);
 	create_connect();
+	msleep(75);
 	create_write_byte(153);
 	create_disconnect();
+	msleep(75);
 	create_connect();
+	msleep(75);
 	
 }
+
 

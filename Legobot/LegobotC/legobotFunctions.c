@@ -115,7 +115,6 @@ void moveToDistWithDipstick(int power, int dist) {
 void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
-	enable_servos();
 	//set the left touch sensor to be parallel to 
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
 	
@@ -124,13 +123,13 @@ void moveToWallAlign(int power) {
 	int leftTriggered = 0;
 	while (1) {
 		if (getLeftTouchSensor()) {
-			motor(LEFT_MOTOR,-15);
+			freeze(LEFT_MOTOR);
 			leftTriggered = 1;
 			//if we don't set anything then the touch sensors could un-trigger
 			//we might never escape loop
 		}
 		if (getRightTouchSensor()) {
-			motor(RIGHT_MOTOR,-15 * R_WHEEL_CALIBRATION_CONSTANT);
+			freeze(RIGHT_MOTOR);	
 			rightTriggered = 1;
 		}
 		if (rightTriggered && leftTriggered) {
@@ -145,13 +144,34 @@ void moveToWallAlign(int power) {
 	
 }
 
+void moveToTouch(int power) {
+	motor(LEFT_MOTOR, power);
+	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
+	//set the left touch sensor to be parallel to 
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	
+	//variables to track which side has been activated
+	while (1) {
+		if (getLeftTouchSensor()) {
+			break;
+		}
+		if (getRightTouchSensor()) {
+			break;
+		}
+		msleep(30);
+	}
+	freeze(RIGHT_MOTOR);
+	freeze(LEFT_MOTOR);
+	
+}
+
 //arcLeft is a boolean
 //extremeArc is a boolean that says whether or not to increase the difference (more arc)
 void arcToWallAlign(int power, int arcLeft, int extremeArc) {
 	int leftPower;
 	int rightPower;
 	if (extremeArc) {
-		leftPower = arcLeft ? power/3.5 : power*1.35;
+		leftPower = arcLeft ? power/3.2 : power*1.35; //give left wheel more power, necessary somehow
 		rightPower = arcLeft ? power*1.35 : power/3.5;
 	}
 	else {
@@ -160,7 +180,6 @@ void arcToWallAlign(int power, int arcLeft, int extremeArc) {
 	}
 	motor(LEFT_MOTOR, leftPower);
 	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
-	enable_servos();
 	//set the left touch sensor to be parallel to 
 	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
 	
@@ -188,6 +207,30 @@ void arcToWallAlign(int power, int arcLeft, int extremeArc) {
 	}
 }
 
+void arcToTouch(int power, int arcLeft, int extremeArc) {
+	int leftPower;
+	int rightPower;
+	if (extremeArc) {
+		leftPower = arcLeft ? power/3.2 : power*1.35; //give left wheel more power, necessary somehow
+		rightPower = arcLeft ? power*1.35 : power/3.5;
+	}
+	else {
+		leftPower = arcLeft ? power/2 : power;
+		rightPower = arcLeft ? power : power/2;
+	}
+	printf("Right wheel power: %d", rightPower);
+	motor(LEFT_MOTOR, leftPower);
+	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
+	//set the left touch sensor to be parallel to 
+	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	
+	while (!getLeftTouchSensor() && !getRightTouchSensor()) {
+		msleep(30);
+	}
+	printf("\nFreezing");
+	freeze(LEFT_MOTOR);
+	freeze(RIGHT_MOTOR);
+}
 
 void turn(double degrees) {
 	clear_motor_position_counter(LEFT_MOTOR);
@@ -288,6 +331,20 @@ void pivotOnRight(int power, int degrees) {
 	freeze(LEFT_MOTOR);
 }
 
+void pivotOnRightTillLeftTouch(int power, int slightReverse) {
+	clear_motor_position_counter(LEFT_MOTOR);
+	freeze(RIGHT_MOTOR);
+	motor(LEFT_MOTOR, power);
+	if (slightReverse) {
+		motor(RIGHT_MOTOR, -2);
+	}
+	while (!getLeftTouchSensor()) {
+		msleep(30);
+	}
+	freeze(RIGHT_MOTOR);
+	freeze(LEFT_MOTOR);
+}
+
 
 
 //The Arm 
@@ -310,10 +367,10 @@ void resetArm() {
 
 void raiseArm() {
 	motor(ARM_MOTOR, FAST_SPEED);
-	while (getArmUpSensorValue() > 100) {
+	while (getArmUpSensorValue() > 280) {
 		msleep(30);
 	}
-	msleep(200);
+	msleep(10);
 	motor(ARM_MOTOR, ARM_HOLDING_POWER);
 }
 	
@@ -334,7 +391,7 @@ void spinnerStop(){
 }
 
 void spinnerStart(){
-	mav(SPINNER_MOTOR, 530);
+	motor(SPINNER_MOTOR, 50);
 }
 
 
