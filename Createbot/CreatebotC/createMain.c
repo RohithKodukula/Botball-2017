@@ -93,6 +93,7 @@ void serialTestingUtility(){
 
 void routine()
 	{
+		
 		//turn out of starting box
 		turnWithSerial(TURN_MID_SPEED, -90);
 		//move out of starting box
@@ -123,8 +124,10 @@ void routine()
 		msleep(1000);
 		thread_destroy(t);
 		//move to final block capture position
-		moveToDist(100, MOVE_SLOW_SPEED);
+		moveToDist(70, MOVE_SLOW_SPEED);
 		
+		//int angle2 = sweepForOrange();
+		msleep(1000);
 		int angle = centerCameraFast(0);
 		msleep(500);
 		int x;
@@ -138,8 +141,6 @@ void routine()
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
-		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
-		msleep(1000);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(250);
@@ -151,7 +152,7 @@ void routine()
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_MID_SPEED - 10, -90 - angle);
+		turnWithSerial(TURN_MID_SPEED - 10, -90 - (angle));
 		msleep(4000);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
@@ -187,6 +188,9 @@ void routine()
 		turnWithSerial(TURN_SLOW_SPEED + 10, 90);
 		msleep(500);
 		thread_destroy(t3);
+		moveToDist(70, MOVE_SLOW_SPEED);
+		//angle2 = sweepForOrange();
+		msleep(1000);
 		angle = centerCameraFast(0);
 		msleep(500);
 		x = getMillimeterDistance();
@@ -197,8 +201,6 @@ void routine()
 		}
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
-		moveToDist(x-55, MOVE_SLOW_SPEED); //move until 6 cm away
-		msleep(1000);
 		//capture remaining orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(250);
@@ -210,7 +212,7 @@ void routine()
 		thread t4 = thread_create(lowerArmBySensor);
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_MID_SPEED -10, -90 - angle);
+		turnWithSerial(TURN_MID_SPEED -10, -90 - (angle));
 		msleep(4000);
 		//thread_destroy(t4);
 		//adding more comments for fun
@@ -296,10 +298,36 @@ void routine()
 int main() {
 	
 	createInit();
-	initActuators();
+	//initActuators();
 	cameraInitialize();
+	int x = 0;
 	
-	routine();
+	//routine();
+	
+	
+	//raiseArmToTop();
+	
+	/*
+	while(1){
+		if (b_button()) {
+			sweepForOrange();
+		}
+		msleep(100);
+	}
+	*/
+	
+	while (1) {
+		if (cameraSeesBigOrange()) {
+			printf("%d: I see a block!\n", x);
+			camera_update();
+			msleep(500);
+			printf("Area: %d\n", get_object_area(0,0));
+		} else {
+			printf("%d: I can't see a good block.\n", x);
+		}
+		x++;
+	}
+	
 	
 	//raiseArmToTop();
 	

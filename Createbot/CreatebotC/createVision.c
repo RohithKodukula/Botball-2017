@@ -18,6 +18,82 @@ void cameraInitialize() {
 	camera_load_config("orange.conf");
 }
 
+int sweepForOrange() {
+	
+	int angle;
+	if (!cameraSeesBigOrange()) {
+		printf("\nTurning right because didn't see anything...\n");
+		turnWithSerial(TURN_SLOW_SPEED + 30, 20);
+		angle = 10;
+		msleep(1000);
+		if (!cameraSeesBigOrange()) {
+			printf("\nTurning left because didn't see anything...\n");
+			turnWithSerial(TURN_SLOW_SPEED + 30, -40);
+			angle = -10;
+			msleep(1000);
+			if (!cameraSeesBigOrange()) {
+				printf("\nSomething shat itself.\n");
+				ao();
+				create_disconnect();
+				return angle;
+			}
+		}	
+	}
+
+		
+	printf("i see it");
+	angle = 0;
+	
+	msleep(1000);
+	return angle;
+}
+
+int cameraSeesBigOrange() {
+	
+	int x, y, z;
+	double averageArea;
+	int isLargeEnough;
+	
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	x = get_object_area(0, 0);
+	msleep(100);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	y = get_object_area(0, 0);
+	msleep(100);
+	camera_update();
+	msleep(50);
+	camera_update();
+	msleep(50);
+	z = get_object_area(0, 0);
+	msleep(100);
+	
+	averageArea = ((x + y + z) / 3);
+	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
+	
+	if (averageArea > 800.00) {
+		isLargeEnough = 1;
+	} else {
+		isLargeEnough = 0;
+	}
+	
+	return isLargeEnough;
+	
+}
+
 void centerCamera(int channel, int object) {
 	
 	//Objects are sorted by area, largest first
