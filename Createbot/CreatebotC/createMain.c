@@ -25,6 +25,7 @@ void mainMenu() {
 		printf("\"Testing Utility\"\n -- Enter the robot testing utilty");
 	
 }
+
 void testingUtility() {
 	printf("Press A to raise Arm 4990 ticks, B to lower arm by sensor, C to center, side button to exit");
 	msleep(500);
@@ -107,47 +108,13 @@ void routine()
 		thread_start(t5);
 		arcToPinkTape();
 		thread_destroy(t5);
-		raiseArm(1500);
-		moveToDist(460, MOVE_MID_SPEED);
-		//turn to face wide side of game board
-		//turnWithSerial(TURN_MID_SPEED,-90);
-		//moveToDist(730, MOVE_MID_SPEED);
-		//wall align
-		//moveToWallAlign(780, MOVE_MID_SPEED, 3.75);
-		//back up after wall align
-		//moveToDist(-2,MOVE_MID_SPEED);
-		//turn to face left wall
-		//turnWithSerial(TURN_MID_SPEED, 90);
-		//lower the claw
 		lowerArmBySensor();
 		//release blue box
 		setLowerClaw(LOWER_CLAW_OPEN);
 		msleep(200);
-		moveToDist(60, MOVE_SLOW_SPEED);
-		moveToDist(-60, MOVE_SLOW_SPEED);
-		//push blue box to pink tape
-		//moveToDist(50,MOVE_MID_SPEED);
-		//back up after pushing blue box to pink tape
-		//moveToDist(-30,MOVE_MID_SPEED);
-		//turn to face front
-		//turnWithSerial(TURN_MID_SPEED, 90);
-		//go forward after wall align
-		//moveToDist(200, MOVE_MID_SPEED);
-		//turn to face left wall
-		//turnWithSerial(TURN_MID_SPEED, -90);
-		moveToDist(-300,MOVE_MID_SPEED);
-		lowerArmBySensor();
-		//release blue box
-		setLowerClaw(LOWER_CLAW_OPEN);
-		msleep(500);
-		//push blue box to wall
-		moveToDist(122,MOVE_MID_SPEED);
-		//back up after pushing blue box to wall
-		moveToDist(-80,MOVE_MID_SPEED);
-		//turn to face left wall
-		turnWithSerial(TURN_MID_SPEED, 90);
-		//move to position to capture cubes
-		//moveToDist(400, MOVE_MID_SPEED);
+		//nudge blue box
+		moveToDist(60, MOVE_MID_SPEED);
+		moveToDist(-60, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
@@ -155,7 +122,9 @@ void routine()
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		msleep(1000);
 		thread_destroy(t);
+		//move to final block capture position
 		moveToDist(100, MOVE_SLOW_SPEED);
+		
 		int angle = centerCameraFast(0);
 		msleep(500);
 		int x;
@@ -321,10 +290,6 @@ void routine()
 		//lowers arm to place botguy/cube on ground
 		lowerArmBySensor();
 		*/
-		
-		
-		
-		
 		
 	}
 	
