@@ -70,13 +70,15 @@ int main() {
 		else if (b_button()) {
 			//arcToWallAlign(NORMAL_SPEED, 1, 1);
 			cameraInitialize();
-			//while(1) {
-				moveToDistWithKicker(NORMAL_SPEED, 100, 1);
-				//camera_update();
-				//camera_update();
-				//printf("\n%d, size: %d",getRightMostBlock(2), get_object_area(getRightMostBlock(2), 0));
-				//msleep(5);
-			//}
+	
+			thread spinnerThread = thread_create(spinnerStart);
+			thread_start(spinnerThread);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 100, 1);
+			
+			thread_destroy(spinnerThread);
+			off(SPINNER_MOTOR);
+
+			
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(2000);
@@ -103,31 +105,32 @@ int main() {
 			
 			
 			//wall align
-			moveToTouch(NORMAL_SPEED); 
+			moveToWallAlign(NORMAL_SPEED); 
 			pivotOnLeft(NORMAL_SPEED, -60);
+			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
-			pivotOnRight(NORMAL_SPEED, -60);
-			moveToDist(NORMAL_SPEED,-9);
-			turnTest(-87.5);
+			pivotOnRight(NORMAL_SPEED, -55);
+			msleep(100);
+			moveToDist(NORMAL_SPEED,-5);
+			turnTest(-88.9);
 			
 			//move to black tape
 			//moveToDistWithDipstick(SLOW_SPEED, 46);
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED, 46, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 30, 1);
 			//turn to center of board
-			turnTest(-87.5);
+			turnTest(-88.9);
 			//move to center of board
-			moveToDistWithDipstick(SLOW_SPEED, 68);
-			//turnt to rack
-			turnTest(88.4);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 68, 1);
+			//turn to rack
+			turnTest(91.2);
 			msleep(1000);
 			raiseArm();
 			msleep(500);
 			setHangerClawPosition(HANGER_UP);
-			moveToWallAlign(NORMAL_SPEED);
+			moveToTouch(NORMAL_SPEED);
 			msleep(500);
 			setHangerClawPosition(HANGER_FORWARD);
 			msleep(500);
-			thread_destroy(spinnerThread);
 			off(SPINNER_MOTOR);
 			moveArm(-100);
 			msleep(100);
@@ -137,15 +140,24 @@ int main() {
 			moveToDist(NORMAL_SPEED, 5);
 			resetArm();
 			//pivotOnLeft(NORMAL_SPEED, 90);
-			//turnTest(-87.5);
+			//turnTest(-88.7);
 			
-			moveToDist(NORMAL_SPEED, -20);
-			turnTest(-90);
-			moveToDist(NORMAL_SPEED,30);
-			turnTest(90);
+
+			moveToDist(NORMAL_SPEED, -7);
+			turnTest(-88.7);
+
+			
 			moveToDist(NORMAL_SPEED, 20);
+			pivotOnLeft(SLOW_SPEED, 15);
+			pivotOnRight(SLOW_SPEED, 15);
+			moveToDist(SLOW_SPEED, -3);
+
 			setHangerClawPosition(HANGER_UP);
+			moveArm(100);
 			setHangerClawPosition(HANGER_FORWARD);
+			resetArm();
+			
+			
 			moveToDist(NORMAL_SPEED, -15);
 			raiseArm();
 			msleep(500);
