@@ -16,7 +16,7 @@ void moveToDistWithKickerAndDipstick(int power, int dist, int channelToKick) {
 	
 	power = dist > 0 ? power : -power;
 	
-	int kickDelay = 450;
+	int kickDelay = 425;
 	
 	printf("delay ms: %d, power level: %f\n", kickDelay, power_level());
 	

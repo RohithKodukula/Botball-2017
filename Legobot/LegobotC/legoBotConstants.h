@@ -19,6 +19,7 @@ const int DUMPER_SERVO;
 const int KICKER_SERVO;
 const int DIPSTICK_SERVO;
 const int HANGER_SERVO;
+const int DISTANCE_SENSOR;
 
 //sensor ports
 const int ARM_DOWN_SENSOR;

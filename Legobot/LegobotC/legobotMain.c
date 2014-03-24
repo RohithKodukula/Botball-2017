@@ -33,11 +33,16 @@ void tribbleCollectTest() {
 
 int main() {
 	legobotInit();
-	
+	cameraInitialize();
+
 	printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
 	while(1) {
 		if (a_button()) {
 			
+			 moveUntilMaxDist(-NORMAL_SPEED);
+
+			
+			/*
 			enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_FORWARD);
 			msleep(1500);
@@ -56,7 +61,7 @@ int main() {
 			msleep(100);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(1000);
-			
+			*/
 
 			
 			
@@ -96,8 +101,6 @@ int main() {
 			
 		}
 		else if (c_button()) {
-			msleep(2000);
-			cameraInitialize();
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
 			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
@@ -117,11 +120,11 @@ int main() {
 			
 			//move to black tape
 			//moveToDistWithDipstick(SLOW_SPEED, 46);
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 30, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 32, 1);
 			//turn to center of board
 			turnTest(-96.2);
 			//move to center of board
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 68, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 66, 1);
 			//turn to rack
 			turnTest(91.2);
 			msleep(1000);
@@ -143,50 +146,36 @@ int main() {
 			moveToDist(NORMAL_SPEED, -5);
 			msleep(100);
 			pivotOnLeft(NORMAL_SPEED, -105);
-			moveToDist(NORMAL_SPEED, 5);
 			resetArm();
-			pivotOnLeft(NORMAL_SPEED, 80);
-			moveToDist(NORMAL_SPEED, 1.5);
-			pivotOnLeft(NORMAL_SPEED, 10);
-			//turnTest(-88.7);
+			moveToDist(NORMAL_SPEED, 30);
+			turnTest(-90.0);
+			moveToWallAlign(SLOW_SPEED);
+			moveToDist(NORMAL_SPEED, -20);
+			turnTest(91.2);
+			moveUntilMaxDist(-NORMAL_SPEED);
+			moveToDist(NORMAL_SPEED, -5);
 			
+			pivotOnLeft(NORMAL_SPEED, 36);
+			moveToDist(NORMAL_SPEED, 1);
+			pivotOnLeft(NORMAL_SPEED, 26);
+			msleep(500);
+			//pivotOnLeft(NORMAL_SPEED, 10);
+			//moveToDist(SLOW_SPEED, 1);
+			msleep(500);
+			moveArm(400);
+			//moveToDist(SLOW_SPEED, 3);
+			setHangerClawPosition(HANGER_BACK);
+			msleep(500);
+			moveToDist(NORMAL_SPEED, -10);
+			resetArm();
+			pivotOnRight(NORMAL_SPEED, -80);
+			pivotOnLeft(NORMAL_SPEED, -58);
+			raiseArm();
+			moveToDist(NORMAL_SPEED, 30);
+			setHangerClawPosition(HANGER_UP);
+			moveToTouch(NORMAL_SPEED);
+			setHangerClawPosition(HANGER_FORWARD);
 
-			//moveToDist(NORMAL_SPEED, -7);
-			//turnTest(-88.7);
-
-			
-			//moveToDist(NORMAL_SPEED, 20);
-			//pivotOnLeft(SLOW_SPEED, 15);
-			//pivotOnRight(SLOW_SPEED, 15);
-			//moveToDist(SLOW_SPEED, -3);
-
-			//setHangerClawPosition(HANGER_UP);
-			//moveArm(100);
-			//setHangerClawPosition(HANGER_FORWARD);
-			//resetArm();
-			
-			
-			//moveToDist(NORMAL_SPEED, -15);
-			//raiseArm();
-			//msleep(500);
-			//moveArm(-90);
-			//moveToDist(NORMAL_SPEED, 15);
-			
-			//raiseArm();
-			//msleep(500);
-			//moveArm(90);
-			
-			
-			
-			
-			
-			
-			
-			
-			//moveToDist(NORMAL_SPEED,-5);
-			//pivotOnleft(NORMAL_SPEED, -30);
-			//pivotOnRight(NORMAL_SPEED, 90);
-			
 		
 		}
 		msleep(100);

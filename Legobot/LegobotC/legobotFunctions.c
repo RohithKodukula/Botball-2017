@@ -160,10 +160,54 @@ void moveToTouch(int power) {
 		}
 		msleep(30);
 	}
-	freeze(RIGHT_MOTOR);
-	freeze(LEFT_MOTOR);
+	halt();
 	
 }
+
+
+void moveUntilMaxDist(int power) {
+	int num = 10;
+	
+	//averaging
+	
+	int valsOld[num];
+	int totalOld = 0;
+	int valsNew[num];
+	int totalNew = 0;
+	
+	int position = 0;
+	
+	int i;
+	for (i = 0; i < num; i++) {
+		valsOld[i] = getDistance();
+		totalOld += valsOld[i];
+		printf("---%d\n",totalOld);
+	}
+	
+	for (i = 0; i < num; i++) {
+		valsNew[i] = getDistance();
+		totalNew += valsNew[i];
+	}
+	printf("totalNew: %d, totalOld: %d\n", totalNew, totalOld);
+	
+	moveStraight(power);
+	
+	while(totalNew + 200 > totalOld ) {
+		totalOld -= valsOld[position];
+		valsOld[position] = valsNew[position];
+		totalOld += valsOld[position];
+		
+		totalNew -= valsNew[position];
+		valsNew[position] = getDistance();
+		totalNew += valsNew[position];
+		
+		printf("new val: %d, totalNew: %d,\n\t totalOld %d, pos: %d\n", valsNew[position], totalNew, totalOld, position);
+		
+		position = (position + 1)%num;
+	}	
+	halt();
+}
+
 
 //arcLeft is a boolean
 //extremeArc is a boolean that says whether or not to increase the difference (more arc)
@@ -391,9 +435,8 @@ void spinnerStop(){
 }
 
 void spinnerStart(){
-	motor(SPINNER_MOTOR, 50);
+	motor(SPINNER_MOTOR, 45);
 }
-
 
 
 //Servos
@@ -403,6 +446,9 @@ void setHangerClawPosition(int position){
 
 void kick() {
 	set_servo_position(KICKER_SERVO, KICKER_KICKED);
+	freeze(SPINNER_MOTOR);
+	msleep(1000);
+	spinnerStart();
 	//not necessary, only 1 pink tribble
 	/*msleep(300);
 	set_servo_position(KICKER_SERVO, KICKER_BACK);*/
@@ -425,8 +471,7 @@ int getRightTouchSensor() {
 	return digital(RIGHT_TOUCH_SENSOR);
 }
 
-
-
-//Vision
-
+int getDistance() {
+	return analog_et(DISTANCE_SENSOR);
+}
 

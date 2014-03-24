@@ -10,6 +10,8 @@ void moveToDist(int power, int dist);
 void moveToDistWithTribbleGrabbing(int power, int dist);
 void moveToWallAlign(int power);
 void moveToTouch(int power);
+void moveUntilMaxDist(int power);
+
 void arcToWallAlign(int power, int arcLeft, int extremeArc);
 
 void turn(double degrees);
