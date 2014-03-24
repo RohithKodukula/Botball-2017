@@ -360,9 +360,9 @@ void resetArm() {
 		}
 		msleep(30);
 	}
-	//freeze(ARM_MOTOR);
-	msleep(100);
-	off(ARM_MOTOR);
+	freeze(ARM_MOTOR);
+	//msleep(100);
+	//off(ARM_MOTOR);
 }
 
 void raiseArm() {

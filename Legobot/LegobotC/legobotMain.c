@@ -96,6 +96,7 @@ int main() {
 			
 		}
 		else if (c_button()) {
+			msleep(2000);
 			cameraInitialize();
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
@@ -112,61 +113,68 @@ int main() {
 			pivotOnRight(NORMAL_SPEED, -55);
 			msleep(100);
 			moveToDist(NORMAL_SPEED,-5);
-			turnTest(-88.9);
+			turnTest(-92.3);
 			
 			//move to black tape
 			//moveToDistWithDipstick(SLOW_SPEED, 46);
 			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 30, 1);
 			//turn to center of board
-			turnTest(-88.9);
+			turnTest(-96.2);
 			//move to center of board
 			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 68, 1);
 			//turn to rack
 			turnTest(91.2);
 			msleep(1000);
+			//arm raises
 			raiseArm();
 			msleep(500);
+			//hanger platform rotates forward
 			setHangerClawPosition(HANGER_UP);
+			//touch sensor activate 
 			moveToTouch(NORMAL_SPEED);
 			msleep(500);
+			//hangers are put on rack
 			setHangerClawPosition(HANGER_FORWARD);
 			msleep(500);
 			off(SPINNER_MOTOR);
+			//arm moves down 
 			moveArm(-100);
 			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
 			msleep(100);
-			pivotOnLeft(NORMAL_SPEED, -90);
+			pivotOnLeft(NORMAL_SPEED, -105);
 			moveToDist(NORMAL_SPEED, 5);
 			resetArm();
-			//pivotOnLeft(NORMAL_SPEED, 90);
+			pivotOnLeft(NORMAL_SPEED, 80);
+			moveToDist(NORMAL_SPEED, 1.5);
+			pivotOnLeft(NORMAL_SPEED, 10);
 			//turnTest(-88.7);
 			
 
-			moveToDist(NORMAL_SPEED, -7);
-			turnTest(-88.7);
+			//moveToDist(NORMAL_SPEED, -7);
+			//turnTest(-88.7);
 
 			
-			moveToDist(NORMAL_SPEED, 20);
-			pivotOnLeft(SLOW_SPEED, 15);
-			pivotOnRight(SLOW_SPEED, 15);
-			moveToDist(SLOW_SPEED, -3);
+			//moveToDist(NORMAL_SPEED, 20);
+			//pivotOnLeft(SLOW_SPEED, 15);
+			//pivotOnRight(SLOW_SPEED, 15);
+			//moveToDist(SLOW_SPEED, -3);
 
-			setHangerClawPosition(HANGER_UP);
-			moveArm(100);
-			setHangerClawPosition(HANGER_FORWARD);
-			resetArm();
+			//setHangerClawPosition(HANGER_UP);
+			//moveArm(100);
+			//setHangerClawPosition(HANGER_FORWARD);
+			//resetArm();
 			
 			
-			moveToDist(NORMAL_SPEED, -15);
-			raiseArm();
-			msleep(500);
-			moveArm(-90);
-			moveToDist(NORMAL_SPEED, 15);
+			//moveToDist(NORMAL_SPEED, -15);
+			//raiseArm();
+			//msleep(500);
+			//moveArm(-90);
+			//moveToDist(NORMAL_SPEED, 15);
 			
-			raiseArm();
-			msleep(500);
-			moveArm(90);
+			//raiseArm();
+			//msleep(500);
+			//moveArm(90);
 			
 			
 			
