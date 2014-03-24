@@ -95,11 +95,11 @@ void routine()
 	{
 		
 		//turn out of starting box
-		turnWithSerial(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -90);
 		//move out of starting box
 		moveToDist(600, MOVE_MID_SPEED);
 		//turn to face left side of game board
-		turnWithSerial(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -90);
 		//move to blue box
 		moveToDist(300, MOVE_MID_SPEED);
 		msleep(100);
@@ -121,13 +121,13 @@ void routine()
 		thread_start(t);
 		arcToBlockCapturePosition();
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		msleep(1000);
+		msleep(2500);
 		thread_destroy(t);
 		//move to final block capture position
 		moveToDist(70, MOVE_SLOW_SPEED);
 		
-		//int angle2 = sweepForOrange();
-		msleep(1000);
+		int angle2 = sweepForOrange();
+		msleep(100);
 		int angle = centerCameraFast(0);
 		msleep(500);
 		int x;
@@ -152,7 +152,7 @@ void routine()
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_MID_SPEED - 10, -90 - (angle));
+		rotate(TURN_MID_SPEED - 10, -87 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
@@ -161,7 +161,7 @@ void routine()
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//turn to face tubes
-		turnWithSerial(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -179,17 +179,17 @@ void routine()
 		//back up from tube wall
 		moveToDist(-120, MOVE_MID_SPEED);
 		//turn to face left wall
-		turnWithSerial(TURN_MID_SPEED, 90);
+		rotate(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
 		moveToDist(-150, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
-		turnWithSerial(TURN_SLOW_SPEED + 10, 90);
-		msleep(500);
+		rotate(TURN_SLOW_SPEED + 10, 90);
+		msleep(1500);
 		thread_destroy(t3);
 		moveToDist(70, MOVE_SLOW_SPEED);
-		//angle2 = sweepForOrange();
+		angle2 = sweepForOrange();
 		msleep(1000);
 		angle = centerCameraFast(0);
 		msleep(500);
@@ -212,7 +212,7 @@ void routine()
 		thread t4 = thread_create(lowerArmBySensor);
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		turnWithSerial(TURN_MID_SPEED -10, -90 - (angle));
+		rotate(TURN_MID_SPEED -10, -87 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t4);
 		//adding more comments for fun
@@ -220,7 +220,7 @@ void routine()
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//rotate to face tubes
-		turnWithSerial(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -296,25 +296,35 @@ void routine()
 	}
 	
 int main() {
-	
 	createInit();
+	printf("\n Battery Capacity: %d", get_create_battery_capacity());
+	printf("\n Battery Charge: %d", get_create_battery_charge());
+	printf("\n Battery Temp: %d", get_create_battery_temp());
 	//initActuators();
-	cameraInitialize();
+	//cameraInitialize();
 	int x = 0;
 	
 	//routine();
 	
+	while (x < 4) {
+		rotate(TURN_MID_SPEED, -90);
+		msleep(500);
+		x++;
+		printf("%d\n", x);
+	}
 	
-	//raiseArmToTop();
 	
 	/*
+	raiseArmToTop();
+	
+	
 	while(1){
 		if (b_button()) {
 			sweepForOrange();
 		}
 		msleep(100);
 	}
-	*/
+	
 	
 	while (1) {
 		if (cameraSeesBigOrange()) {
@@ -327,7 +337,7 @@ int main() {
 		}
 		x++;
 	}
-	
+	*/
 	
 	//raiseArmToTop();
 	

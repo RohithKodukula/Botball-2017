@@ -21,14 +21,15 @@ void cameraInitialize() {
 int sweepForOrange() {
 	
 	int angle;
+	
 	if (!cameraSeesBigOrange()) {
-		printf("\nTurning right because didn't see anything...\n");
-		turnWithSerial(TURN_SLOW_SPEED + 30, 20);
+		printf("\nTurning right because I didn't see anything...\n");
+		turnWithSerial(TURN_SLOW_SPEED + 30, 15);
 		angle = 10;
 		msleep(1000);
 		if (!cameraSeesBigOrange()) {
-			printf("\nTurning left because didn't see anything...\n");
-			turnWithSerial(TURN_SLOW_SPEED + 30, -40);
+			printf("\nTurning left because I didn't see anything...\n");
+			turnWithSerial(TURN_SLOW_SPEED + 30, -30);
 			angle = -10;
 			msleep(1000);
 			if (!cameraSeesBigOrange()) {
@@ -55,31 +56,31 @@ int cameraSeesBigOrange() {
 	int isLargeEnough;
 	
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	x = get_object_area(0, 0);
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	y = get_object_area(0, 0);
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	camera_update();
-	msleep(50);
+	msleep(200);
 	z = get_object_area(0, 0);
-	msleep(100);
+	msleep(200);
 	
 	averageArea = ((x + y + z) / 3);
 	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
@@ -165,14 +166,13 @@ int centerCameraFast(int channel) {
 		if (angle == 0) {
 			break;
 		}
-		//printf("\ncalculated angle: %d",angle);
+		printf("\ncalculated angle: %d\n",angle);
 		
-		//rotate(50,angle);
 		rotate(50, angle);
 		msleep(1300);
 		counter++;
 	}
-	//printf("Angle from original: %d", accumulatedAngle);
+	printf("\nAngle from original: %d\n", accumulatedAngle);
 	return accumulatedAngle;
 }
 

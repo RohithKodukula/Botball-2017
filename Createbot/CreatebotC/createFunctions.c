@@ -199,7 +199,7 @@ void rotate(int speed, int degrees) {
 		}
 		else if(absDegrees >=90 && absDegrees < 180)
 		{
-			degrees = 0.87 * degrees; //works
+			degrees = 0.88 * degrees; //works
 		}
 		else if(absDegrees >= 180 && absDegrees < 270)
 		{
@@ -470,7 +470,7 @@ void turnWithSerial(int speed, int degrees) {
 	}
 	 
 	create_disconnect();
-	msleep(75);
+	msleep(150);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -497,14 +497,14 @@ void turnWithSerial(int speed, int degrees) {
 			
 	create_disconnect();
 	
-	msleep(75);
+	msleep(150);
 	create_connect();
-	msleep(75);
+	msleep(150);
 	create_write_byte(153);
 	create_disconnect();
-	msleep(75);
+	msleep(150);
 	create_connect();
-	msleep(75);
+	msleep(150);
 	
 }
 
@@ -552,7 +552,7 @@ void arcToPinkTape() {
 void arcToBlockCapturePosition() {
 	
 	create_disconnect();
-	msleep(75);
+	msleep(150);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -569,7 +569,7 @@ void arcToBlockCapturePosition() {
 	
 			create_write_byte(156); //wait 30 cm
 			create_write_byte(1);
-			create_write_byte(96);
+			create_write_byte(88);
 
 			create_write_byte(137); //stop
 			create_write_byte(0);
@@ -579,13 +579,13 @@ void arcToBlockCapturePosition() {
 			
 	create_disconnect();
 	
-	msleep(75);
+	msleep(150);
 	create_connect();
-	msleep(75);
+	msleep(150);
 	create_write_byte(153);
 	create_disconnect();
-	msleep(75);
+	msleep(150);
 	create_connect();
-	msleep(75);
+	msleep(150);
 	
 }
