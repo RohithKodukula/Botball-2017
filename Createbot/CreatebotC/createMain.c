@@ -119,6 +119,9 @@ void routine()
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
+		/*
+		GO FOR BLOCK 1
+		*/
 		arcToBlockCapturePosition();
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		msleep(1500);
@@ -189,8 +192,11 @@ void routine()
 		//turn to face left wall
 		rotate(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
-		moveToDist(-150, MOVE_MID_SPEED);
+		moveToDist(-170, MOVE_MID_SPEED); //was -150
 		//raise arm while turning to face orange boxes
+		/*
+		GO FOR BLOCK 2
+		*/
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
 		rotate(TURN_SLOW_SPEED + 10, 90);
@@ -318,7 +324,7 @@ int main() {
 	printf("\n Battery Temp: %d", get_create_battery_temp());
 	initActuators();
 	cameraInitialize();
-	int x = 0;
+	//int x = 0;
 	
 	routine();
 	
