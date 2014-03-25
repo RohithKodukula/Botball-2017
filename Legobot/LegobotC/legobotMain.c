@@ -35,7 +35,14 @@ int main() {
 	legobotInit();
 	cameraInitialize();
 
-	printf("Press side button to end, A button to test dist, B button to test turn, C button to run longer test");
+	console_clear();
+	
+	printf("-Side button to end\n-A button to test dist\n-B button to test turn\n-C button to run routine");
+	
+	set_a_button_text("Test Distance");
+	set_b_button_text("Test Turn");
+	set_c_button_text("Routine");
+	
 	while(1) {
 		if (a_button()) {
 			
@@ -101,6 +108,17 @@ int main() {
 			
 		}
 		else if (c_button()) {
+			
+			routine();
+		
+		}
+		msleep(100);
+	}
+	
+}
+
+void routine() {
+	
 			thread spinnerThread = thread_create(spinnerStart);
 			thread_start(spinnerThread);
 			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
@@ -116,17 +134,17 @@ int main() {
 			pivotOnRight(NORMAL_SPEED, -55);
 			msleep(100);
 			moveToDist(NORMAL_SPEED,-5);
-			turnTest(-92.3);
+			turnTest(-97.0);
 			
 			//move to black tape
 			//moveToDistWithDipstick(SLOW_SPEED, 46);
 			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 32, 1);
 			//turn to center of board
-			turnTest(-96.2);
+			turnTest(-95.5);
 			//move to center of board
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 66, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 67, 1);
 			//turn to rack
-			turnTest(91.2);
+			turnTest(92.5);
 			msleep(1000);
 			//arm raises
 			raiseArm();
@@ -139,34 +157,38 @@ int main() {
 			//hangers are put on rack
 			setHangerClawPosition(HANGER_FORWARD);
 			msleep(500);
+			moveArm(-90);
+			msleep(500);
 			off(SPINNER_MOTOR);
-			//arm moves down 
-			moveArm(-100);
 			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
 			msleep(100);
-			pivotOnLeft(NORMAL_SPEED, -105);
 			resetArm();
-			moveToDist(NORMAL_SPEED, 30);
-			turnTest(-90.0);
-			moveToWallAlign(SLOW_SPEED);
-			moveToDist(NORMAL_SPEED, -20);
-			turnTest(91.2);
+			pivotOnLeft(NORMAL_SPEED, -105);
+			moveToDist(NORMAL_SPEED, 40);
+			//turnTest(-98.0);
+			//moveToWallAlign(SLOW_SPEED);
+			//moveToDist(NORMAL_SPEED, -11);
+			//turnTest(93.5);
+			//resetArm();
 			moveUntilMaxDist(-NORMAL_SPEED);
-			moveToDist(NORMAL_SPEED, -5);
+			moveToDist(NORMAL_SPEED, -2);
+			setHangerClawPosition(HANGER_UP);
+			pivotOnLeft(NORMAL_SPEED, 90);
 			
-			pivotOnLeft(NORMAL_SPEED, 36);
+			/*
+			
 			moveToDist(NORMAL_SPEED, 1);
 			pivotOnLeft(NORMAL_SPEED, 26);
 			msleep(500);
-			//pivotOnLeft(NORMAL_SPEED, 10);
-			//moveToDist(SLOW_SPEED, 1);
+			pivotOnLeft(NORMAL_SPEED, 10);
+			moveToDist(SLOW_SPEED, 5);
 			msleep(500);
 			moveArm(400);
 			//moveToDist(SLOW_SPEED, 3);
 			setHangerClawPosition(HANGER_BACK);
 			msleep(500);
-			moveToDist(NORMAL_SPEED, -10);
+			moveToDist(NORMAL_SPEED, -13);
 			resetArm();
 			pivotOnRight(NORMAL_SPEED, -80);
 			pivotOnLeft(NORMAL_SPEED, -58);
@@ -175,12 +197,9 @@ int main() {
 			setHangerClawPosition(HANGER_UP);
 			moveToTouch(NORMAL_SPEED);
 			setHangerClawPosition(HANGER_FORWARD);
+			
+			*/
 
-		
-		}
-		msleep(100);
-	}
-	
 }
 
 void turnTest(double degrees) {
