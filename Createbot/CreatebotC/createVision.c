@@ -22,16 +22,18 @@ int sweepForOrange() {
 	
 	int angle;
 	
+	printf("\nSweeping for orange...\n");
+	
 	if (!cameraSeesBigOrange()) {
 		printf("\nTurning right because I didn't see anything...\n");
 		turnWithSerial(TURN_SLOW_SPEED + 30, 15);
 		angle = 10;
-		msleep(500);
+		msleep(1000);
 		if (!cameraSeesBigOrange()) {
 			printf("\nTurning left because I didn't see anything...\n");
 			turnWithSerial(TURN_SLOW_SPEED + 30, -30);
 			angle = -10;
-			msleep(500);
+			msleep(1000);
 			if (!cameraSeesBigOrange()) {
 				printf("\nSomething shat itself.\n");
 				ao();
@@ -44,42 +46,45 @@ int sweepForOrange() {
 		
 	printf("i see it");
 	angle = 0;
-
+	
+	msleep(1000);
 	return angle;
 }
 
 int cameraSeesBigOrange() {
+	
+	printf("\nseesbigorange started...\n");
 	
 	int x, y, z;
 	double averageArea;
 	int isLargeEnough;
 	
 	camera_update();
-	//msleep(200);
+	msleep(200);
 	camera_update();
-	//msleep(200);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	x = get_object_area(0, 0);
-	//msleep(200);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	y = get_object_area(0, 0);
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	camera_update();
-	msleep(100);
+	msleep(200);
 	z = get_object_area(0, 0);
-	msleep(100);
+	msleep(200);
 	
 	averageArea = ((x + y + z) / 3);
 	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
@@ -168,7 +173,7 @@ int centerCameraFast(int channel) {
 		printf("\ncalculated angle: %d\n",angle);
 		
 		rotate(50, angle);
-		msleep(500);
+		msleep(1300);
 		counter++;
 	}
 	printf("\nAngle from original: %d\n", accumulatedAngle);
@@ -319,9 +324,9 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 
 int getAngleToBlob(channel, blob) {
 	int xCoords[3];
-	//camera_update(); //2 are required to clear for some reason...
-	//camera_update();
-	//msleep(200);
+	camera_update(); //2 are required to clear for some reason...
+	camera_update();
+	msleep(200);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);

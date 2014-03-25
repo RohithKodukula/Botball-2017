@@ -121,37 +121,45 @@ void routine()
 		thread_start(t);
 		arcToBlockCapturePosition();
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		msleep(2500);
+		msleep(1500);
 		thread_destroy(t);
 		//move to final block capture position
 		moveToDist(70, MOVE_SLOW_SPEED);
 		
 		int angle2 = sweepForOrange();
-		//msleep(100); optimization attempt
+		printf("\nangle2: %d\n", angle2);
+		msleep(100);
 		int angle = centerCameraFast(0);
-		//msleep(500); optimization attempt
+		printf("\nangle: %d\n", angle);
+		msleep(500);
 		int x;
 		x = getMillimeterDistance();
 		
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(200);
+			msleep(500);
 		}
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
-		msleep(200);
+		msleep(500);
+		raiseArm(100);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(200);
+		msleep(250);
+		raiseArm(70);
+		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//back up from orange boxes
-		moveToDist(-300, MOVE_MID_SPEED);
+		moveToDist(-50, MOVE_SLOW_SPEED);
+		msleep(100);
+		moveToDist(-200, MOVE_MID_SPEED - 10);
 		//compensate for camera turn
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
+		printf("\nturn compensation: %d\n", -87 - (angle + angle2));
 		rotate(TURN_MID_SPEED - 10, -87 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t2);		//turn to face left wall
@@ -170,7 +178,7 @@ void routine()
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
-		msleep(500);
+		msleep(750);
 		//drop orange box into tube below
 		setUpperClaw(UPPER_CLAW_OPEN);
 		msleep(500);
@@ -190,28 +198,36 @@ void routine()
 		thread_destroy(t3);
 		moveToDist(70, MOVE_SLOW_SPEED);
 		angle2 = sweepForOrange();
-		//msleep(1000);
+		printf("\nangle2: %d\n", angle2);
+		msleep(1000);
 		angle = centerCameraFast(0);
-		//msleep(500);
+		printf("\nangle: %d\n", angle);
+		msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(200);
+			msleep(500);
 		}
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
 		//capture remaining orange box in upper claw
+		raiseArm(100);
 		setUpperClaw(UPPER_CLAW_CLOSED);
+		msleep(250);
+		raiseArm(70);
 		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//pull away from orange box starting position
-		moveToDist(-300, MOVE_MID_SPEED);
+		moveToDist(-50, MOVE_SLOW_SPEED);
+		msleep(100);
+		moveToDist(-200, MOVE_MID_SPEED - 10);
 		//compensate for camera turn
 		thread t4 = thread_create(lowerArmBySensor);
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
+		printf("\nturn compensation: %d\n", -87 - (angle + angle2));
 		rotate(TURN_MID_SPEED -10, -87 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t4);

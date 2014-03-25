@@ -33,7 +33,7 @@ void setLowerClaw(int position) {
 void raiseArm(int position) {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) < position) {
-		printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
+		//printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
 		motor(ARM_PORT, 70);
 		msleep(100);
 	}
@@ -47,7 +47,7 @@ void raiseArmTo1500() {
 void raiseArmToTop() {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) < ARM_TOP_POS) {
-		printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
+		//printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
 		motor(ARM_PORT, 70);
 		msleep(100);
 	}
@@ -57,7 +57,7 @@ void raiseArmToTop() {
 void lowerArm(int position) {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) > position) {
-		printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
+		//printf("Motor position = %d\n", get_motor_position_counter(ARM_PORT));
 		motor(ARM_PORT, -70);
 		msleep(100);
 	}
@@ -68,13 +68,13 @@ void lowerArmBySensor() {
 	motor(ARM_PORT, -40);
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
 		msleep(100);
-		printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
+		//printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	}
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
 		msleep(100);
-		printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
+		//printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	}
-	printf("arm sensor out = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
+	//printf("arm sensor out = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	msleep(300);
 	off(ARM_PORT);
 }
