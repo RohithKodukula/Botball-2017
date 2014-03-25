@@ -300,18 +300,18 @@ int main() {
 	printf("\n Battery Capacity: %d", get_create_battery_capacity());
 	printf("\n Battery Charge: %d", get_create_battery_charge());
 	printf("\n Battery Temp: %d", get_create_battery_temp());
-	//initActuators();
-	//cameraInitialize();
+	initActuators();
+	cameraInitialize();
 	int x = 0;
 	
-	//routine();
+	routine();
 	
-	while (x < 4) {
+	/*while (x < 4) {
 		rotate(TURN_MID_SPEED, -90);
 		msleep(500);
 		x++;
 		printf("%d\n", x);
-	}
+	}*/
 	
 	
 	/*
