@@ -127,23 +127,23 @@ void routine()
 		moveToDist(70, MOVE_SLOW_SPEED);
 		
 		int angle2 = sweepForOrange();
-		msleep(100);
+		//msleep(100); optimization attempt
 		int angle = centerCameraFast(0);
-		msleep(500);
+		//msleep(500); optimization attempt
 		int x;
 		x = getMillimeterDistance();
 		
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(500);
+			msleep(200);
 		}
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
-		msleep(500);
+		msleep(200);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(250);
+		msleep(200);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//back up from orange boxes
@@ -190,14 +190,14 @@ void routine()
 		thread_destroy(t3);
 		moveToDist(70, MOVE_SLOW_SPEED);
 		angle2 = sweepForOrange();
-		msleep(1000);
+		//msleep(1000);
 		angle = centerCameraFast(0);
-		msleep(500);
+		//msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(500);
+			msleep(200);
 		}
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
