@@ -192,7 +192,7 @@ void routine()
 		//turn to face left wall
 		rotate(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
-		moveToDist(-170, MOVE_MID_SPEED); //was -150
+		moveToDist(-200, MOVE_MID_SPEED); //was -150
 		//raise arm while turning to face orange boxes
 		/*
 		GO FOR BLOCK 2
