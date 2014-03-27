@@ -112,6 +112,50 @@ void moveToDistWithPomAligner(int power, int dist) {
 	
 }
 
+void moveToDistWithPausingPomCapture(int power, int dist) {
+	
+	int ticks = dist * TICKS_PER_CM;
+	int current ticks = 0;
+	int remainingDist = dist;
+	
+	clear_motor_position_counter(LEFT_MOTOR);
+	clear_motor_position_counter(RIGHT_MOTOR);
+	
+	if (dist < 0) {
+		power *= -1;
+	}
+	
+	thread pomAlignerThread5;
+	pomAlignerThread5 = thread_create(runPomAligner);
+	thread_start(pomAlignerThread5);
+	
+	moveStraight(power);
+	
+	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
+		
+		currentTicks = (abs(get_motor_position_counter(LEFT_MOTOR)));
+		remainingDist -= (abs(currentTicks / TICKS_PER_CM));
+		
+		if (seesPinkPom()) {
+			halt();
+			flickPom();
+			this(power, remainingDist);
+		} else if (seesGreenPom()) {
+			halt();
+			capturePom();
+			this(power, remainingDist);
+		}
+		
+		msleep(30);
+	}
+	
+	halt();
+	
+	thread_destroy(pomAlignerThread5);
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
+	
+}
+
 
 
 //----------WALL ALIGN FUNCTIONS----------
