@@ -1,4 +1,3 @@
-
 #ifndef _LEGOBOTFUNCTIONS_H_
 #define _LEGOBOTFUNCTIONS_H_
 
@@ -14,6 +13,7 @@ void moveToDistWithTribbleGrabbing(int power, int dist);
 void moveToWallAlign(int power);
 void moveToTouch(int power);
 void moveUntilMaxDist(int power);
+void moveToDistWithPausingPomCapture(int power, int dist);
 
 //wall align functions
 void arcToWallAlign(int power, int arcLeft, int extremeArc);
