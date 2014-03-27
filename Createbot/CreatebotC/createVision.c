@@ -174,7 +174,7 @@ int centerCameraFast(int channel) {
 		printf("\ncalculated angle: %d\n",angle);
 		
 		rotate(50, angle);
-		msleep(800);
+		msleep(200);
 		counter++;
 	}
 	printf("\nAngle from original: %d\n", accumulatedAngle);
@@ -327,7 +327,7 @@ int getAngleToBlob(channel, blob) {
 	int xCoords[3];
 	camera_update(); //2 are required to clear for some reason...
 	camera_update();
-	msleep(200);
+	msleep(100);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);

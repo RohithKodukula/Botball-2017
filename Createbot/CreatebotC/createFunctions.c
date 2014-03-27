@@ -66,7 +66,7 @@ void lowerArm(int position) {
 
 //----- LOWER ARM BY SENSOR -----
 void lowerArmBySensor() {
-	motor(ARM_PORT, -40);
+	motor(ARM_PORT, -50);
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
 		msleep(100);
 		//printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
@@ -76,7 +76,7 @@ void lowerArmBySensor() {
 		//printf("arm sensor = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
 	}
 	//printf("arm sensor out = %d\n", analog10(ARM_DOWN_SENSOR_PORT));
-	msleep(300);
+	msleep(250);
 	off(ARM_PORT);
 }
 

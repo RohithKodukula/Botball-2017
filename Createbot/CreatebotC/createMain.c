@@ -133,14 +133,14 @@ void routine()
 		msleep(100);
 		int angle = centerCameraFast(0);
 		printf("\nangle: %d\n", angle);
-		msleep(500);
+		//msleep(500);
 		int x;
 		x = getMillimeterDistance();
 		
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(500);
+			msleep(100);
 		}
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
@@ -148,26 +148,26 @@ void routine()
 		raiseArm(15);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(150);
+		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
-		msleep(150);
+		msleep(100);
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(250);
+		msleep(200);
 		raiseArm(50);
-		msleep(250);
+		msleep(200);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//back up from orange boxes
-		moveToDist(-50, MOVE_SLOW_SPEED);
+		moveToDist(-70, MOVE_SLOW_SPEED);
 		msleep(100);
-		moveToDist(-200, MOVE_MID_SPEED - 10);
+		moveToDist(-180, MOVE_MID_SPEED - 10);
 		//compensate for camera turn
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
 		rotate(TURN_MID_SPEED - 10, -84 - (angle + angle2));
-		msleep(4000);
+		msleep(3500);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
 		printf("SHOULD BE D-STROYED\n");*/
@@ -196,10 +196,12 @@ void routine()
 		rotate(TURN_MID_SPEED, 90);
 		//back up to position to turn to view orange block
 		moveToDist(-200, MOVE_MID_SPEED); //was -150
+		
 		//raise arm while turning to face orange boxes
 		/*
 		GO FOR BLOCK 2
 		*/
+		
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
 		rotate(TURN_SLOW_SPEED + 10, 90);
@@ -208,41 +210,41 @@ void routine()
 		moveToDist(70, MOVE_SLOW_SPEED);
 		angle2 = sweepForOrange();
 		printf("\nangle2: %d\n", angle2);
-		msleep(1000);
+		msleep(100);
 		angle = centerCameraFast(0);
 		printf("\nangle: %d\n", angle);
-		msleep(500);
+		//msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(500);
+			msleep(100);
 		}
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
 		//capture remaining orange box in upper claw
 		raiseArm(15);
 		setUpperClaw(UPPER_CLAW_CLOSED);
-		msleep(150);
+		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
-		msleep(150);
+		msleep(100);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(250);
 		raiseArm(50);
-		msleep(250);
+		msleep(200);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
 		//pull away from orange box starting position
-		moveToDist(-50, MOVE_SLOW_SPEED);
+		moveToDist(-90, MOVE_SLOW_SPEED);
 		msleep(100);
-		moveToDist(-200, MOVE_MID_SPEED - 10);
+		moveToDist(-180, MOVE_MID_SPEED - 10);
 		//compensate for camera turn
 		thread t4 = thread_create(lowerArmBySensor);
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
 		rotate(TURN_MID_SPEED -10, -84 - (angle + angle2));
-		msleep(4000);
+		msleep(3500);
 		//thread_destroy(t4);
 		//adding more comments for fun
 		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
@@ -261,15 +263,28 @@ void routine()
 		msleep(500);
 		//drop orange box into pipe
 		setUpperClaw(UPPER_CLAW_OPEN);
-		/*
+		
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
-		moveToDist(-300, MOVE_MID_SPEED);
+		
+		msleep(2000);
+		moveToDist(-200, MOVE_FAST_SPEED);
 		//rotate towards wall
-		turnWithSerial(TURN_MID_SPEED, 90);
+		rotate(TURN_MID_SPEED, -80);
+		moveToDist(150,MOVE_FAST_SPEED);
+
+		arcToPinkTape();
+		setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
+		raiseArm(400);
+		
+		moveToDist(-400,MOVE_FAST_SPEED);
+	
+
+
+/*
 		//wall align
-		moveToWallAlign(700, MOVE_MID_SPEED, 3.0);
+		//moveToWallAlign(700, MOVE_MID_SPEED, 3.0);
 		//backup
 		moveToDist(-300, MOVE_MID_SPEED);
 		//rotate to center of board
@@ -331,8 +346,7 @@ int main() {
 	printf("\n Battery Temp: %d", get_create_battery_temp());
 	initActuators();
 	cameraInitialize();
-	//int x = 0;
-	
+
 	routine();
 	
 	/*while (x < 4) {
