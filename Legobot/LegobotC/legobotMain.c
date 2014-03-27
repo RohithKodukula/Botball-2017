@@ -80,16 +80,16 @@ int main() {
 			//pivotOnRight(NORMAL_SPEED, -45);
 		}
 		else if (b_button()) {
-			//arcToWallAlign(NORMAL_SPEED, 1, 1);
-			cameraInitialize();
-	
-			thread spinnerThread = thread_create(spinnerStart);
-			thread_start(spinnerThread);
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 100, 1);
 			
-			thread_destroy(spinnerThread);
-			off(SPINNER_MOTOR);
-
+			turnTest(-90.0);
+			turnTest(-90.0);
+			turnTest(-90.0);
+			turnTest(-90.0);
+			msleep(1000);
+			turnTest(90.0);
+			turnTest(90.0);
+			turnTest(90.0);
+			turnTest(90.0);
 			
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
@@ -128,24 +128,23 @@ void routine() {
 			
 			//wall align
 			moveToWallAlign(NORMAL_SPEED); 
-			pivotOnLeft(NORMAL_SPEED, -60);
+			pivotOnLeft(NORMAL_SPEED, -45);
 			msleep(100);
 			moveToDist(NORMAL_SPEED, -5);
-			pivotOnRight(NORMAL_SPEED, -55);
+			pivotOnRight(NORMAL_SPEED, -45);
 			msleep(100);
 			moveToDist(NORMAL_SPEED,-5);
-			turnTest(-97.0);
+			turnTest(-90.0);
 			
 			//move to black tape
-			//moveToDistWithDipstick(SLOW_SPEED, 46);
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 32, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 36, 1);
 			//turn to center of board
-			turnTest(-95.5);
+			turnTest(-86.0);
 			//move to center of board
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED-10, 67, 1);
+			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 72, 1);
 			//turn to rack
-			turnTest(92.5);
-			msleep(1000);
+			turnTest(84.0);
+			msleep(500);
 			//arm raises
 			raiseArm();
 			msleep(500);
@@ -161,22 +160,22 @@ void routine() {
 			msleep(500);
 			off(SPINNER_MOTOR);
 			msleep(100);
-			moveToDist(NORMAL_SPEED, -5);
+			moveToDist(NORMAL_SPEED, -2);
 			msleep(100);
+			pivotOnLeft(NORMAL_SPEED, -100);
 			resetArm();
-			pivotOnLeft(NORMAL_SPEED, -105);
 			moveToDist(NORMAL_SPEED, 40);
 			//turnTest(-98.0);
 			//moveToWallAlign(SLOW_SPEED);
 			//moveToDist(NORMAL_SPEED, -11);
 			//turnTest(93.5);
 			//resetArm();
-			moveUntilMaxDist(-NORMAL_SPEED);
+			moveUntilMaxDist(-1 * NORMAL_SPEED);
 			moveToDist(NORMAL_SPEED, -2);
-			setHangerClawPosition(HANGER_UP);
-			pivotOnLeft(NORMAL_SPEED, 90);
+			setHangerClawPosition(HANGER_FORWARD);
+			//pivotOnLeft(NORMAL_SPEED, 90);
 			
-			/*
+			
 			
 			moveToDist(NORMAL_SPEED, 1);
 			pivotOnLeft(NORMAL_SPEED, 26);
@@ -198,29 +197,32 @@ void routine() {
 			moveToTouch(NORMAL_SPEED);
 			setHangerClawPosition(HANGER_FORWARD);
 			
-			*/
+			
 
 }
 
 void turnTest(double degrees) {
+	
 	clear_motor_position_counter(LEFT_MOTOR);
 	
 	double ticks = degrees * TICKS_PER_DEGREE;
+		
 	//everything is calibrated around left wheel
 	if (ticks < 0) {
-		motor(LEFT_MOTOR, -1*NORMAL_SPEED);
+		motor(LEFT_MOTOR, -1 * NORMAL_SPEED);
 		motor(RIGHT_MOTOR, NORMAL_SPEED);
 		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
-			msleep(30);
+			msleep(20);
 		}
 	}
 	else {
 		motor(LEFT_MOTOR, NORMAL_SPEED);
-		motor(RIGHT_MOTOR, -1*NORMAL_SPEED);
+		motor(RIGHT_MOTOR, -1 * NORMAL_SPEED);
 		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
-			msleep(30);
+			msleep(20);
 		}
 	}
 	
 	halt();
+	
 }

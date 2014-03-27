@@ -26,12 +26,12 @@ int sweepForOrange() {
 	
 	if (!cameraSeesBigOrange()) {
 		printf("\nTurning right because I didn't see anything...\n");
-		turnWithSerial(TURN_SLOW_SPEED + 30, 15);
+		rotate(TURN_SLOW_SPEED + 30, 15);
 		angle = 10;
 		msleep(1000);
 		if (!cameraSeesBigOrange()) {
 			printf("\nTurning left because I didn't see anything...\n");
-			turnWithSerial(TURN_SLOW_SPEED + 30, -30);
+			rotate(TURN_SLOW_SPEED + 30, -30);
 			angle = -10;
 			msleep(1000);
 			if (!cameraSeesBigOrange()) {
@@ -117,7 +117,8 @@ void centerCamera(int channel, int object) {
 	printf("\norange blob:\ncentroid.x: %d\narea: %d\n", get_object_centroid(channel, object).x, get_object_area(channel,object));
 	
 	int counter = 0;
-	while ( (get_object_centroid(channel, object).x > camCenter.x+mOE || get_object_centroid(channel, object).x < camCenter.x-mOE) && get_object_area(channel,object) > 1000)
+	while ( (get_object_centroid(channel, object).x > camCenter.x+mOE || 
+		     get_object_centroid(channel, object).x < camCenter.x-mOE) && get_object_area(channel,object) > 1000)
 	{
 		printf("camCenter = (%d,%d)\nobject centroid = (%d,%d)\n\n",camCenter.x,camCenter.y,get_object_centroid(channel, object).x,get_object_centroid(channel, object).y);
 		camera_update();
@@ -173,7 +174,7 @@ int centerCameraFast(int channel) {
 		printf("\ncalculated angle: %d\n",angle);
 		
 		rotate(50, angle);
-		msleep(1300);
+		msleep(800);
 		counter++;
 	}
 	printf("\nAngle from original: %d\n", accumulatedAngle);
@@ -324,9 +325,9 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 
 int getAngleToBlob(channel, blob) {
 	int xCoords[3];
-	camera_update(); //2 are required to clear for some reason...
-	camera_update();
-	msleep(200);
+	//camera_update(); //2 are required to clear for some reason...
+	//camera_update();
+	//msleep(200);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);
@@ -423,4 +424,3 @@ void blobTrack(int channel, int object) {
 	}
 	printf("\nLoc of object: (%d, %d)", centroid.x, centroid.y);
 }
-

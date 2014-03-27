@@ -65,7 +65,6 @@ void serialTestingUtility(){
 			printf("Press the desired degree angle to test. Side button returns to main menu.\n");
 			msleep(250);
 			while (!side_button()) {
-				
 				if (a_button()) {
 					printf("\n\nTurning 90 degrees at speed 150 mm/s with serial function...\n\n");
 					turnWithSerial(150, 90);
@@ -95,11 +94,11 @@ void routine()
 	{
 		
 		//turn out of starting box
-		rotate(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -80);
 		//move out of starting box
 		moveToDist(600, MOVE_MID_SPEED);
 		//turn to face left side of game board
-		rotate(TURN_MID_SPEED, -90);
+		rotate(TURN_MID_SPEED, -80);
 		//move to blue box
 		moveToDist(300, MOVE_MID_SPEED);
 		msleep(100);
@@ -146,11 +145,15 @@ void routine()
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
-		raiseArm(100);
+		raiseArm(15);
 		//capture orange box in upper claw
 		setUpperClaw(UPPER_CLAW_CLOSED);
+		msleep(150);
+		setUpperClaw(UPPER_CLAW_OPEN);
+		msleep(150);
+		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(250);
-		raiseArm(70);
+		raiseArm(50);
 		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
@@ -162,8 +165,8 @@ void routine()
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		printf("\nturn compensation: %d\n", -87 - (angle + angle2));
-		rotate(TURN_MID_SPEED - 10, -87 - (angle + angle2));
+		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
+		rotate(TURN_MID_SPEED - 10, -84 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
@@ -218,10 +221,14 @@ void routine()
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
 		//capture remaining orange box in upper claw
-		raiseArm(100);
+		raiseArm(15);
+		setUpperClaw(UPPER_CLAW_CLOSED);
+		msleep(150);
+		setUpperClaw(UPPER_CLAW_OPEN);
+		msleep(150);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(250);
-		raiseArm(70);
+		raiseArm(50);
 		msleep(250);
 		//Raise arm slightly to pull away from surface
 		//raiseArm(500);
@@ -233,8 +240,8 @@ void routine()
 		thread t4 = thread_create(lowerArmBySensor);
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		printf("\nturn compensation: %d\n", -87 - (angle + angle2));
-		rotate(TURN_MID_SPEED -10, -87 - (angle + angle2));
+		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
+		rotate(TURN_MID_SPEED -10, -84 - (angle + angle2));
 		msleep(4000);
 		//thread_destroy(t4);
 		//adding more comments for fun

@@ -64,6 +64,7 @@ void lowerArm(int position) {
 	off(ARM_PORT);
 }
 
+//----- LOWER ARM BY SENSOR -----
 void lowerArmBySensor() {
 	motor(ARM_PORT, -40);
 	while (analog10(ARM_DOWN_SENSOR_PORT) > 100) {
@@ -79,6 +80,7 @@ void lowerArmBySensor() {
 	off(ARM_PORT);
 }
 
+//----- GET MILLIMETER DISTANCE -----
 int getMillimeterDistance() {
 	int i;
 	double sum = 0;
@@ -87,6 +89,7 @@ int getMillimeterDistance() {
 		sum += analog_et(2);
 	}
 	double y = sum/n;
+	//mathematica function to find mm distance
 	double mm = 10*(2213.1614337305136 - 20.725917486966626*y + 0.07920950330177698*y*y - 0.0001526660102098271*y*y*y 
 			+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
 	//printf("cm = %f\n", mm/10);
