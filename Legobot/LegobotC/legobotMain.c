@@ -170,7 +170,7 @@ void routine() {
 	//pivot out from under pink hangers
 	pivotOnLeft(NORMAL_SPEED, -98);
 	//lower the arm
-	resetArm();
+	lowerArmBySensor();
 	//move past the pipe
 	moveToDist(NORMAL_SPEED, 35);
 	//move back to the pipe
@@ -191,7 +191,7 @@ void routine() {
 	setHangerClawPosition(HANGER_BACK);
 	msleep(500);
 	moveToDist(NORMAL_SPEED, -13);
-	resetArm();
+	lowerArmBySensor();
 	pivotOnRight(NORMAL_SPEED, -80);
 	pivotOnLeft(NORMAL_SPEED, -58);
 	raiseArm();
