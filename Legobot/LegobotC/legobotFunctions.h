@@ -32,10 +32,12 @@ void moveArm(int pos);
 void runPomAligner();
 void spinnerStop();
 void spinnerStart();
+int capturePom();
 
 //servo functions
 void setHangerClawPosition(int position);
 void kick();
+void flickPom();
 
 //get sensor data functions
 int getArmDownSensorValue();
