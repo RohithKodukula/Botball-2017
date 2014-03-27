@@ -325,9 +325,9 @@ int sweepToFindLargestBlock(int channel, int sweepAngle) {
 
 int getAngleToBlob(channel, blob) {
 	int xCoords[3];
-	//camera_update(); //2 are required to clear for some reason...
-	//camera_update();
-	//msleep(200);
+	camera_update(); //2 are required to clear for some reason...
+	camera_update();
+	msleep(200);
 	xCoords[0] = getBlobXCoord(channel, blob);
 	xCoords[1] = getBlobXCoord(channel, blob);
 	xCoords[2] = getBlobXCoord(channel, blob);
