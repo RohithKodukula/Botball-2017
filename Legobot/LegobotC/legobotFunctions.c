@@ -20,24 +20,6 @@ void legobotInit(){
 	lowerArmBySensor();
 }
 
-int capturePom() {
-	
-	int startingPosition = get_motor_position_counter(LEFT_MOTOR);
-	
-	spinnerStart();
-	set_servo_position(KICKER_SERVO, KICKER_KICKED);
-	moveToDist(MID_SPEED, 1);
-	set_servo_position(KICKER_SERVO, KICKER_DOWN);
-	moveToDist(MID_SPEED, 4);
-	moveToDist(-MID_SPEED, -4);
-	spinnerStop();
-	
-	int newPosition = get_motor_position_counter(LEFT_MOTOR);
-	
-	return (startingPosition - newPosition);
-	
-}
-
 //----------END MISC FUNCTIONS----------
 
 
@@ -538,7 +520,8 @@ void moveArm(int pos) {
 
 //----------END ARM FUNCTIONS----------
 
-//----------SPINNER FUNCTIONS----------
+
+//----------POM COLLECTION FUNCTIONS----------
 
 void spinnerStop(){
 	off(SPINNER_MOTOR);
@@ -548,7 +531,25 @@ void spinnerStart(){
 	motor(SPINNER_MOTOR, 45);
 }
 
-//----------END SPINNER FUNCTIONS----------
+int capturePom() {
+	
+	int startingPosition = get_motor_position_counter(LEFT_MOTOR);
+	
+	spinnerStart();
+	set_servo_position(KICKER_SERVO, KICKER_KICKED);
+	moveToDist(MID_SPEED, 1);
+	set_servo_position(KICKER_SERVO, KICKER_DOWN);
+	moveToDist(MID_SPEED, 4);
+	moveToDist(-MID_SPEED, -4);
+	spinnerStop();
+	
+	int newPosition = get_motor_position_counter(LEFT_MOTOR);
+	
+	return (startingPosition - newPosition);
+	
+}
+
+//----------END POM COLLECTION FUNCTIONS----------
 
 
 //----------SERVO FUNCTIONS----------
