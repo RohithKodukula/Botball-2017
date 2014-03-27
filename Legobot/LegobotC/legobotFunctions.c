@@ -1,6 +1,8 @@
 #include "legobotConstants.h"
 #include <math.h>
 
+//----------MISC FUNCTIONS----------
+
 void legobotInit(){
 	//setting all servo positions and enabling.
 	set_servo_position(DUMPER_SERVO, DUMPER_UP);
@@ -18,8 +20,29 @@ void legobotInit(){
 	lowerArmBySensor();
 }
 
+int capturePom() {
+	
+	int startingPosition = get_motor_position_counter(LEFT_MOTOR);
+	
+	spinnerStart();
+	set_servo_position(KICKER_SERVO, KICKER_KICKED);
+	moveToDist(MID_SPEED, 1);
+	set_servo_position(KICKER_SERVO, KICKER_DOWN);
+	moveToDist(MID_SPEED, 4);
+	moveToDist(-MID_SPEED, -4);
+	spinnerStop();
+	
+	int newPosition = get_motor_position_counter(LEFT_MOTOR);
+	
+	return (startingPosition - newPosition);
+	
+}
 
-//Driving
+//----------END MISC FUNCTIONS----------
+
+
+//----------DRIVING FUNCTIONS----------
+
 void halt() {
 	freeze(LEFT_MOTOR);
 	freeze(RIGHT_MOTOR);
@@ -36,7 +59,6 @@ void moveStraight(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
 }
-
 
 /*
 Must give positive power, distance can be negative
@@ -114,6 +136,8 @@ void moveToDistWithPomAligner(int power, int dist) {
 
 void moveToDistWithPausingPomCapture(int power, int dist) {
 	
+	set_servo_position(KICKER_SERVO, KICKER_DOWN);
+	
 	int ticks = dist * TICKS_PER_CM;
 	int current ticks = 0;
 	int remainingDist = dist;
@@ -139,11 +163,12 @@ void moveToDistWithPausingPomCapture(int power, int dist) {
 		if (seesPinkPom()) {
 			halt();
 			flickPom();
-			this(power, remainingDist);
+			moveToDistWithPausingPomCapture(power, remainingDist);
 		} else if (seesGreenPom()) {
 			halt();
-			capturePom();
-			this(power, remainingDist);
+			currentTicks += capturePom();
+			remainingDist -= (abs(currentTicks / TICKS_PER_CM));
+			moveToDistWithPausingPomCapture(power, remainingDist);
 		}
 		
 		msleep(30);
@@ -154,8 +179,11 @@ void moveToDistWithPausingPomCapture(int power, int dist) {
 	thread_destroy(pomAlignerThread5);
 	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 	
+	set_servo_position(KICKER_SERVO, KICKER_BACK);
+	
 }
 
+//----------END DRIVING FUNCTIONS----------
 
 
 //----------WALL ALIGN FUNCTIONS----------
@@ -508,6 +536,7 @@ void moveArm(int pos) {
 	
 }
 
+//----------END ARM FUNCTIONS----------
 
 //----------SPINNER FUNCTIONS----------
 
@@ -536,6 +565,17 @@ void kick() {
 	//not necessary, only 1 pink tribble
 	/*msleep(300);
 	set_servo_position(KICKER_SERVO, KICKER_BACK);*/
+}
+
+void flickPom() {
+	
+	set_servo_position(KICKER_SERVO, KICKER_BACK);
+	moveToDist(MID_SPEED, 2);
+	set_servo_position(KICKER_SERVO, KICKER_KICKED);
+	msleep(250);
+	set_servo_position(KICKER_SERVO, KICKER_DOWN);
+	moveToDist(MID_SPEED, -2);
+	
 }
 
 //----------END SERVO FUNCTIONS----------
