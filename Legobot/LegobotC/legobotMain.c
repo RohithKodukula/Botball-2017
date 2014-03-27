@@ -139,7 +139,7 @@ void routine() {
 			//move to black tape
 			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 36, 1);
 			//turn to center of board
-			turnTest(-86.0);
+			turnTest(-90.0);
 			//move to center of board
 			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 72, 1);
 			//turn to rack
@@ -156,28 +156,26 @@ void routine() {
 			//hangers are put on rack
 			setHangerClawPosition(HANGER_FORWARD);
 			msleep(500);
+			moveToDist(NORMAL_SPEED, -3);
+			msleep(100);
 			moveArm(-90);
 			msleep(500);
 			off(SPINNER_MOTOR);
 			msleep(100);
-			moveToDist(NORMAL_SPEED, -2);
-			msleep(100);
-			pivotOnLeft(NORMAL_SPEED, -100);
+			pivotOnLeft(NORMAL_SPEED, -90);
 			resetArm();
-			moveToDist(NORMAL_SPEED, 40);
-			//turnTest(-98.0);
-			//moveToWallAlign(SLOW_SPEED);
-			//moveToDist(NORMAL_SPEED, -11);
-			//turnTest(93.5);
-			//resetArm();
+			moveToDist(NORMAL_SPEED, 35);
+			//move back to the pipe
 			moveUntilMaxDist(-1 * NORMAL_SPEED);
-			moveToDist(NORMAL_SPEED, -2);
+			//move back an extra 3 cm
+			moveToDist(NORMAL_SPEED, -3);
+			//hanger claw forward to grab hanger
 			setHangerClawPosition(HANGER_FORWARD);
-			//pivotOnLeft(NORMAL_SPEED, 90);
-			
-			
-			
+			//pivot until claw is next to hanger
+			pivotOnLeft(NORMAL_SPEED, 60);
+			//move in a little to wedge between hanger and pipe
 			moveToDist(NORMAL_SPEED, 1);
+			//pivot until claw is under hanger
 			pivotOnLeft(NORMAL_SPEED, 26);
 			msleep(500);
 			pivotOnLeft(NORMAL_SPEED, 10);
