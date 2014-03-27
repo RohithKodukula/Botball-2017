@@ -1,3 +1,4 @@
+
 //motor ports
 const int LEFT_MOTOR = 2;
 const int RIGHT_MOTOR = 0;
@@ -9,11 +10,10 @@ const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 12.60;
 const double R_WHEEL_CALIBRATION_CONSTANT = 1.20;
 
-
 //servos
 const int DUMPER_SERVO = 0;
 const int KICKER_SERVO = 1;
-const int DIPSTICK_SERVO = 2;
+const int POM_ALIGNER_SERVO = 2;
 const int HANGER_SERVO = 3;
 
 //sensor ports
@@ -40,9 +40,9 @@ const int DUMPER_DUMP = 900;
 const int DUMPER_UP = 1960;
 
 //disturber position constants
-const int DIPSTICK_OPEN = 900;
-const int DIPSTICK_CLOSE = 200;
-const int DIPSTICK_PARALLEL = 860;
+const int POM_ALIGNER_OPEN = 900;
+const int POM_ALIGNER_CLOSE = 200;
+const int POM_ALIGNER_PARALLEL = 860;
 
 //motor powers
 const int FAST_SPEED = 80;
@@ -50,4 +50,5 @@ const int NORMAL_SPEED = 60;
 const int SLOW_SPEED = 40;
 const int SUPER_SLOW_SPEED = 20;
 
+//motor power to maintain arm height
 const int ARM_HOLDING_POWER = 15;

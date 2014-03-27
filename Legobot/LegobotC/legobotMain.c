@@ -4,6 +4,7 @@
 
 
 void tribbleCollectTest() {
+	
 	printf("collecting test");
 	legobotInit();
 	printf("collecting test");
@@ -12,9 +13,9 @@ void tribbleCollectTest() {
 	
 	mav(SPINNER_MOTOR, 500);
 	
-	thread dipstickThread;
-	dipstickThread = thread_create(dipstickDoesShit);
-	thread_start(dipstickThread);
+	thread pomAlignerThread3;
+	pomAlignerThread3 = thread_create(runPomAligner);
+	thread_start(pomAlignerThread3);
 	
 	msleep(4000);
 	
@@ -28,26 +29,26 @@ void tribbleCollectTest() {
 	
 	ao();
 	msleep(1000);
-	thread_destroy(dipstickThread);
+	thread_destroy(pomAlignerThread3);
+	
 }
 
 int main() {
+	
 	legobotInit();
 	cameraInitialize();
-
+	
 	console_clear();
-	
 	printf("-Side button to end\n-A button to test dist\n-B button to test turn\n-C button to run routine");
-	
 	set_a_button_text("Test Distance");
 	set_b_button_text("Test Turn");
 	set_c_button_text("Routine");
 	
 	while(1) {
+		
 		if (a_button()) {
 			
-			 moveUntilMaxDist(-NORMAL_SPEED);
-
+			moveUntilMaxDist(-NORMAL_SPEED);
 			
 			/*
 			enable_servo(HANGER_SERVO);
@@ -69,7 +70,7 @@ int main() {
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
 			msleep(1000);
 			*/
-
+			
 			
 			
 			//arcToWallAlign(NORMAL_SPEED, 1,1);
@@ -79,17 +80,18 @@ int main() {
 			//pivotOnLeft(NORMAL_SPEED, -45);
 			//pivotOnRight(NORMAL_SPEED, -45);
 		}
+		
 		else if (b_button()) {
 			
-			turnTest(-90.0);
-			turnTest(-90.0);
-			turnTest(-90.0);
-			turnTest(-90.0);
+			rotate(-90.0);
+			rotate(-90.0);
+			rotate(-90.0);
+			rotate(-90.0);
 			msleep(1000);
-			turnTest(90.0);
-			turnTest(90.0);
-			turnTest(90.0);
-			turnTest(90.0);
+			rotate(90.0);
+			rotate(90.0);
+			rotate(90.0);
+			rotate(90.0);
 			
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);
@@ -107,134 +109,108 @@ int main() {
 			moveToDist(NORMAL_SPEED,-13);*/
 			
 		}
-		else if (c_button()) {
-			
-			routine();
 		
+		else if (c_button()) {
+			routine();
 		}
+		
 		msleep(100);
+		
 	}
 	
 }
 
 void routine() {
 	
-			thread spinnerThread = thread_create(spinnerStart);
-			thread_start(spinnerThread);
-			//arcToWallAlign(NORMAL_SPEED+10, 1, 1);
-			//arcToTouch(NORMAL_SPEED, 1, 1);
-			//pivotOnRightTillLeftTouch(NORMAL_SPEED, 1);
-			
-			
-			//wall align
-			moveToWallAlign(NORMAL_SPEED); 
-			pivotOnLeft(NORMAL_SPEED, -45);
-			msleep(100);
-			moveToDist(NORMAL_SPEED, -5);
-			pivotOnRight(NORMAL_SPEED, -45);
-			msleep(100);
-			moveToDist(NORMAL_SPEED,-5);
-			turnTest(-90.0);
-			
-			//move to black tape
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 36, 1);
-			//turn to center of board
-			turnTest(-90.0);
-			//move to center of board
-			moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 72, 1);
-			//turn to rack
-			turnTest(88.0);
-			msleep(500);
-			//arm raises
-			raiseArm();
-			msleep(500);
-			//hanger platform rotates forward
-			setHangerClawPosition(HANGER_UP);
-			//touch sensor activate 
-			moveToTouch(NORMAL_SPEED);
-			msleep(500);
-			//hangers are put on rack
-			setHangerClawPosition(HANGER_FORWARD);
-			msleep(500);
-			//back up to make room to get out of
-			//the way of the pink hangers
-			moveToDist(NORMAL_SPEED, -3);
-			msleep(500);
-			//lower the arm out of way of hangers
-			moveArm(-90);
-			msleep(500);
-			off(SPINNER_MOTOR);
-			msleep(100);
-			//pivot out from under pink hangers
-			pivotOnLeft(NORMAL_SPEED, -98);
-			//lower the arm
-			resetArm();
-			//move past the pipe
-			moveToDist(NORMAL_SPEED, 35);
-			//move back to the pipe
-			moveUntilMaxDist(-1 * NORMAL_SPEED);
-			//move back an extra 5 cm
-			moveToDist(NORMAL_SPEED, -5);
-			//hanger claw forward to grab hanger
-			setHangerClawPosition(HANGER_FORWARD);
-			//pivot until claw is next to hanger
-			pivotOnLeft(NORMAL_SPEED, 40);
-			msleep(500);
-			//pivot until claw is under hanger
-			pivotOnLeft(SLOW_SPEED, 18);
-			msleep(500);
-			moveToDist(SLOW_SPEED, 2);
-			msleep(500);
-			moveArm(400);
-			setHangerClawPosition(HANGER_BACK);
-			msleep(500);
-			moveToDist(NORMAL_SPEED, -13);
-			resetArm();
-			pivotOnRight(NORMAL_SPEED, -80);
-			pivotOnLeft(NORMAL_SPEED, -58);
-			raiseArm();
-			moveToDist(NORMAL_SPEED, 30);
-			setHangerClawPosition(HANGER_UP);
-			msleep(250);
-			moveToTouch(NORMAL_SPEED);
-			msleep(500);
-			setHangerClawPosition(HANGER_FORWARD);
-			msleep(500);
-			moveToDist(NORMAL_SPEED - 10, -3);
-			msleep(500);
-			moveArm(-120);
-			msleep(500);
-			pivotOnRight(NORMAL_SPEED, 30);
-			moveToDist(NORMAL_SPEED, -25);
-			pivotOnRight(NORMAL_SPEED, -30);
-			turnTest(120.0);
-			moveToDist(NORMAL_SPEED, 80);
-			pivotOnLeft(NORMAL_SPEED, 120);
-
-}
-
-void turnTest(double degrees) {
+	//create and beging a pom collector thread
+	thread spinnerThread = thread_create(spinnerStart);
+	thread_start(spinnerThread);
 	
-	clear_motor_position_counter(LEFT_MOTOR);
+	//wall align
+	moveToWallAlign(NORMAL_SPEED); 
 	
-	double ticks = degrees * TICKS_PER_DEGREE;
-		
-	//everything is calibrated around left wheel
-	if (ticks < 0) {
-		motor(LEFT_MOTOR, -1 * NORMAL_SPEED);
-		motor(RIGHT_MOTOR, NORMAL_SPEED);
-		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
-			msleep(20);
-		}
-	}
-	else {
-		motor(LEFT_MOTOR, NORMAL_SPEED);
-		motor(RIGHT_MOTOR, -1 * NORMAL_SPEED);
-		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
-			msleep(20);
-		}
-	}
+	//move to beginning of route
+	pivotOnLeft(NORMAL_SPEED, -45);
+	msleep(100);
+	moveToDist(NORMAL_SPEED, -5);
+	pivotOnRight(NORMAL_SPEED, -45);
+	msleep(100);
+	moveToDist(NORMAL_SPEED,-5);
+	rotate(-90.0);
 	
-	halt();
+	//move to black tape
+	moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 36, 1);
+	//turn to center of board
+	rotate(-90.0);
+	//move to center of board
+	moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 72, 1);
+	//turn to rack
+	rotate(88.0);
+	msleep(500);
+	//arm raises
+	raiseArm();
+	msleep(500);
+	//hanger platform rotates forward
+	setHangerClawPosition(HANGER_UP);
+	//touch sensor activate 
+	moveToTouch(NORMAL_SPEED);
+	msleep(500);
+	//hangers are put on rack
+	setHangerClawPosition(HANGER_FORWARD);
+	msleep(500);
+	//back up to make room to get out of
+	//the way of the pink hangers
+	moveToDist(NORMAL_SPEED, -3);
+	msleep(500);
+	//lower the arm out of way of hangers
+	moveArm(-90);
+	msleep(500);
+	off(SPINNER_MOTOR);
+	msleep(100);
+	//pivot out from under pink hangers
+	pivotOnLeft(NORMAL_SPEED, -98);
+	//lower the arm
+	resetArm();
+	//move past the pipe
+	moveToDist(NORMAL_SPEED, 35);
+	//move back to the pipe
+	moveUntilMaxDist(-1 * NORMAL_SPEED);
+	//move back an extra 5 cm
+	moveToDist(NORMAL_SPEED, -5);
+	//hanger claw forward to grab hanger
+	setHangerClawPosition(HANGER_FORWARD);
+	//pivot until claw is next to hanger
+	pivotOnLeft(NORMAL_SPEED, 40);
+	msleep(500);
+	//pivot until claw is under hanger
+	pivotOnLeft(SLOW_SPEED, 18);
+	msleep(500);
+	moveToDist(SLOW_SPEED, 2);
+	msleep(500);
+	moveArm(400);
+	setHangerClawPosition(HANGER_BACK);
+	msleep(500);
+	moveToDist(NORMAL_SPEED, -13);
+	resetArm();
+	pivotOnRight(NORMAL_SPEED, -80);
+	pivotOnLeft(NORMAL_SPEED, -58);
+	raiseArm();
+	moveToDist(NORMAL_SPEED, 30);
+	setHangerClawPosition(HANGER_UP);
+	msleep(250);
+	moveToTouch(NORMAL_SPEED);
+	msleep(500);
+	setHangerClawPosition(HANGER_FORWARD);
+	msleep(500);
+	moveToDist(NORMAL_SPEED - 10, -3);
+	msleep(500);
+	moveArm(-120);
+	msleep(500);
+	pivotOnRight(NORMAL_SPEED, 30);
+	moveToDist(NORMAL_SPEED, -25);
+	pivotOnRight(NORMAL_SPEED, -30);
+	rotate(120.0);
+	moveToDist(NORMAL_SPEED, 80);
+	pivotOnLeft(NORMAL_SPEED, 120);
 	
 }

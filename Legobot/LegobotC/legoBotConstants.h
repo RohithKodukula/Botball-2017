@@ -13,11 +13,10 @@ const int TICKS_PER_CM;
 const double TICKS_PER_DEGREE;
 const double R_WHEEL_CALIBRATION_CONSTANT;
 
-
 //servos
 const int DUMPER_SERVO;
 const int KICKER_SERVO;
-const int DIPSTICK_SERVO;
+const int POM_ALIGNER_SERVO;
 const int HANGER_SERVO;
 const int DISTANCE_SENSOR;
 
@@ -44,9 +43,9 @@ const int DUMPER_DUMP;
 const int DUMPER_UP;
 
 //disturber position constants
-const int DIPSTICK_OPEN;
-const int DIPSTICK_CLOSE;
-const int DIPSTICK_PARALLEL;
+const int POM_ALIGNER_OPEN;
+const int POM_ALIGNER_CLOSE;
+const int POM_ALIGNER_PARALLEL;
 
 //motor powers
 const int FAST_SPEED;
@@ -54,8 +53,7 @@ const int NORMAL_SPEED;
 const int SLOW_SPEED;
 const int SUPER_SLOW_SPEED;
 
+//motor power to maintain arm height
 const int ARM_HOLDING_POWER;
-
-
 
 #endif

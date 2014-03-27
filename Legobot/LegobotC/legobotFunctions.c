@@ -4,7 +4,7 @@
 void legobotInit(){
 	//setting all servo positions and enabling.
 	set_servo_position(DUMPER_SERVO, DUMPER_UP);
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 	set_servo_position(HANGER_SERVO, HANGER_BACK);
 	set_servo_position(KICKER_SERVO, KICKER_BACK);
 	enable_servos();
@@ -14,8 +14,8 @@ void legobotInit(){
 	clear_motor_position_counter(RIGHT_MOTOR);
 	clear_motor_position_counter(SPINNER_MOTOR);
 	clear_motor_position_counter(ARM_MOTOR);
-	moveArm(500);
-	resetArm();
+	moveArm(600);
+	lowerArmBySensor();
 }
 
 
@@ -64,59 +64,63 @@ void moveToDist(int power, int dist){
 	}
 	/*
 	if(ticks >= 0){
-		while(get_motor_position_counter(LEFT_MOTOR) < ticks && get_motor_position_counter(RIGHT_MOTOR) < ticks)
-			msleep(10);
+	while(get_motor_position_counter(LEFT_MOTOR) < ticks && get_motor_position_counter(RIGHT_MOTOR) < ticks)
+	msleep(10);
 	}
 	else if(ticks < 0){
-		while(get_motor_position_counter(LEFT_MOTOR) > ticks && get_motor_position_counter(RIGHT_MOTOR) > ticks)
-			msleep(10);
+	while(get_motor_position_counter(LEFT_MOTOR) > ticks && get_motor_position_counter(RIGHT_MOTOR) > ticks)
+	msleep(10);
 	}
 	*/
 	
 	halt();
+	
 }
 
-
-//Dipshit. *dipstick
-
-void dipstickDoesShit(){
+void runPomAligner(){
 	while(1){
-		set_servo_position(DIPSTICK_SERVO, DIPSTICK_CLOSE);
+		set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_CLOSE);
 		msleep(200);
-		set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+		set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 		msleep(1000);
 	}
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 }
 
 
-void moveToDistWithDipstick(int power, int dist) {
+void moveToDistWithPomAligner(int power, int dist) {
 	int ticks = dist*TICKS_PER_CM;
 	clear_motor_position_counter(LEFT_MOTOR);
 	clear_motor_position_counter(RIGHT_MOTOR);
 	
 	power = dist > 0 ? power : -power;
 	
-	thread dipstickThread;
-	dipstickThread = thread_create(dipstickDoesShit);
-	thread_start(dipstickThread);
+	thread pomAlignerThread1;
+	pomAlignerThread1 = thread_create(runPomAligner);
+	thread_start(pomAlignerThread1);
 	
 	moveStraight(power);
 	
 	while (abs(get_motor_position_counter(LEFT_MOTOR)) < abs(ticks)) {
 		msleep(10);
 	}
+	
 	halt();
-	thread_destroy(dipstickThread);
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_OPEN);
-
+	
+	thread_destroy(pomAlignerThread1);
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
+	
 }
+
+
+
+//----------WALL ALIGN FUNCTIONS----------
 
 void moveToWallAlign(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
 	//set the left touch sensor to be parallel to 
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_PARALLEL); //860 is when its parallel
 	
 	//variables to track which side has been activated
 	int rightTriggered = 0;
@@ -148,7 +152,7 @@ void moveToTouch(int power) {
 	motor(LEFT_MOTOR, power);
 	motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
 	//set the left touch sensor to be parallel to 
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_PARALLEL); //860 is when its parallel
 	
 	//variables to track which side has been activated
 	while (1) {
@@ -208,7 +212,6 @@ void moveUntilMaxDist(int power) {
 	halt();
 }
 
-
 //arcLeft is a boolean
 //extremeArc is a boolean that says whether or not to increase the difference (more arc)
 void arcToWallAlign(int power, int arcLeft, int extremeArc) {
@@ -225,7 +228,7 @@ void arcToWallAlign(int power, int arcLeft, int extremeArc) {
 	motor(LEFT_MOTOR, leftPower);
 	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
 	//set the left touch sensor to be parallel to 
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_PARALLEL); //860 is when its parallel
 	
 	//variables to track which side has been activated
 	int rightTriggered = 0;
@@ -266,7 +269,7 @@ void arcToTouch(int power, int arcLeft, int extremeArc) {
 	motor(LEFT_MOTOR, leftPower);
 	motor(RIGHT_MOTOR, rightPower * R_WHEEL_CALIBRATION_CONSTANT);	//calibration constant kept
 	//set the left touch sensor to be parallel to 
-	set_servo_position(DIPSTICK_SERVO, DIPSTICK_PARALLEL); //860 is when its parallel
+	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_PARALLEL); //860 is when its parallel
 	
 	while (!getLeftTouchSensor() && !getRightTouchSensor()) {
 		msleep(30);
@@ -275,6 +278,39 @@ void arcToTouch(int power, int arcLeft, int extremeArc) {
 	freeze(LEFT_MOTOR);
 	freeze(RIGHT_MOTOR);
 }
+
+//----------END WALL ALIGN FUNCTIONS----------
+
+
+
+//----------TURNING FUNCTIONS----------
+
+void rotate(double degrees) {
+	
+	clear_motor_position_counter(LEFT_MOTOR);
+	
+	double ticks = degrees * TICKS_PER_DEGREE;
+	
+	//everything is calibrated around left wheel
+	if (ticks < 0) {
+		motor(LEFT_MOTOR, -1 * NORMAL_SPEED);
+		motor(RIGHT_MOTOR, NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
+			msleep(20);
+		}
+	}
+	else {
+		motor(LEFT_MOTOR, NORMAL_SPEED);
+		motor(RIGHT_MOTOR, -1 * NORMAL_SPEED);
+		while (get_motor_position_counter(LEFT_MOTOR) < ticks) {
+			msleep(20);
+		}
+	}
+	
+	halt();
+	
+}
+
 
 void turn(double degrees) {
 	clear_motor_position_counter(LEFT_MOTOR);
@@ -286,7 +322,7 @@ void turn(double degrees) {
 		degrees = 3.57339 + 1.01722*degrees - (0.000017767*(degrees*degrees));
 	}
 	printf("corrected degrees: %f\n", degrees);
-
+	
 	double ticks = degrees * TICKS_PER_DEGREE;
 	//everything is calibrated around left wheel
 	if (ticks < 0) {
@@ -338,7 +374,7 @@ void pivotOnLeft(int power, int degrees) {
 	clear_motor_position_counter(RIGHT_MOTOR);
 	freeze(LEFT_MOTOR);
 	int ticks = degrees * TICKS_PER_DEGREE * 2 * 0.945;	//last one is calibration
-														//all ticks to cm is calibrated on left wheel
+	//all ticks to cm is calibrated on left wheel
 	
 	power = degrees < 0 ? -power : power;
 	motor(RIGHT_MOTOR, power);
@@ -389,11 +425,13 @@ void pivotOnRightTillLeftTouch(int power, int slightReverse) {
 	freeze(LEFT_MOTOR);
 }
 
+//----------END TURNING FUNCTIONS----------
 
 
-//The Arm 
 
-void resetArm() {
+//----------ARM FUNCTIONS----------
+
+void lowerArmBySensor() {
 	clear_motor_position_counter(ARM_MOTOR);
 	motor(ARM_MOTOR, -1);
 	int pwr = 0;
@@ -417,7 +455,6 @@ void raiseArm() {
 	msleep(10);
 	motor(ARM_MOTOR, ARM_HOLDING_POWER);
 }
-	
 
 void moveArm(int pos) {
 	clear_motor_position_counter(ARM_MOTOR);
@@ -428,8 +465,8 @@ void moveArm(int pos) {
 }
 
 
+//----------SPINNER FUNCTIONS----------
 
-//Spinner
 void spinnerStop(){
 	off(SPINNER_MOTOR);
 }
@@ -438,8 +475,11 @@ void spinnerStart(){
 	motor(SPINNER_MOTOR, 45);
 }
 
+//----------END SPINNER FUNCTIONS----------
 
-//Servos
+
+//----------SERVO FUNCTIONS----------
+
 void setHangerClawPosition(int position){
 	set_servo_position(HANGER_SERVO, position);
 }
@@ -454,7 +494,11 @@ void kick() {
 	set_servo_position(KICKER_SERVO, KICKER_BACK);*/
 }
 
-//Sensors
+//----------END SERVO FUNCTIONS----------
+
+
+//----------SENSOR FUNCTIONS----------
+
 int getArmDownSensorValue() {
 	return analog10(ARM_DOWN_SENSOR);
 }

@@ -2,15 +2,20 @@
 #include "legobotFunctions.h"
 
 void cameraInitialize() {
+	
 	camera_open_at_res(LOW_RES);
 	camera_load_config("tribble.conf");
-
+	
 }
 
-void moveToDistWithKickerAndDipstick(int power, int dist, int channelToKick) {
-	printf("going to move %d\n", dist);
+void moveToDistWithKickerAndPomAligner(int power, int dist, int channelToKick) {
+	
+	printf("\nMoving %d...\n", dist);
+	
 	int ticks = dist*TICKS_PER_CM;
-	printf("ticks: %d\n", ticks);
+	
+	printf("\nTicks: %d\n", ticks);
+	
 	clear_motor_position_counter(LEFT_MOTOR);
 	clear_motor_position_counter(RIGHT_MOTOR);
 	
@@ -20,9 +25,9 @@ void moveToDistWithKickerAndDipstick(int power, int dist, int channelToKick) {
 	
 	printf("delay ms: %d, power level: %f\n", kickDelay, power_level());
 	
-	thread dipstickThread;
-	dipstickThread = thread_create(dipstickDoesShit);
-	thread_start(dipstickThread);
+	thread pomAlignerThread2;
+	pomAlignerThread2 = thread_create(runPomAligner);
+	thread_start(pomAlignerThread2);
 	
 	moveStraight(power);
 	
@@ -31,7 +36,7 @@ void moveToDistWithKickerAndDipstick(int power, int dist, int channelToKick) {
 		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
 			camera_update();
 			camera_update();
-
+			
 			printf("moving backwards!");
 			if (channelToKick == getRightMostBlock(get_channel_count())) {
 				printf("see green blob\n");
@@ -56,7 +61,9 @@ void moveToDistWithKickerAndDipstick(int power, int dist, int channelToKick) {
 			msleep(10);
 		}
 	}
-	thread_destroy(dipstickThread);
+	
+	thread_destroy(pomAlignerThread2);
+	
 	halt();
 	
 }
@@ -80,7 +87,7 @@ void moveToDistWithKicker(int power, int dist, int channelToKick) {
 		while (get_motor_position_counter(LEFT_MOTOR) > ticks) {
 			camera_update();
 			camera_update();
-
+			
 			printf("moving backwards!");
 			if (channelToKick == getRightMostBlock(get_channel_count())) {
 				kick();
