@@ -278,9 +278,19 @@ void routine()
 		setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
 		raiseArm(400);
 		
-		moveToDist(-400,MOVE_FAST_SPEED);
-	
-
+		if(seconds() < 105.0) {
+		
+			moveToDist(-800,MOVE_FAST_SPEED);
+			
+			thread t5 = thread_create(raiseArmToBlueBlockHeight);
+			thread_start(t5);
+			
+			rotate(TURN_MID_SPEED, -100);
+			msleep(500);
+			moveToDist(800,MOVE_FAST_SPEED);
+			
+			
+		}
 
 /*
 		//wall align

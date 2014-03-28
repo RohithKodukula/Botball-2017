@@ -10,6 +10,7 @@ void raiseArmTo1500();
 void raiseArmToTop();
 void lowerArm(int position);
 void lowerArmBySensor();
+void raiseArmToBlueBlockHeight();
 
 //create movement
 void moveStraight(int vel);
