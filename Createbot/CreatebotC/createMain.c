@@ -274,21 +274,22 @@ void routine()
 		rotate(TURN_MID_SPEED, -80);
 		moveToDist(150,MOVE_FAST_SPEED);
 
-		arcToPinkTape();
-		setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
-		raiseArm(400);
+		if(seconds() < 120.0) {
 		
-		if(seconds() < 105.0) {
+			arcToPinkTape();
+			setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
+			raiseArm(400);
 		
 			moveToDist(-800,MOVE_FAST_SPEED);
 			
 			thread t5 = thread_create(raiseArmToBlueBlockHeight);
 			thread_start(t5);
 			
+			msleep(500);
+			
 			rotate(TURN_MID_SPEED, -100);
 			msleep(500);
 			moveToDist(800,MOVE_FAST_SPEED);
-			
 			
 		}
 
