@@ -139,11 +139,11 @@ void routine() {
 	rotate(-90.0);
 	
 	//move to black tape
-	moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 36, 1);
+	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 36, 1);
 	//turn to center of board
 	rotate(-90.0);
 	//move to center of board
-	moveToDistWithKickerAndDipstick(NORMAL_SPEED - 10, 72, 1);
+	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 72, 1);
 	//turn to rack
 	rotate(88.0);
 	msleep(500);

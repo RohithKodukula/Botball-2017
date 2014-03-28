@@ -115,13 +115,13 @@ void moveToDistWithPomAligner(int power, int dist) {
 	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 	
 }
-
+/*
 void moveToDistWithPausingPomCapture(int power, int dist) {
 	
 	set_servo_position(KICKER_SERVO, KICKER_DOWN);
 	
 	int ticks = dist * TICKS_PER_CM;
-	int current ticks = 0;
+	int currentTicks = 0;
 	int remainingDist = dist;
 	
 	clear_motor_position_counter(LEFT_MOTOR);
@@ -163,7 +163,7 @@ void moveToDistWithPausingPomCapture(int power, int dist) {
 	
 	set_servo_position(KICKER_SERVO, KICKER_BACK);
 	
-}
+}*/
 
 //----------END DRIVING FUNCTIONS----------
 
@@ -603,4 +603,3 @@ int getRightTouchSensor() {
 int getDistance() {
 	return analog_et(DISTANCE_SENSOR);
 }
-

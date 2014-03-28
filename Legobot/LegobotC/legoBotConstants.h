@@ -37,6 +37,7 @@ const int HANGER_UP;
 //kicker servo
 const int KICKER_KICKED;
 const int KICKER_BACK;
+const int KICKER_DOWN;
 
 //dumper position constants
 const int DUMPER_DUMP;
@@ -49,11 +50,16 @@ const int POM_ALIGNER_PARALLEL;
 
 //motor powers
 const int FAST_SPEED;
-const int NORMAL_SPEED;
+const int NORMAL_SPEED;//
+const int MID_SPEED;//same as normal speed. we might want to fix this
 const int SLOW_SPEED;
 const int SUPER_SLOW_SPEED;
 
 //motor power to maintain arm height
 const int ARM_HOLDING_POWER;
+
+//camera color channels
+const int GREEN_CHANNEL;
+const int PINK_CHANNEL;
 
 #endif

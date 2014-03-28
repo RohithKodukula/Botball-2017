@@ -8,7 +8,7 @@ const int ARM_MOTOR = 3;
 //motor constants
 const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 12.60;
-const double R_WHEEL_CALIBRATION_CONSTANT = 1.20;
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.14;
 
 //servos
 const int DUMPER_SERVO = 0;
@@ -34,6 +34,7 @@ const int HANGER_UP = 1024;
 //kicker servo
 const int KICKER_KICKED = 1800;
 const int KICKER_BACK = 725;
+const int KICKER_DOWN = 725;
 
 //dumper position constants
 const int DUMPER_DUMP = 900;
@@ -47,8 +48,13 @@ const int POM_ALIGNER_PARALLEL = 860;
 //motor powers
 const int FAST_SPEED = 80;
 const int NORMAL_SPEED = 60;
+const int MID_SPEED = 60;
 const int SLOW_SPEED = 40;
 const int SUPER_SLOW_SPEED = 20;
 
 //motor power to maintain arm height
 const int ARM_HOLDING_POWER = 15;
+
+//camera color channels
+const int GREEN_CHANNEL = 0;
+const int PINK_CHANNEL = 1;
