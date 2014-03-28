@@ -37,6 +37,120 @@ int main() {
 	
 	legobotInit();
 	cameraInitialize();
+	console_clear();
+	
+	printf("Running routine...\n\n");
+	routine();
+	
+}
+
+int routine() {
+	
+	//create and beging a pom collector thread
+	thread spinnerThread = thread_create(spinnerStart);
+	thread_start(spinnerThread);
+	
+	//wall align
+	moveToWallAlign(NORMAL_SPEED);
+	
+	//move to beginning of route
+	pivotOnLeft(NORMAL_SPEED, -44);
+	msleep(100);
+	moveToDist(NORMAL_SPEED, -5);
+	pivotOnRight(NORMAL_SPEED, -44);
+	msleep(100);
+	moveToDist(NORMAL_SPEED,-5);
+	rotate(-82.0);
+	
+	//move to black tape
+	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 36, 1);
+	//turn to center of board
+	rotate(-83.0);
+	//move to center of board
+	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 72, 1);
+	//turn to rack
+	rotate(89.0);
+	msleep(500);
+	//arm raises
+	raiseArm();
+	msleep(500);
+	//hanger platform rotates forward
+	setHangerClawPosition(HANGER_UP);
+	//touch sensor activate 
+	moveToTouch(NORMAL_SPEED);
+	msleep(500);
+	//hangers are put on rack
+	setHangerClawPosition(HANGER_FORWARD);
+	msleep(500);
+	//back up to make room to get out of
+	//the way of the pink hangers
+	moveToDist(NORMAL_SPEED, -2);
+	msleep(500);
+	//lower the arm out of way of hangers
+	moveArm(-20);
+	msleep(500);
+	off(SPINNER_MOTOR);
+	msleep(100);
+	//pivot out from under pink hangers
+	pivotOnLeft(NORMAL_SPEED, -98);
+	//lower the arm
+	lowerArmBySensor();
+	//move past the pipe
+	moveToDist(NORMAL_SPEED, 35);
+	//move back to the pipe
+	moveUntilMaxDist(-1 * NORMAL_SPEED);
+	//move back an extra 5 cm
+	moveToDist(NORMAL_SPEED, -5);
+	//hanger claw forward to grab hanger
+	setHangerClawPosition(HANGER_FORWARD);
+	//pivot until claw is next to hanger
+	pivotOnLeft(NORMAL_SPEED, 40);
+	msleep(500);
+	//pivot until claw is under hanger
+	pivotOnLeft(SLOW_SPEED, 18);
+	msleep(500);
+	moveToDist(SLOW_SPEED, 2);
+	msleep(500);
+	moveArm(400);
+	setHangerClawPosition(HANGER_UP);
+	msleep(500);
+	moveToDist(NORMAL_SPEED, -13);
+	lowerArmBySensor();
+	pivotOnRight(NORMAL_SPEED, -80);
+	pivotOnLeft(NORMAL_SPEED, -58);
+	raiseArm();
+	moveToDist(NORMAL_SPEED, 30);
+	setHangerClawPosition(HANGER_UP);
+	msleep(250);
+	moveToTouch(NORMAL_SPEED);
+	msleep(500);
+	setHangerClawPosition(HANGER_FORWARD);
+	msleep(500);
+	moveToDist(NORMAL_SPEED - 10, -3);
+	msleep(500);
+	moveArm(-20);
+	msleep(500);
+	pivotOnLeft(NORMAL_SPEED, -40);
+	moveToDist(NORMAL_SPEED, -10);
+	rotate(48.0);
+	lowerArmBySensor();
+	moveToTouch(NORMAL_SPEED);
+	setHangerClawPosition(HANGER_UP);
+	
+	//parallel park this shit
+	moveToDist(NORMAL_SPEED, -2);
+	pivotOnRight(NORMAL_SPEED, -45);
+	pivotOnLeft(NORMAL_SPEED, 45);
+	pivotOnRight(NORMAL_SPEED, -20);
+	moveToDist(NORMAL_SPEED, -6);
+	pivotOnLeft(NORMAL_SPEED, -22);
+	
+	
+	return 1;
+	
+}
+
+void mainMenu() {
 	
 	console_clear();
 	printf("-Side button to end\n-A button to test dist\n-B button to test turn\n-C button to run routine");
@@ -117,100 +231,5 @@ int main() {
 		msleep(100);
 		
 	}
-	
-}
-
-void routine() {
-	
-	//create and beging a pom collector thread
-	thread spinnerThread = thread_create(spinnerStart);
-	thread_start(spinnerThread);
-	
-	//wall align
-	moveToWallAlign(NORMAL_SPEED); 
-	
-	//move to beginning of route
-	pivotOnLeft(NORMAL_SPEED, -45);
-	msleep(100);
-	moveToDist(NORMAL_SPEED, -5);
-	pivotOnRight(NORMAL_SPEED, -45);
-	msleep(100);
-	moveToDist(NORMAL_SPEED,-5);
-	rotate(-90.0);
-	
-	//move to black tape
-	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 36, 1);
-	//turn to center of board
-	rotate(-90.0);
-	//move to center of board
-	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 72, 1);
-	//turn to rack
-	rotate(88.0);
-	msleep(500);
-	//arm raises
-	raiseArm();
-	msleep(500);
-	//hanger platform rotates forward
-	setHangerClawPosition(HANGER_UP);
-	//touch sensor activate 
-	moveToTouch(NORMAL_SPEED);
-	msleep(500);
-	//hangers are put on rack
-	setHangerClawPosition(HANGER_FORWARD);
-	msleep(500);
-	//back up to make room to get out of
-	//the way of the pink hangers
-	moveToDist(NORMAL_SPEED, -3);
-	msleep(500);
-	//lower the arm out of way of hangers
-	moveArm(-90);
-	msleep(500);
-	off(SPINNER_MOTOR);
-	msleep(100);
-	//pivot out from under pink hangers
-	pivotOnLeft(NORMAL_SPEED, -98);
-	//lower the arm
-	lowerArmBySensor();
-	//move past the pipe
-	moveToDist(NORMAL_SPEED, 35);
-	//move back to the pipe
-	moveUntilMaxDist(-1 * NORMAL_SPEED);
-	//move back an extra 5 cm
-	moveToDist(NORMAL_SPEED, -5);
-	//hanger claw forward to grab hanger
-	setHangerClawPosition(HANGER_FORWARD);
-	//pivot until claw is next to hanger
-	pivotOnLeft(NORMAL_SPEED, 40);
-	msleep(500);
-	//pivot until claw is under hanger
-	pivotOnLeft(SLOW_SPEED, 18);
-	msleep(500);
-	moveToDist(SLOW_SPEED, 2);
-	msleep(500);
-	moveArm(400);
-	setHangerClawPosition(HANGER_BACK);
-	msleep(500);
-	moveToDist(NORMAL_SPEED, -13);
-	lowerArmBySensor();
-	pivotOnRight(NORMAL_SPEED, -80);
-	pivotOnLeft(NORMAL_SPEED, -58);
-	raiseArm();
-	moveToDist(NORMAL_SPEED, 30);
-	setHangerClawPosition(HANGER_UP);
-	msleep(250);
-	moveToTouch(NORMAL_SPEED);
-	msleep(500);
-	setHangerClawPosition(HANGER_FORWARD);
-	msleep(500);
-	moveToDist(NORMAL_SPEED - 10, -3);
-	msleep(500);
-	moveArm(-120);
-	msleep(500);
-	pivotOnRight(NORMAL_SPEED, 30);
-	moveToDist(NORMAL_SPEED, -25);
-	pivotOnRight(NORMAL_SPEED, -30);
-	rotate(120.0);
-	moveToDist(NORMAL_SPEED, 80);
-	pivotOnLeft(NORMAL_SPEED, 120);
 	
 }
