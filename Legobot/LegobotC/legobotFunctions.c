@@ -558,6 +558,18 @@ void setHangerClawPosition(int position){
 	set_servo_position(HANGER_SERVO, position);
 }
 
+void setServoSlow(int targetPos, int sleepTime) {
+	int increment = 40;
+	printf("\n servoPos = %d", get_servo_position(HANGER_SERVO));
+	printf("\nservoPos > targetPos\n");
+	while(get_servo_position(HANGER_SERVO) >= targetPos) {
+		set_servo_position(HANGER_SERVO, get_servo_position(HANGER_SERVO) - increment);
+		printf("servo pos = %d\n", get_servo_position(HANGER_SERVO));
+		msleep(sleepTime);
+	}
+	set_servo_position(HANGER_SERVO, targetPos);
+}
+
 void kick() {
 	set_servo_position(KICKER_SERVO, KICKER_KICKED);
 	freeze(SPINNER_MOTOR);
@@ -577,6 +589,16 @@ void flickPom() {
 	set_servo_position(KICKER_SERVO, KICKER_DOWN);
 	moveToDist(MID_SPEED, -2);
 	
+}
+
+void dumpBasket() {
+	int i = 0;
+	for(i = 0; i < 3; i++) {
+		set_servo_position(BASKET_SERVO, BASKET_DOWN);
+		msleep(500);
+		set_servo_position(BASKET_SERVO, BASKET_UP);
+		msleep(400);
+	}
 }
 
 //----------END SERVO FUNCTIONS----------

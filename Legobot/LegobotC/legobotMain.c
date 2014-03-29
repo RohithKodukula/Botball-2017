@@ -38,7 +38,7 @@ int main() {
 	legobotInit();
 	cameraInitialize();
 	console_clear();
-	
+	//mainMenu();
 	printf("Running routine...\n\n");
 	routine();
 	
@@ -60,11 +60,11 @@ int routine() {
 	pivotOnRight(NORMAL_SPEED, -44);
 	msleep(100);
 	moveToDist(NORMAL_SPEED,-5);
-	rotate(-82.0);
-	
+	//turn to face black tape
+	rotate(-84.0);
 	//move to black tape
 	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 36, 1);
-	//turn to center of board
+	//turn to center of board + hangers
 	rotate(-83.0);
 	//move to center of board
 	moveToDistWithKickerAndPomAligner(NORMAL_SPEED - 10, 72, 1);
@@ -112,6 +112,7 @@ int routine() {
 	moveToDist(SLOW_SPEED, 2);
 	msleep(500);
 	moveArm(400);
+	setServoSlow(HANGER_UP, 100);
 	setHangerClawPosition(HANGER_UP);
 	msleep(500);
 	moveToDist(NORMAL_SPEED, -13);
@@ -137,15 +138,17 @@ int routine() {
 	moveToTouch(NORMAL_SPEED);
 	setHangerClawPosition(HANGER_UP);
 	
-	//parallel park this shit
+	//angle park
 	moveToDist(NORMAL_SPEED, -2);
 	pivotOnRight(NORMAL_SPEED, -45);
 	pivotOnLeft(NORMAL_SPEED, 45);
 	pivotOnRight(NORMAL_SPEED, -20);
-	moveToDist(NORMAL_SPEED, -6);
-	pivotOnLeft(NORMAL_SPEED, -22);
+	moveToDist(NORMAL_SPEED, -12);
+	//pivotOnLeft(NORMAL_SPEED, -22);
 	
-	
+	//dump poms in lower area
+	dumpBasket();
+
 	return 1;
 	
 }
@@ -196,16 +199,12 @@ void mainMenu() {
 		}
 		
 		else if (b_button()) {
-			
-			rotate(-90.0);
-			rotate(-90.0);
-			rotate(-90.0);
-			rotate(-90.0);
-			msleep(1000);
-			rotate(90.0);
-			rotate(90.0);
-			rotate(90.0);
-			rotate(90.0);
+			while(1){
+				//setServoSlow(HANGER_FORWARD, 50);
+				set_servo_position(HANGER_SERVO, HANGER_FORWARD);
+				msleep(500);
+				setServoSlow(HANGER_BACK, 100);
+			}
 			
 			/*enable_servo(HANGER_SERVO);
 			set_servo_position(HANGER_SERVO,HANGER_BACK);

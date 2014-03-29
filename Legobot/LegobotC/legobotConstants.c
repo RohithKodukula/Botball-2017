@@ -8,13 +8,14 @@ const int ARM_MOTOR = 3;
 //motor constants
 const int TICKS_PER_CM = 52;
 const double TICKS_PER_DEGREE = 12.60;
-const double R_WHEEL_CALIBRATION_CONSTANT = 1.153;
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.152;
 
 //servos
 const int DUMPER_SERVO = 0;
 const int KICKER_SERVO = 1;
 const int POM_ALIGNER_SERVO = 2;
 const int HANGER_SERVO = 3;
+const int BASKET_SERVO = 0;
 
 //sensor ports
 const int ARM_DOWN_SENSOR = 3;
@@ -30,6 +31,10 @@ const int ARM_TOP_POS = 2000;
 const int HANGER_FORWARD = 2047;
 const int HANGER_BACK = 0;
 const int HANGER_UP = 1024;
+
+//basket position constants
+const int BASKET_UP = 2047;
+const int BASKET_DOWN = 800;
 
 //kicker servo
 const int KICKER_KICKED = 1800;

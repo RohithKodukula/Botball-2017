@@ -18,13 +18,14 @@ const int DUMPER_SERVO;
 const int KICKER_SERVO;
 const int POM_ALIGNER_SERVO;
 const int HANGER_SERVO;
-const int DISTANCE_SENSOR;
+const int BASKET_SERVO;
 
 //sensor ports
 const int ARM_DOWN_SENSOR;
 const int ARM_UP_SENSOR;
 const int LEFT_TOUCH_SENSOR;
 const int RIGHT_TOUCH_SENSOR;
+const int DISTANCE_SENSOR;
 
 //arm positions in ticks
 const int ARM_TOP_POS;
@@ -33,6 +34,10 @@ const int ARM_TOP_POS;
 const int HANGER_FORWARD;
 const int HANGER_BACK;
 const int HANGER_UP;
+
+//basket position constants
+const int BASKET_UP;
+const int BASKET_DOWN;
 
 //kicker servo
 const int KICKER_KICKED;

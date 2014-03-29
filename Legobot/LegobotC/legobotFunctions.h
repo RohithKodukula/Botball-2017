@@ -38,6 +38,7 @@ int capturePom();
 void setHangerClawPosition(int position);
 void kick();
 void flickPom();
+void setServoSlow(int targetPos, int sleepTime);
 
 //get sensor data functions
 int getArmDownSensorValue();
