@@ -40,7 +40,9 @@ int main() {
 	console_clear();
 	//mainMenu();
 	printf("Running routine...\n\n");
-	routine();
+	//routine();
+	
+	mainMenu();
 	
 }
 
@@ -165,7 +167,7 @@ void mainMenu() {
 		
 		if (a_button()) {
 			
-			moveToDistWithPausingPomCapture();
+			moveStraight(NORMAL_SPEED);
 			
 			/*
 			enable_servo(HANGER_SERVO);
