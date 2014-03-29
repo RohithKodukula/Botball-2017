@@ -147,6 +147,7 @@ void routine()
 		msleep(500);
 		raiseArm(15);
 		//capture orange box in upper claw
+		msleep(300);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
@@ -224,6 +225,7 @@ void routine()
 		msleep(500);
 		//capture remaining orange box in upper claw
 		raiseArm(15);
+		msleep(300);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
@@ -274,7 +276,7 @@ void routine()
 		rotate(TURN_MID_SPEED, -80);
 		moveToDist(150,MOVE_FAST_SPEED);
 
-		if(seconds() - initialTime < 3000.0) {
+		if(seconds() - initialTime < 105.0) {
 		
 			arcToPinkTape();
 			setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
@@ -289,9 +291,10 @@ void routine()
 			
 			msleep(500);
 			
-			rotate(TURN_FAST_SPEED, -100);
+			rotate(TURN_FAST_SPEED, -110);
 			msleep(500);
-			moveToDist(800,MOVE_FAST_SPEED);
+			setLowerClaw(LOWER_CLAW_OPEN);
+			//moveToDist(800,MOVE_FAST_SPEED);
 			
 		}
 

@@ -56,8 +56,8 @@ void raiseArmToTop() {
 
 void raiseArmToBlueBlockHeight() {
 	clear_motor_position_counter(ARM_PORT);
-	while(get_motor_position_counter(ARM_PORT) < 1500) {
-		motor(ARM_PORT, 70);
+	while(get_motor_position_counter(ARM_PORT) < 1900) {
+		motor(ARM_PORT, 73);
 		msleep(100);
 	}
 	off(ARM_PORT);
