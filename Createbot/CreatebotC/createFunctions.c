@@ -40,8 +40,8 @@ void raiseArm(int position) {
 	off(ARM_PORT);
 }
 
-void raiseArmTo1500() {
-	raiseArm(1500);
+void raiseArmTo250() {
+	raiseArm(250);
 }
 
 void raiseArmToTop() {
@@ -56,8 +56,8 @@ void raiseArmToTop() {
 
 void raiseArmToBlueBlockHeight() {
 	clear_motor_position_counter(ARM_PORT);
-	while(get_motor_position_counter(ARM_PORT) < 1500) {
-		motor(ARM_PORT, 70);
+	while(get_motor_position_counter(ARM_PORT) < 1850) {
+		motor(ARM_PORT, 87);
 		msleep(100);
 	}
 	off(ARM_PORT);
@@ -536,7 +536,7 @@ void arcToPinkTape() {
 			create_write_byte(255);
 			create_write_byte(55);
 			create_write_byte(253);
-			create_write_byte(41);
+			create_write_byte(30);
 	
 			create_write_byte(156); //wait -80 cm
 			create_write_byte(253);

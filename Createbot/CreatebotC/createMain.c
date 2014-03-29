@@ -93,6 +93,7 @@ void serialTestingUtility(){
 void routine()
 	{
 		double initialTime = seconds();
+		msleep(1600);
 		//turn out of starting box
 		rotate(TURN_MID_SPEED, -80);
 		//move out of starting box
@@ -104,8 +105,9 @@ void routine()
 		msleep(100);
 		//capture blue box with lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
-		thread t5 = thread_create(raiseArmTo1500);
+		thread t5 = thread_create(raiseArmTo250);
 		thread_start(t5);
+		//bring blue block to tape
 		arcToPinkTape();
 		thread_destroy(t5);
 		lowerArmBySensor();
@@ -147,6 +149,7 @@ void routine()
 		msleep(500);
 		raiseArm(15);
 		//capture orange box in upper claw
+		msleep(300);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
@@ -224,6 +227,7 @@ void routine()
 		msleep(500);
 		//capture remaining orange box in upper claw
 		raiseArm(15);
+		msleep(300);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		msleep(100);
 		setUpperClaw(UPPER_CLAW_OPEN);
@@ -268,13 +272,13 @@ void routine()
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
 		
-		msleep(2000);
+		msleep(800);
 		moveToDist(-200, MOVE_FAST_SPEED);
 		//rotate towards wall
 		rotate(TURN_MID_SPEED, -80);
 		moveToDist(150,MOVE_FAST_SPEED);
-
-		if(seconds() - initialTime < 3000.0) {
+		//yolo
+		if(seconds() - initialTime < 104.0) { //105.0
 		
 			arcToPinkTape();
 			setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
@@ -284,14 +288,15 @@ void routine()
 			thread t6 = thread_create(raiseArmToBlueBlockHeight);
 			thread_start(t6);
 			
-			moveToDist(-800,MOVE_FAST_SPEED);
+			moveToDist(-700,MOVE_FAST_SPEED);
 			
 			
 			msleep(500);
 			
-			rotate(TURN_FAST_SPEED, -100);
+			rotate(TURN_FAST_SPEED, -163);
 			msleep(500);
-			moveToDist(800,MOVE_FAST_SPEED);
+			//setLowerClaw(LOWER_CLAW_OPEN);
+			//moveToDist(800,MOVE_FAST_SPEED);
 			
 		}
 
@@ -353,9 +358,6 @@ void routine()
 	}
 
 int main() {
-	//wait_for_light(LIGHT_SENSOR_PORT);
-	printf("see light, starting\n");
-	shut_down_in(119.5);//119.5
 	createInit();
 	printf("\n Battery Capacity: %d", get_create_battery_capacity());
 	printf("\n Battery Charge: %d", get_create_battery_charge());
@@ -366,8 +368,10 @@ int main() {
 	//printf("Waiting for light\n");
 	//printf("See light, starting routine\n");
 	
-	//initActuators();
 
+	wait_for_light(LIGHT_SENSOR_PORT);
+	printf("see light, starting\n");
+	shut_down_in(119.5);//119.5
 	routine();
 	
 	/*while (x < 4) {
