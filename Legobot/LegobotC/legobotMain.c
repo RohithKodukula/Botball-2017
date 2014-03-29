@@ -84,7 +84,7 @@ int routine() {
 	msleep(500);
 	//back up to make room to get out of
 	//the way of the pink hangers
-	moveToDist(NORMAL_SPEED, -2);
+	moveToDist(NORMAL_SPEED, -3);
 	msleep(500);
 	//lower the arm out of way of hangers
 	moveArm(-20);
@@ -143,7 +143,7 @@ int routine() {
 	pivotOnRight(NORMAL_SPEED, -45);
 	pivotOnLeft(NORMAL_SPEED, 45);
 	pivotOnRight(NORMAL_SPEED, -20);
-	moveToDist(NORMAL_SPEED, -12);
+	moveToDist(NORMAL_SPEED, -14);
 	//pivotOnLeft(NORMAL_SPEED, -22);
 	
 	//dump poms in lower area
@@ -156,8 +156,8 @@ int routine() {
 void mainMenu() {
 	
 	console_clear();
-	printf("-Side button to end\n-A button to test dist\n-B button to test turn\n-C button to run routine");
-	set_a_button_text("Test Distance");
+	printf("-Side button to end\n-A button to test experimental pom function\n-B button to test turn\n-C button to run routine");
+	set_a_button_text("Exp. Pom Pick");
 	set_b_button_text("Test Turn");
 	set_c_button_text("Routine");
 	
@@ -165,7 +165,7 @@ void mainMenu() {
 		
 		if (a_button()) {
 			
-			moveUntilMaxDist(-NORMAL_SPEED);
+			moveToDistWithPausingPomCapture();
 			
 			/*
 			enable_servo(HANGER_SERVO);

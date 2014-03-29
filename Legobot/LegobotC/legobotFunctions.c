@@ -115,7 +115,7 @@ void moveToDistWithPomAligner(int power, int dist) {
 	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_OPEN);
 	
 }
-/*
+
 void moveToDistWithPausingPomCapture(int power, int dist) {
 	
 	set_servo_position(KICKER_SERVO, KICKER_DOWN);
@@ -163,7 +163,7 @@ void moveToDistWithPausingPomCapture(int power, int dist) {
 	
 	set_servo_position(KICKER_SERVO, KICKER_BACK);
 	
-}*/
+}
 
 //----------END DRIVING FUNCTIONS----------
 

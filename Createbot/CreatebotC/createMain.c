@@ -351,12 +351,19 @@ void routine()
 	}
 	
 int main() {
+	wait_for_light(LIGHT_SENSOR_PORT);
+	shut_down_in(60.0);
 	createInit();
 	printf("\n Battery Capacity: %d", get_create_battery_capacity());
 	printf("\n Battery Charge: %d", get_create_battery_charge());
 	printf("\n Battery Temp: %d", get_create_battery_temp());
 	initActuators();
 	cameraInitialize();
+	
+	//printf("Waiting for light\n");
+	//printf("See light, starting routine\n");
+	
+	//initActuators();
 
 	routine();
 	

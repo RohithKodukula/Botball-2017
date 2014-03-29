@@ -131,3 +131,9 @@ int getRightMostBlock(int numChannels) {
 	return rightMostChannel;
 }
 
+int seesPinkPom() {
+	
+	
+	
+}
+
