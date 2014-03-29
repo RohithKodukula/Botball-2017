@@ -3,6 +3,8 @@
 int main()
 {
 	
+	create_connect();
+	
 	printf("\nRunning...\n");
 	
 	int x = 1;
@@ -134,7 +136,7 @@ void turnWithSerial(int speed, int degrees) {
 	}
 	
 	msleep(300);
-	create_connect();
+	create_clear_serial_buffer();
 	msleep(300);
 	
 			create_write_byte(128); //initializes mode to full
@@ -161,7 +163,7 @@ void turnWithSerial(int speed, int degrees) {
 			create_write_byte(153);
 			
 	msleep(300);
-	create_disconnect();
+	create_clear_serial_buffer();
 	msleep(300);
 	
 }
