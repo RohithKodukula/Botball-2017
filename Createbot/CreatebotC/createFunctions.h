@@ -6,7 +6,7 @@ void createInit();
 
 //arm
 void raiseArm(int position);
-void raiseArmTo1500();
+void raiseArmTo250();
 void raiseArmToTop();
 void lowerArm(int position);
 void lowerArmBySensor();
