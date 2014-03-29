@@ -26,6 +26,7 @@ const int ARM_UP_SENSOR;
 const int LEFT_TOUCH_SENSOR;
 const int RIGHT_TOUCH_SENSOR;
 const int DISTANCE_SENSOR;
+const int LIGHT_SENSOR;
 
 //arm positions in ticks
 const int ARM_TOP_POS;

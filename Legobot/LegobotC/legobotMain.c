@@ -34,7 +34,8 @@ void tribbleCollectTest() {
 }
 
 int main() {
-	
+	wait_for_light(LIGHT_SENSOR);
+	shut_down_in(119.5);
 	legobotInit();
 	cameraInitialize();
 	console_clear();
@@ -47,6 +48,8 @@ int main() {
 }
 
 int routine() {
+	
+	
 	
 	//create and beging a pom collector thread
 	thread spinnerThread = thread_create(spinnerStart);
