@@ -92,7 +92,7 @@ void serialTestingUtility(){
 
 void routine()
 	{
-		
+		double initialTime = seconds();
 		//turn out of starting box
 		rotate(TURN_MID_SPEED, -80);
 		//move out of starting box
@@ -274,20 +274,22 @@ void routine()
 		rotate(TURN_MID_SPEED, -80);
 		moveToDist(150,MOVE_FAST_SPEED);
 
-		if(seconds() < 120.0) {
+		if(seconds() - initialTime < 3000.0) {
 		
 			arcToPinkTape();
 			setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
+			
 			raiseArm(400);
 		
+			thread t6 = thread_create(raiseArmToBlueBlockHeight);
+			thread_start(t6);
+			
 			moveToDist(-800,MOVE_FAST_SPEED);
 			
-			thread t5 = thread_create(raiseArmToBlueBlockHeight);
-			thread_start(t5);
 			
 			msleep(500);
 			
-			rotate(TURN_MID_SPEED, -100);
+			rotate(TURN_FAST_SPEED, -100);
 			msleep(500);
 			moveToDist(800,MOVE_FAST_SPEED);
 			
@@ -349,10 +351,11 @@ void routine()
 		*/
 		
 	}
-	
+
 int main() {
-	wait_for_light(LIGHT_SENSOR_PORT);
-	shut_down_in(60.0);
+	//wait_for_light(LIGHT_SENSOR_PORT);
+	printf("see light, starting\n");
+	shut_down_in(119.5);//119.5
 	createInit();
 	printf("\n Battery Capacity: %d", get_create_battery_capacity());
 	printf("\n Battery Charge: %d", get_create_battery_charge());
