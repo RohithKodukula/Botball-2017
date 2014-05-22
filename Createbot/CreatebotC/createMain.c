@@ -92,31 +92,36 @@ void serialTestingUtility(){
 
 void routine()
 	{
+		
 		double initialTime = seconds();
-		msleep(1600);
 		//turn out of starting box
-		rotate(TURN_MID_SPEED, -80);
+		//turnWithSerial(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -86);
 		//move out of starting box
 		moveToDist(600, MOVE_MID_SPEED);
+		msleep(2000);
 		//turn to face left side of game board
-		rotate(TURN_MID_SPEED, -80);
+		//turnWithSerial(TURN_MID_SPEED, -90);
+		turnWithSerial(TURN_MID_SPEED, -86);
 		//move to blue box
 		moveToDist(300, MOVE_MID_SPEED);
 		msleep(100);
 		//capture blue box with lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
 		thread t5 = thread_create(raiseArmTo250);
+		//raiseArmTo250();
 		thread_start(t5);
 		//bring blue block to tape
 		arcToPinkTape();
+		msleep(4000);
 		thread_destroy(t5);
 		lowerArmBySensor();
 		//release blue box
 		setLowerClaw(LOWER_CLAW_OPEN);
-		msleep(200);
+		msleep(500);
 		//nudge blue box
-		moveToDist(60, MOVE_MID_SPEED);
-		moveToDist(-60, MOVE_MID_SPEED);
+		moveToDist(80, MOVE_MID_SPEED);
+		moveToDist(-70, MOVE_MID_SPEED);
 		//raise arm while turning to face orange boxes
 		thread t = thread_create(raiseArmToTop);
 		thread_start(t);
@@ -125,11 +130,12 @@ void routine()
 		*/
 		arcToBlockCapturePosition();
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		msleep(1500);
+		msleep(8000);
 		thread_destroy(t);
+		msleep(100);
+		rotate(TURN_MID_SPEED, -8);
 		//move to final block capture position
-		moveToDist(70, MOVE_SLOW_SPEED);
-		
+		//moveToDist(70, MOVE_SLOW_SPEED);
 		int angle2 = sweepForOrange();
 		printf("\nangle2: %d\n", angle2);
 		msleep(100);
@@ -142,7 +148,7 @@ void routine()
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(100);
+			msleep(150);
 		}
 		
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
@@ -168,14 +174,14 @@ void routine()
 		thread t2 = thread_create(lowerArmBySensor);
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
-		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
+		printf("\nturn compensation: %d\n", -74 - (angle + angle2));
 		rotate(TURN_MID_SPEED - 10, -84 - (angle + angle2));
 		msleep(3500);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
 		printf("SHOULD BE D-STROYED\n");*/
 		//wall align
-		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
+		moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//turn to face tubes
 		rotate(TURN_MID_SPEED, -90);
@@ -183,7 +189,7 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
 		//wall align on tube wall
-		moveToWallAlign(900, MOVE_MID_SPEED, 1.5);
+		moveToWallAlign(1100, MOVE_MID_SPEED, 2.5);
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
@@ -208,7 +214,7 @@ void routine()
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
 		rotate(TURN_SLOW_SPEED + 10, 90);
-		msleep(1500);
+		msleep(4000);
 		thread_destroy(t3);
 		moveToDist(70, MOVE_SLOW_SPEED);
 		angle2 = sweepForOrange();
@@ -221,7 +227,7 @@ void routine()
 		while (x > 150) {
 			moveToDist(30, MOVE_SLOW_SPEED);
 			x = getMillimeterDistance();
-			msleep(100);
+			msleep(150);
 		}
 		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
 		msleep(500);
@@ -247,11 +253,11 @@ void routine()
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
-		rotate(TURN_MID_SPEED -10, -84 - (angle + angle2));
+		rotate(TURN_MID_SPEED -10, -74 - (angle + angle2));
 		msleep(3500);
 		//thread_destroy(t4);
 		//adding more comments for fun
-		moveToWallAlign(800, MOVE_MID_SPEED, 2.0);
+		moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//rotate to face tubes
@@ -260,7 +266,7 @@ void routine()
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
 		//wall align on tube wall
-		moveToWallAlign(1000, MOVE_MID_SPEED, 1.5);
+		moveToWallAlign(1100, MOVE_MID_SPEED, 2.5);
 		msleep(500);
 		//capture tube in lower claw
 		setLowerClaw(LOWER_CLAW_CLOSED_PIPE);
@@ -271,16 +277,17 @@ void routine()
 		//release tube in lower claw
 		setLowerClaw(LOWER_CLAW_OPEN);
 		//back up from tube wall
-		
+		/*
 		msleep(800);
-		moveToDist(-200, MOVE_FAST_SPEED);
+		moveToDist(-300, MOVE_FAST_SPEED);
 		//rotate towards wall
 		rotate(TURN_MID_SPEED, -80);
-		moveToDist(150,MOVE_FAST_SPEED);
+		moveToDist(40,MOVE_FAST_SPEED);
 		//yolo
-		if(seconds() - initialTime < 104.0) { //105.0
+		 if(seconds() - initialTime < 0) { //105.0
 		
 			arcToPinkTape();
+			msleep(6000);
 			setLowerClaw(LOWER_CLAW_STRANGLE_BOT_GUY);
 			
 			raiseArm(400);
@@ -288,18 +295,18 @@ void routine()
 			thread t6 = thread_create(raiseArmToBlueBlockHeight);
 			thread_start(t6);
 			
-			moveToDist(-700,MOVE_FAST_SPEED);
+			moveToDist(-830,MOVE_FAST_SPEED);
 			
 			
 			msleep(500);
 			
-			rotate(TURN_FAST_SPEED, -163);
+			rotate(TURN_FAST_SPEED, -186);
 			msleep(500);
 			//setLowerClaw(LOWER_CLAW_OPEN);
 			//moveToDist(800,MOVE_FAST_SPEED);
 			
 		}
-
+*/
 /*
 		//wall align
 		//moveToWallAlign(700, MOVE_MID_SPEED, 3.0);
@@ -358,6 +365,8 @@ void routine()
 	}
 
 int main() {
+	
+	
 	createInit();
 	printf("\n Battery Capacity: %d", get_create_battery_capacity());
 	printf("\n Battery Charge: %d", get_create_battery_charge());
@@ -373,6 +382,8 @@ int main() {
 	printf("see light, starting\n");
 	shut_down_in(119.5);//119.5
 	routine();
+	
+	
 	
 	/*while (x < 4) {
 		rotate(TURN_MID_SPEED, -90);

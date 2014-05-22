@@ -176,19 +176,46 @@ void moveToWallAlign(int power) {
 	//set the left touch sensor to be parallel to 
 	set_servo_position(POM_ALIGNER_SERVO, POM_ALIGNER_PARALLEL); //860 is when its parallel
 	
+	clear_motor_position_counter(LEFT_MOTOR);
+	clear_motor_position_counter(RIGHT_MOTOR);
+	
+	int lPos;
+	int rPos;
+	
 	//variables to track which side has been activated
 	int rightTriggered = 0;
 	int leftTriggered = 0;
 	while (1) {
-		if (getLeftTouchSensor()) {
+		if (getLeftTouchSensor() || leftTriggered) {
 			freeze(LEFT_MOTOR);
-			leftTriggered = 1;
 			//if we don't set anything then the touch sensors could un-trigger
 			//we might never escape loop
+			if (!leftTriggered) {
+				//if we're stopped the left motor, we need to save current position of right motor for comparison
+				rPos = get_motor_position_counter(RIGHT_MOTOR);
+				leftTriggered = 1;
+			}
+			else {
+				if ((get_motor_position_counter(RIGHT_MOTOR) - rPos) > TICKS_PER_DEGREE * 360 * 2 * 1.08) {
+					leftTriggered = 0; //go back into loop
+					motor(LEFT_MOTOR, power);
+				}
+			}
 		}
-		if (getRightTouchSensor()) {
+		if (getRightTouchSensor() || rightTriggered) {
 			freeze(RIGHT_MOTOR);	
-			rightTriggered = 1;
+			
+			if (!rightTriggered) {
+				lPos = get_motor_position_counter(LEFT_MOTOR);
+				rightTriggered = 1;
+			}
+			else {
+				if ((get_motor_position_counter(LEFT_MOTOR) - lPos) > TICKS_PER_DEGREE*360*2*0.98) {
+					rightTriggered = 0;
+					motor(RIGHT_MOTOR, power*R_WHEEL_CALIBRATION_CONSTANT);
+
+				}
+			}
 		}
 		if (rightTriggered && leftTriggered) {
 			//halt the motors
@@ -503,10 +530,10 @@ void lowerArmBySensor() {
 
 void raiseArm() {
 	motor(ARM_MOTOR, FAST_SPEED);
-	while (getArmUpSensorValue() > 280) {
-		msleep(30);
+	while (getArmUpSensorValue() > 290) {
+		msleep(20);
 	}
-	msleep(10);
+	msleep(5);
 	motor(ARM_MOTOR, ARM_HOLDING_POWER);
 }
 
@@ -573,7 +600,7 @@ void setServoSlow(int targetPos, int sleepTime) {
 void kick() {
 	set_servo_position(KICKER_SERVO, KICKER_KICKED);
 	freeze(SPINNER_MOTOR);
-	msleep(1000);
+	msleep(800);
 	spinnerStart();
 	//not necessary, only 1 pink tribble
 	/*msleep(300);
@@ -595,9 +622,9 @@ void dumpBasket() {
 	int i = 0;
 	for(i = 0; i < 3; i++) {
 		set_servo_position(BASKET_SERVO, BASKET_DOWN);
-		msleep(500);
+		msleep(800);
 		set_servo_position(BASKET_SERVO, BASKET_UP);
-		msleep(400);
+		msleep(800);
 	}
 }
 

@@ -7,8 +7,8 @@ const int ARM_MOTOR = 3;
 
 //motor constants
 const int TICKS_PER_CM = 52;
-const double TICKS_PER_DEGREE = 12.60;
-const double R_WHEEL_CALIBRATION_CONSTANT = 1.04;
+const double TICKS_PER_DEGREE = 11.06;
+const double R_WHEEL_CALIBRATION_CONSTANT = 1.01;
 
 //servos
 const int DUMPER_SERVO = 0;

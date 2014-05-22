@@ -35,7 +35,7 @@ int sweepForOrange() {
 			angle = -10;
 			msleep(1000);
 			if (!cameraSeesBigOrange()) {
-				printf("\nSomething shat itself.\n");
+				printf("\nSomething pooped itself.\n");
 				ao();
 				create_disconnect();
 				return angle;

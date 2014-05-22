@@ -41,7 +41,7 @@ void raiseArm(int position) {
 }
 
 void raiseArmTo250() {
-	raiseArm(250);
+	raiseArm(350);
 }
 
 void raiseArmToTop() {
@@ -480,10 +480,10 @@ void turnWithSerial(int speed, int degrees) {
 		speed1 = 0;
 		speed2 = 0;
 	}
-	 
-	create_disconnect();
-	msleep(150);
-	create_connect();
+	
+	msleep(300);
+	create_clear_serial_buffer();
+	msleep(300);
 	
 			create_write_byte(128); //initializes mode to full
 			create_write_byte(132);
@@ -506,24 +506,18 @@ void turnWithSerial(int speed, int degrees) {
 			create_write_byte(0);
 			create_write_byte(0);
 			create_write_byte(0);
+			create_write_byte(153);
 			
-	create_disconnect();
-	
-	msleep(150);
-	create_connect();
-	msleep(150);
-	create_write_byte(153);
-	create_disconnect();
-	msleep(150);
-	create_connect();
-	msleep(150);
+	msleep(300);
+	create_clear_serial_buffer();
+	msleep(300);
 	
 }
 
 void arcToPinkTape() {
 	 
 	create_disconnect();
-	msleep(75);
+	msleep(300);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -535,8 +529,8 @@ void arcToPinkTape() {
 			create_write_byte(137); //arc with radius -45 cm at speed -200 mm/s
 			create_write_byte(255);
 			create_write_byte(55);
-			create_write_byte(253);
-			create_write_byte(30);
+			create_write_byte(252);
+			create_write_byte(225);
 	
 			create_write_byte(156); //wait -80 cm
 			create_write_byte(253);
@@ -550,21 +544,18 @@ void arcToPinkTape() {
 			
 	create_disconnect();
 	
-	msleep(75);
+	msleep(300);
 	create_connect();
-	msleep(75);
+	msleep(300);
 	create_write_byte(153);
-	create_disconnect();
-	msleep(75);
-	create_connect();
-	msleep(75);
+	create_clear_serial_buffer();
 	
 }
 
 void arcToBlockCapturePosition() {
 	
 	create_disconnect();
-	msleep(150);
+	msleep(300);
 	create_connect();
 	
 			create_write_byte(128); //initializes mode to full
@@ -577,11 +568,11 @@ void arcToBlockCapturePosition() {
 			create_write_byte(0);
 			create_write_byte(80);
 			create_write_byte(0);
-			create_write_byte(95);
+			create_write_byte(130);
 	
 			create_write_byte(156); //wait 30 cm
 			create_write_byte(1);
-			create_write_byte(88);
+			create_write_byte(220);
 
 			create_write_byte(137); //stop
 			create_write_byte(0);
@@ -591,13 +582,10 @@ void arcToBlockCapturePosition() {
 			
 	create_disconnect();
 	
-	msleep(150);
+	msleep(300);
 	create_connect();
-	msleep(150);
+	msleep(300);
 	create_write_byte(153);
-	create_disconnect();
-	msleep(150);
-	create_connect();
-	msleep(150);
+	create_clear_serial_buffer();
 	
 }

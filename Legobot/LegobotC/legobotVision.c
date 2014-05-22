@@ -21,7 +21,7 @@ void moveToDistWithKickerAndPomAligner(int power, int dist, int channelToKick) {
 	
 	power = dist > 0 ? power : -power;
 	
-	int kickDelay = 425;
+	int kickDelay = 435;
 	
 	printf("delay ms: %d, power level: %f\n", kickDelay, power_level());
 	
