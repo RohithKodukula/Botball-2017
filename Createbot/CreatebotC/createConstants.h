@@ -15,6 +15,7 @@ const int ET_SENSOR_PORT;
 const int LIGHT_SENSOR_PORT;
 
 //arm positions in ticks
+const int ARM_MID_POS;
 const int ARM_TOP_POS;
 
 //claw position constants

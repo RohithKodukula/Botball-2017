@@ -45,7 +45,40 @@ int sweepForOrange() {
 
 		
 	printf("i see it");
-	angle = 0;
+	//angle = 0;
+	
+	msleep(1000);
+	return angle;
+}
+
+int sweepForYellow() {
+	
+	int angle;
+	
+	printf("\nSweeping for orange...\n");
+	
+	if (!cameraSeesBigOrange()) {
+		printf("\nTurning right because I didn't see anything...\n");
+		rotate(TURN_SLOW_SPEED + 30, 15);
+		angle = 10;
+		msleep(1000);
+		if (!cameraSeesBigOrange()) {
+			printf("\nTurning left because I didn't see anything...\n");
+			rotate(TURN_SLOW_SPEED + 30, -30);
+			angle = -10;
+			msleep(1000);
+			if (!cameraSeesBigOrange()) {
+				printf("\nSomething pooped itself.\n");
+				ao();
+				create_disconnect();
+				return angle;
+			}
+		}	
+	}
+
+		
+	printf("i see it");
+	//angle = 0;
 	
 	msleep(1000);
 	return angle;
@@ -90,6 +123,54 @@ int cameraSeesBigOrange() {
 	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
 	
 	if (averageArea > 800.00) {
+		isLargeEnough = 1;
+	} else {
+		isLargeEnough = 0;
+	}
+	
+	return isLargeEnough;
+	
+}
+
+int cameraSeesBigYellow() {
+	
+	printf("\nseesbigyellow started...\n");
+	
+	int x, y, z;
+	double averageArea;
+	int isLargeEnough;
+	
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	x = get_object_area(0, 0);
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	y = get_object_area(0, 0);
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	z = get_object_area(0, 0);
+	msleep(200);
+	
+	averageArea = ((x + y + z) / 3);
+	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
+	
+	if (averageArea > 600.00) {
 		isLargeEnough = 1;
 	} else {
 		isLargeEnough = 0;

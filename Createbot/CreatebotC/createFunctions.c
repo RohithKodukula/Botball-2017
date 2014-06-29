@@ -42,6 +42,13 @@ void raiseArm(int position) {
 
 void raiseArmTo250() {
 	raiseArm(350);
+<<<<<<< HEAD
+}
+
+void raiseArmToMiddle(){
+	raiseArm(ARM_MID_POS);
+=======
+>>>>>>> FETCH_HEAD
 }
 
 void raiseArmToTop() {
@@ -395,7 +402,7 @@ void turnWithSerial(int speed, int degrees) {
 	} else if (degrees >= -45) {
 		compensation = 4;
 	} else if (degrees >= -90) {
-		compensation = 2;
+		compensation = 6;
 	} else if (degrees >= -180) {
 		compensation = 8;
 	} else {
@@ -409,7 +416,7 @@ void turnWithSerial(int speed, int degrees) {
 	} else if (degrees <= 45) {
 		compensation = 4;
 	} else if (degrees <= 90) {
-		compensation = 2;
+		compensation = 6;
 	} else if (degrees <= 180) {
 		compensation = 8;
 	} else {
@@ -486,26 +493,46 @@ void turnWithSerial(int speed, int degrees) {
 	msleep(300);
 	
 			create_write_byte(128); //initializes mode to full
+	msleep(20);
 			create_write_byte(132);
+	msleep(20);
 
 			create_write_byte(152); //script size
+	msleep(20);
 			create_write_byte(13);
+	msleep(20);
 	
 			create_write_byte(137); //spin
+	msleep(20);
 			create_write_byte(speed1);
+	msleep(20);
 			create_write_byte(speed2);
+	msleep(20);
 			create_write_byte(0);
+			msleep(20);
 			create_write_byte(0);
+			msleep(20);
 	
 			create_write_byte(157); //wait angle
+			msleep(20);
 			create_write_byte(angle1);
+			msleep(20);
 			create_write_byte(angle2);
+			msleep(20);
 
 			create_write_byte(137); //stop
+			msleep(20);
 			create_write_byte(0);
+			msleep(20);
 			create_write_byte(0);
+			msleep(20);
 			create_write_byte(0);
+			msleep(20);
 			create_write_byte(0);
+<<<<<<< HEAD
+			msleep(20);
+=======
+>>>>>>> FETCH_HEAD
 			create_write_byte(153);
 			
 	msleep(300);

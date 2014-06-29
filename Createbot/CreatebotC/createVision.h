@@ -12,4 +12,7 @@ int getLargestBlob(int channel);
 
 int cameraSeesBigOrange();
 
+int cameraSeesBigYellow();
+int sweepForYellow();
+
 #endif

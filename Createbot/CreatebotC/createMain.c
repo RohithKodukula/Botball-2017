@@ -52,7 +52,7 @@ void serialTestingUtility(){
 		
 		if (a_button()) {
 			printf("\n\nMoving to distance 100cm at speed 350 mm/s with serial function...\n\n");
-			moveWithSerial(350, 100);
+			moveWithSerial(350, 1000);
 			console_clear();
 		}
 		
@@ -96,13 +96,21 @@ void routine()
 		double initialTime = seconds();
 		//turn out of starting box
 		//turnWithSerial(TURN_MID_SPEED, -90);
+<<<<<<< HEAD
+		turnWithSerial(TURN_MID_SPEED, -90);
+=======
 		turnWithSerial(TURN_MID_SPEED, -86);
+>>>>>>> FETCH_HEAD
 		//move out of starting box
 		moveToDist(600, MOVE_MID_SPEED);
 		msleep(2000);
 		//turn to face left side of game board
 		//turnWithSerial(TURN_MID_SPEED, -90);
+<<<<<<< HEAD
+		turnWithSerial(200, -90);
+=======
 		turnWithSerial(TURN_MID_SPEED, -86);
+>>>>>>> FETCH_HEAD
 		//move to blue box
 		moveToDist(300, MOVE_MID_SPEED);
 		msleep(100);
@@ -133,7 +141,11 @@ void routine()
 		msleep(8000);
 		thread_destroy(t);
 		msleep(100);
+<<<<<<< HEAD
+		turnWithSerial(200, -8);
+=======
 		rotate(TURN_MID_SPEED, -8);
+>>>>>>> FETCH_HEAD
 		//move to final block capture position
 		//moveToDist(70, MOVE_SLOW_SPEED);
 		int angle2 = sweepForOrange();
@@ -175,7 +187,11 @@ void routine()
 		thread_start(t2);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		printf("\nturn compensation: %d\n", -74 - (angle + angle2));
+<<<<<<< HEAD
+		turnWithSerial(200, -90 - (angle + angle2));
+=======
 		rotate(TURN_MID_SPEED - 10, -84 - (angle + angle2));
+>>>>>>> FETCH_HEAD
 		msleep(3500);
 		//thread_destroy(t2);		//turn to face left wall
 		/*thread_destroy(t2);
@@ -184,7 +200,7 @@ void routine()
 		moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 		moveToDist(-90, MOVE_SLOW_SPEED);
 		//turn to face tubes
-		rotate(TURN_MID_SPEED, -90);
+		turnWithSerial(200, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -202,7 +218,7 @@ void routine()
 		//back up from tube wall
 		moveToDist(-120, MOVE_MID_SPEED);
 		//turn to face left wall
-		rotate(TURN_MID_SPEED, 90);
+		turnWithSerial(200, 90);
 		//back up to position to turn to view orange block
 		moveToDist(-200, MOVE_MID_SPEED); //was -150
 		
@@ -213,10 +229,15 @@ void routine()
 		
 		thread t3 = thread_create(raiseArmToTop);
 		thread_start(t3);
+<<<<<<< HEAD
+		turnWithSerial(200, 90);
+		msleep(7000);
+=======
 		rotate(TURN_SLOW_SPEED + 10, 90);
 		msleep(4000);
+>>>>>>> FETCH_HEAD
 		thread_destroy(t3);
-		moveToDist(70, MOVE_SLOW_SPEED);
+		moveWithSerial(200, 30);
 		angle2 = sweepForOrange();
 		printf("\nangle2: %d\n", angle2);
 		msleep(100);
@@ -225,13 +246,12 @@ void routine()
 		//msleep(500);
 		x = getMillimeterDistance();
 		while (x > 150) {
-			moveToDist(30, MOVE_SLOW_SPEED);
+			moveWithSerial(200, 300);
 			x = getMillimeterDistance();
 			msleep(150);
 		}
-		moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
-		msleep(500);
-		//capture remaining orange box in upper claw
+		moveToDist(x-45, MOVE_SLOW_SPEED); 				//move until 6 cm away
+		msleep(500);									//capture remaining orange box in upper claw
 		raiseArm(15);
 		msleep(300);
 		setUpperClaw(UPPER_CLAW_CLOSED);
@@ -253,15 +273,19 @@ void routine()
 		thread_start(t4);
 		//turnWithSerial(TURN_SLOW_SPEED, 90);
 		printf("\nturn compensation: %d\n", -84 - (angle + angle2));
+<<<<<<< HEAD
+		turnWithSerial(200, -74 - (angle + angle2));
+=======
 		rotate(TURN_MID_SPEED -10, -74 - (angle + angle2));
+>>>>>>> FETCH_HEAD
 		msleep(3500);
 		//thread_destroy(t4);
 		//adding more comments for fun
 		moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 		//back up from wall align on left wall
 		moveToDist(-90, MOVE_SLOW_SPEED);
-		//rotate to face tubes
-		rotate(TURN_MID_SPEED, -90);
+		//turn to face tubes
+		turnWithSerial(200, -90);
 		/*moveToDist(x - 600, MOVE_SLOW_SPEED);
 		setUpperClaw(UPPER_CLAW_CLOSED);
 		moveToDist(-300,MOVE_MID_SPEED);*/
@@ -280,7 +304,11 @@ void routine()
 		/*
 		msleep(800);
 		moveToDist(-300, MOVE_FAST_SPEED);
+<<<<<<< HEAD
+		//turn towards wall
+=======
 		//rotate towards wall
+>>>>>>> FETCH_HEAD
 		rotate(TURN_MID_SPEED, -80);
 		moveToDist(40,MOVE_FAST_SPEED);
 		//yolo
@@ -368,20 +396,38 @@ int main() {
 	
 	
 	createInit();
-	printf("\n Battery Capacity: %d", get_create_battery_capacity());
-	printf("\n Battery Charge: %d", get_create_battery_charge());
-	printf("\n Battery Temp: %d", get_create_battery_temp());
+	printf("\nBattery Capacity: %d", get_create_battery_capacity());
+	printf("\nBattery Charge: %d", get_create_battery_charge());
+	printf("\nBattery Temp: %d", get_create_battery_temp());
 	initActuators();
 	cameraInitialize();
+	
+	//raiseArmToMiddle();
+	
+	shut_down_in(119.5);
+	routine();
+	
+	/*
+	int x = 0;
+	
+	while(1) {
+	turnWithSerial(200, 90);
+	msleep(500);
+		x++;
+		printf("\nTurns: %d", x);
+	}
+	*/
 	
 	//printf("Waiting for light\n");
 	//printf("See light, starting routine\n");
 	
-
+	/*
 	wait_for_light(LIGHT_SENSOR_PORT);
 	printf("see light, starting\n");
 	shut_down_in(119.5);//119.5
 	routine();
+	*/
+	
 	
 	
 	
