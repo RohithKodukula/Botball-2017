@@ -11,6 +11,8 @@ void blobTrack(int channel, int object);
 int getLargestBlob(int channel);
 
 int cameraSeesBigOrange();
+point2 cameraSeesBigOranges();
+void moveToBestBlob();
 
 int cameraSeesBigYellow();
 int sweepForYellow();

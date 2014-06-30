@@ -26,12 +26,12 @@ int sweepForOrange() {
 	
 	if (!cameraSeesBigOrange()) {
 		printf("\nTurning right because I didn't see anything...\n");
-		rotate(TURN_SLOW_SPEED + 30, 15);
+		turnWithSerial(50, 20);
 		angle = 10;
 		msleep(1000);
 		if (!cameraSeesBigOrange()) {
 			printf("\nTurning left because I didn't see anything...\n");
-			rotate(TURN_SLOW_SPEED + 30, -30);
+			turnWithSerial(50, -40);
 			angle = -10;
 			msleep(1000);
 			if (!cameraSeesBigOrange()) {
@@ -129,6 +129,88 @@ int cameraSeesBigOrange() {
 	}
 	
 	return isLargeEnough;
+	
+}
+
+point2 cameraSeesBigOranges() {
+	
+	printf("\nseesbigoranges started...\n");
+	
+	int x, y, z;
+	double averageArea;
+	int isLargeEnough;
+	int i = 0;
+	int bestObjectIndex = 0;
+	
+	point2 bestObjectLocation;
+	bestObjectLocation.x = -1;
+	bestObjectLocation.y = -1;
+	
+	while (i < 2 && isLargeEnough) { //begin while loop
+		
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	x = get_object_area(0, i);
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	y = get_object_area(0, i);
+	msleep(200);
+	camera_update();
+	msleep(200);
+	camera_update();
+	msleep(200);
+	z = get_object_area(0, i);
+	msleep(200);
+	
+	averageArea = ((x + y + z) / 3);
+	printf("\nx: %d\ny: %d\nz: %d\n", x, y, z);
+	
+	if (averageArea > 800.00) {
+		isLargeEnough = 1;
+		
+		printf("\nY-coord of current object: %d", get_object_centroid(0, i).y);
+		printf("\nY-coord of best object: %d", get_object_centroid(0, bestObjectIndex).y);
+		
+		
+		if (get_object_centroid(0, bestObjectIndex).y > get_object_centroid(0, i).y) {
+			bestObjectIndex = i;
+			printf("\nfound the best object index...\n");
+		}
+		
+	} else {
+		isLargeEnough = 0;
+		if(i==0)
+		{
+			
+			printf("failed and exiting function...");
+			
+			return bestObjectLocation;
+		}
+	}
+	
+	i++;
+		
+	}		//end while loop
+	
+	printf("\nIndex: %d", bestObjectIndex);
+	printf("\nLocation: (%d, %d)", get_object_centroid(0, bestObjectIndex).x, get_object_centroid(0, bestObjectIndex).y);
+	
+	point2 returnedPoint = get_object_centroid(0, bestObjectIndex);
+	
+	return returnedPoint;
 	
 }
 
@@ -232,6 +314,35 @@ void centerCamera(int channel, int object) {
 }
 
 
+
+void moveToBestBlob(point2 objectPosition) {
+	
+	printf("\nstarting movetobestblob...\n");
+	
+	thread moveArm;
+	
+	if (objectPosition.y < 100) {
+		moveArm = thread_create(raiseArmToTopFromBetween);
+	} else {
+		moveArm = thread_create(lowerArmToMiddleFromBetween);
+	}
+	
+	printf("\nangle to move to the block: %d\n", getAngle(objectPosition.x));
+	
+	printf("\nstarting movement threads...\n");
+	
+	thread_start(moveArm);
+	turnWithSerial(200, getAngle(objectPosition.x));
+	
+	msleep(4000);
+	
+	printf("\ndestroying movement threads...\n");
+	
+	thread_destroy(moveArm);
+	
+}
+
+
 //camera width is 320 with MED_RES
 int centerCameraFast(int channel) {
 	int x;
@@ -239,6 +350,7 @@ int centerCameraFast(int channel) {
 	int angle = 999;
 	int blob = 0; //largest blob
 	int counter = 0;
+	
 	while ( (angle < -1 || angle > 1) && counter < 5){
 		printf("\ntest 1, %d\n", counter);
 		angle = getAngleToBlob(channel, blob);
@@ -254,7 +366,7 @@ int centerCameraFast(int channel) {
 		}
 		printf("\ncalculated angle: %d\n",angle);
 		
-		rotate(50, angle);
+		turnWithSerial(40, angle);
 		msleep(500);
 		counter++;
 	}

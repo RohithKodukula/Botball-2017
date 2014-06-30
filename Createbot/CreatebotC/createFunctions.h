@@ -8,9 +8,17 @@ void createInit();
 void raiseArm(int position);
 void raiseArmTo250();
 void raiseArmToTop();
+void raiseArmToBetween();
+void raiseArmToTopFromBetween();
+void lowerArmToMiddleFromBetween();
 void lowerArm(int position);
 void lowerArmBySensor();
 void raiseArmToBlueBlockHeight();
+
+//
+void captureOrangeBlock();
+void setDeltaAngle(int angle);
+int getDeltaAngle();
 
 //create movement
 void moveStraight(int vel);

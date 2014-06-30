@@ -1,5 +1,7 @@
 #include "createConstants.h"
 
+int deltaAngle = 0;
+
 void createInit() {
 	int connect = create_connect();
 	enable_servos();
@@ -42,13 +44,14 @@ void raiseArm(int position) {
 
 void raiseArmTo250() {
 	raiseArm(350);
-<<<<<<< HEAD
 }
 
 void raiseArmToMiddle(){
 	raiseArm(ARM_MID_POS);
-=======
->>>>>>> FETCH_HEAD
+}
+
+void raiseArmToBetween(){
+	raiseArm(ARM_BETWEEN_POS);
 }
 
 void raiseArmToTop() {
@@ -61,6 +64,14 @@ void raiseArmToTop() {
 	off(ARM_PORT);
 }
 
+void raiseArmToTopFromBetween() {
+	raiseArm(2135);
+}
+
+void lowerArmToMiddleFromBetween() {
+	lowerArm(-1025);
+}
+
 void raiseArmToBlueBlockHeight() {
 	clear_motor_position_counter(ARM_PORT);
 	while(get_motor_position_counter(ARM_PORT) < 1850) {
@@ -68,6 +79,51 @@ void raiseArmToBlueBlockHeight() {
 		msleep(100);
 	}
 	off(ARM_PORT);
+}
+
+void setDeltaAngle(int angle) {
+	deltaAngle = angle;
+}
+
+int getDeltaAngle() {
+	return deltaAngle;
+}
+
+void captureOrangeBlock() {
+	
+	int angle2 = sweepForOrange();
+	msleep(100);
+	int angle = centerCameraFast(0);
+	int x;
+	
+	if (getMillimeterDistance() > 300) {
+		moveWithSerial(250, 100);
+	}
+	
+	x = getMillimeterDistance();
+	
+	while (x > 150) {
+		moveWithSerial(170, 50);
+		x = getMillimeterDistance();
+		msleep(150);
+	}
+	
+	moveWithSerial(MOVE_SLOW_SPEED, x-40);
+	msleep(500);
+	raiseArm(15);
+	msleep(300);
+	setUpperClaw(UPPER_CLAW_CLOSED);
+	msleep(100);
+	setUpperClaw(UPPER_CLAW_OPEN);
+	msleep(100);
+	setUpperClaw(UPPER_CLAW_CLOSED);
+	msleep(200);
+	raiseArm(50);
+	msleep(200);
+	moveWithSerial(MOVE_SLOW_SPEED, -70);
+	msleep(100);
+	moveWithSerial(MOVE_MID_SPEED, -180);
+	
 }
 
 void lowerArm(int position) {
@@ -326,8 +382,6 @@ void moveWithSerial(int speed, int distance) {
 		speed2 = 255 - speed2;
 	}
 	
-	distance = distance * 10;
-	
 	if (distance < 0) {
 		
 		dist1 = 0;
@@ -529,10 +583,7 @@ void turnWithSerial(int speed, int degrees) {
 			create_write_byte(0);
 			msleep(20);
 			create_write_byte(0);
-<<<<<<< HEAD
 			msleep(20);
-=======
->>>>>>> FETCH_HEAD
 			create_write_byte(153);
 			
 	msleep(300);
