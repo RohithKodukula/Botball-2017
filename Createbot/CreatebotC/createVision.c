@@ -331,8 +331,11 @@ void moveToBestBlob(point2 objectPosition) {
 	
 	printf("\nstarting movement threads...\n");
 	
+	int angleToBlock = getAngle(objectPosition.x);
+	setDeltaAngle(angleToBlock);
+	
+	turnWithSerial(200, angleToBlock);
 	thread_start(moveArm);
-	turnWithSerial(200, getAngle(objectPosition.x));
 	
 	msleep(4000);
 	

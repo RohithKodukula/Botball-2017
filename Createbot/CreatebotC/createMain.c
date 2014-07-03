@@ -97,11 +97,12 @@ void multipleBlockTestingUtility(){
 	
 	printf("--------MULTIPLE LEVEL BLOCK TESTING UTILITY--------\n");
 	printf("\n\t  Side Button ---- Check for blocks on both levels.\n\n");
+	set_a_button_text("Block Vision");
 	
 	
 	while (1) {
 		
-		if (side_button()) {
+		if (a_button()) {
 			console_clear();
 			
 			printf("running...\n");
@@ -127,6 +128,7 @@ void routineTestingUtility(){
 	
 	printf("--------ROUTINE TESTING UTILITY--------\n");
 	printf("\n\tSide Button ---- Run the full routine.\n\n");
+	set_a_button_text("Block Vision");
 	
 	while (1) {
 		
@@ -142,10 +144,25 @@ void routineTestingUtility(){
 			point2 bestBlobLocation = cameraSeesBigOranges();
 			
 			if (bestBlobLocation.x > 0 && bestBlobLocation.y > 0) {
-				moveToBestBlob(bestBlobLocation);
+			moveToBestBlob(bestBlobLocation);
 			}
 			*/
 			
+			
+		}
+		
+		if (a_button()) {
+			console_clear();
+			
+			printf("running...\n");
+			
+			raiseArmToBetween();
+			
+			msleep(500);
+			
+			point2 bestBlobLocation = cameraSeesBigOranges();
+			
+			moveToBestBlob(bestBlobLocation);
 			
 		}
 		
@@ -158,67 +175,63 @@ void routineTestingUtility(){
 void routine()
 {
 	setDeltaAngle(0);
+	setDeltaDistance(0);
+	
 	double initialTime = seconds();
-	turnWithSerial(TURN_MID_SPEED, -35);
-	moveToDist(300, MOVE_MID_SPEED + 40);
-	turnWithSerial(TURN_MID_SPEED, -75);
+	
+	turnWithSerial(TURN_MID_SPEED, -45);
+	moveWithSerial(MOVE_MID_SPEED + 40, 280);
+	turnWithSerial(TURN_MID_SPEED, -53);
+	
 	raiseArmToBetween();
-	
 	point2 bestBlobLocation = cameraSeesBigOranges();
-			
-			if (bestBlobLocation.x > 0 && bestBlobLocation.y > 0) {
-				
-				moveToBestBlob(bestBlobLocation);
-				
-				captureOrangeBlock();
-				
-			}
 	
-	msleep(2000); //turn to face left side of game board
-	turnWithSerial(200, -90);
-	moveToDist(300, MOVE_MID_SPEED); //move to blue box
-	msleep(100); //capture blue box with lower claw
-	setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
-	thread t5 = thread_create(raiseArmTo250);
-	thread_start(t5); //bring blue block to tape
-	arcToPinkTape();
-	msleep(4000);
-	thread_destroy(t5);
-	lowerArmBySensor(); //release blue box
-	setLowerClaw(LOWER_CLAW_OPEN);
-	msleep(500); //nudge blue box
-	moveToDist(80, MOVE_MID_SPEED);
-	moveToDist(-70, MOVE_MID_SPEED); //raise arm while turning to face orange boxes
+	if (bestBlobLocation.x > 0 && bestBlobLocation.y > 0) {
+		moveToBestBlob(bestBlobLocation);
+		moveWithSerial(MOVE_MID_SPEED, 300);
+		setDeltaDistance(getDeltaDistance() + 300);
+		captureOrangeBlock();
+		lowerArmBySensor();
+		moveWithSerial(MOVE_MID_SPEED, 330);
+		turnWithSerial(TURN_MID_SPEED, -95);
+		moveWithSerial(MOVE_MID_SPEED, 360);
+		
+	} else {
+		lowerArmBySensor();
+		moveWithSerial(MOVE_MID_SPEED, 400);
+		turnWithSerial(TURN_MID_SPEED, -95);
+		moveWithSerial(MOVE_MID_SPEED, 300);
+	}
+	
+	msleep(500);
+	
+	moveBlueCube();
+	
+	//raise arm while turning to face orange boxes
 	thread t = thread_create(raiseArmToTop);
 	thread_start(t);
-	/*
-	GO FOR BLOCK 1
-	*/
 	arcToBlockCapturePosition();
-	//turnWithSerial(TURN_SLOW_SPEED, 90);
 	msleep(8000);
 	thread_destroy(t);
 	msleep(100);
-	//<<<<<<< HEAD
 	turnWithSerial(200, -8);
-	//=======
-	rotate(TURN_MID_SPEED, -8);
-	//>>>>>>> FETCH_HEAD
-	//move to final block capture position
-	//moveToDist(70, MOVE_SLOW_SPEED);
 	int angle2 = sweepForOrange();
 	printf("\nangle2: %d\n", angle2);
 	msleep(100);
 	int angle = centerCameraFast(0);
 	printf("\nangle: %d\n", angle);
-	//msleep(500);
+	
+	
+	
+	/*
+	
 	int x;
 	x = getMillimeterDistance();
 	
 	while (x > 150) {
-		moveToDist(30, MOVE_SLOW_SPEED);
-		x = getMillimeterDistance();
-		msleep(150);
+	moveToDist(30, MOVE_SLOW_SPEED);
+	x = getMillimeterDistance();
+	msleep(150);
 	}
 	
 	moveToDist(x-45, MOVE_SLOW_SPEED); //move until 6 cm away
@@ -253,15 +266,15 @@ void routine()
 	msleep(3500);
 	//thread_destroy(t2);		//turn to face left wall
 	/*thread_destroy(t2);
-	printf("SHOULD BE D-STROYED\n");*/
+	printf("SHOULD BE D-STROYED\n");
+	
+	*/
+	
 	//wall align
 	moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 	moveToDist(-90, MOVE_SLOW_SPEED);
 	//turn to face tubes
 	turnWithSerial(200, -90);
-	/*moveToDist(x - 600, MOVE_SLOW_SPEED);
-	setUpperClaw(UPPER_CLAW_CLOSED);
-	moveToDist(-300,MOVE_MID_SPEED);*/
 	//wall align on tube wall
 	moveToWallAlign(1100, MOVE_MID_SPEED, 2.5);
 	msleep(500);
@@ -281,21 +294,29 @@ void routine()
 	moveToDist(-200, MOVE_MID_SPEED); //was -150
 	
 	//raise arm while turning to face orange boxes
+	
 	/*
 	GO FOR BLOCK 2
 	*/
 	
-	thread t3 = thread_create(raiseArmToTop);
+	thread t3 = thread_create(raiseArmToBetween);
 	thread_start(t3);
-	//<<<<<<< HEAD
 	turnWithSerial(200, 90);
 	msleep(7000);
-	//=======
-	rotate(TURN_SLOW_SPEED + 10, 90);
-	msleep(4000);
-	//>>>>>>> FETCH_HEAD
+	//rotate(TURN_SLOW_SPEED + 10, 90);
+	//msleep(4000);
 	thread_destroy(t3);
 	moveWithSerial(200, 30);
+	
+	bestBlobLocation = cameraSeesBigOranges();
+	
+	if (bestBlobLocation.x > 0 && bestBlobLocation.y > 0) {
+		moveToBestBlob(bestBlobLocation);
+		captureOrangeBlock();
+	}
+	
+	/*
+	
 	angle2 = sweepForOrange();
 	printf("\nangle2: %d\n", angle2);
 	msleep(100);
@@ -320,8 +341,6 @@ void routine()
 	msleep(250);
 	raiseArm(50);
 	msleep(200);
-	//Raise arm slightly to pull away from surface
-	//raiseArm(500);
 	//pull away from orange box starting position
 	moveToDist(-90, MOVE_SLOW_SPEED);
 	msleep(100);
@@ -329,15 +348,14 @@ void routine()
 	//compensate for camera turn
 	thread t4 = thread_create(lowerArmBySensor);
 	thread_start(t4);
-	//turnWithSerial(TURN_SLOW_SPEED, 90);
 	printf("\nturn compensation: %d\n", -84 - (angle + angle2));
-	//<<<<<<< HEAD
 	turnWithSerial(200, -74 - (angle + angle2));
-	//=======
 	rotate(TURN_MID_SPEED -10, -74 - (angle + angle2));
-	//>>>>>>> FETCH_HEAD
 	msleep(3500);
-	//thread_destroy(t4);
+	
+	*/
+	
+	
 	//adding more comments for fun
 	moveToWallAlign(1000, MOVE_MID_SPEED, 3.0);
 	//back up from wall align on left wall
@@ -448,6 +466,30 @@ void routine()
 	lowerArmBySensor();
 	*/
 	
+}
+
+void moveBlueCube() {
+	
+	/*
+	
+	//turn to face left side of game board
+	turnWithSerial(200, -90);
+	moveToDist(300, MOVE_MID_SPEED); //move to blue box
+	msleep(100); //capture blue box with lower claw
+	
+	*/
+	
+	setLowerClaw(LOWER_CLAW_CLOSED_BLOCK);
+	thread t5 = thread_create(raiseArmTo250);
+	thread_start(t5); //bring blue block to tape
+	arcToPinkTape();
+	msleep(4000);
+	thread_destroy(t5);
+	lowerArmBySensor(); //release blue box
+	setLowerClaw(LOWER_CLAW_OPEN);
+	msleep(500); //nudge blue box
+	moveToDist(80, MOVE_MID_SPEED);
+	moveToDist(-70, MOVE_MID_SPEED);
 }
 
 int main() {

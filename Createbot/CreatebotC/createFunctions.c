@@ -1,6 +1,7 @@
 #include "createConstants.h"
 
 int deltaAngle = 0;
+int deltaDistance = 0;
 
 void createInit() {
 	int connect = create_connect();
@@ -81,6 +82,10 @@ void raiseArmToBlueBlockHeight() {
 	off(ARM_PORT);
 }
 
+void raiseBlockOffShelf() {
+	raiseArm(50);
+}
+
 void setDeltaAngle(int angle) {
 	deltaAngle = angle;
 }
@@ -89,26 +94,50 @@ int getDeltaAngle() {
 	return deltaAngle;
 }
 
+void setDeltaDistance(int distance) {
+	deltaDistance = distance;
+}
+
+int getDeltaDistance() {
+	return deltaDistance;
+}
+
 void captureOrangeBlock() {
 	
-	int angle2 = sweepForOrange();
-	msleep(100);
-	int angle = centerCameraFast(0);
+	//int angle2 = sweepForOrange();
+	
+	//msleep(100);
+	//int angle = centerCameraFast(0);
 	int x;
+	
+	
+	printf("\n\nPAUSING\n\n\current delta distance: %d\n\n", getDeltaDistance());
+	//msleep(3000);
 	
 	if (getMillimeterDistance() > 300) {
 		moveWithSerial(250, 100);
+		setDeltaDistance(getDeltaDistance() + 100);
 	}
+	
+	
+	printf("\n\nPAUSING\n\n\current delta distance: %d\n\n", getDeltaDistance());
+	//msleep(3000);
 	
 	x = getMillimeterDistance();
 	
 	while (x > 150) {
 		moveWithSerial(170, 50);
+		setDeltaDistance(getDeltaDistance() + 50);
 		x = getMillimeterDistance();
 		msleep(150);
 	}
 	
+	printf("\n\nPAUSING\n\n\current delta distance: %d\n\n", getDeltaDistance());
+	//msleep(3000);
+	
 	moveWithSerial(MOVE_SLOW_SPEED, x-40);
+	setDeltaDistance(getDeltaDistance() + x - 40);
+	thread t1 = thread_create(raiseBlockOffShelf);
 	msleep(500);
 	raiseArm(15);
 	msleep(300);
@@ -117,12 +146,16 @@ void captureOrangeBlock() {
 	setUpperClaw(UPPER_CLAW_OPEN);
 	msleep(100);
 	setUpperClaw(UPPER_CLAW_CLOSED);
-	msleep(200);
-	raiseArm(50);
-	msleep(200);
-	moveWithSerial(MOVE_SLOW_SPEED, -70);
-	msleep(100);
-	moveWithSerial(MOVE_MID_SPEED, -180);
+	msleep(150);
+	thread_start(t1);
+	
+	
+	printf("\n\nPAUSING\n\n\current delta distance: %d\n\n", getDeltaDistance());
+	//msleep(3000);
+	
+	moveWithSerial(-MOVE_MID_SPEED, getDeltaDistance());
+	thread_destroy(t1);
+	turnWithSerial(TURN_MID_SPEED, -getDeltaAngle());
 	
 }
 
@@ -163,7 +196,7 @@ int getMillimeterDistance() {
 	double y = sum/n;
 	//mathematica function to find mm distance
 	double mm = 10*(2213.1614337305136 - 20.725917486966626*y + 0.07920950330177698*y*y - 0.0001526660102098271*y*y*y 
-			+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
+	+ 1.4770513368970602*(pow(10,-7))*y*y*y*y - 5.725546246379343*(pow(10,-11))*y*y*y*y*y);
 	//printf("cm = %f\n", mm/10);
 	return (int)mm;
 }
@@ -183,7 +216,7 @@ void moveToDist(int dist, int speed) {
 	if(speed >= 400){dist = dist - (22 * (dist * 0.01));} //fast speed
 	else if(speed > 300 && speed < 400){dist = dist - (8 * (dist * 0.01));} //mid speed
 	else if(speed <= 300){dist = dist - (6 * (dist * 0.01));} //slow speed
-
+	
 	if (dist > 0) {   
 		moveStraight(speed); 
 		while (-get_create_distance() < dist) { msleep(10); }
@@ -210,7 +243,7 @@ void moveToWallAlign(int dist, int speed, double secondTimeout) {
 	if(speed >= 400){dist = dist - (22 * (dist * 0.01));} //fast speed
 	else if(speed > 300 && speed < 400){dist = dist - (8 * (dist * 0.01));} //mid speed
 	else if(speed <= 300){dist = dist - (6 * (dist * 0.01));} //slow speed
-
+	
 	if (dist > 0) {   
 		moveStraight(speed); 
 		while (-get_create_distance() < dist && seconds() - startTime < secondTimeout) { msleep(10); }
@@ -224,7 +257,7 @@ void moveToWallAlign(int dist, int speed, double secondTimeout) {
 	createStop();
 	
 	//printf("Distance Moved: %dmm\n", -get_create_distance(0)); 
-
+	
 	
 }
 
@@ -339,7 +372,7 @@ void rotate(int speed, int degrees) {
 			msleep(3);
 			//printf("angle = %d\n", get_create_normalized_angle());
 		}
-	} else if (degrees < 0) {
+		} else if (degrees < 0) {
 		while(get_create_normalized_angle() < -degrees || get_create_normalized_angle() == 0) {
 			create_spin_CCW(speed);
 			msleep(3);
@@ -352,13 +385,8 @@ void rotate(int speed, int degrees) {
 //curves, 100cm = 110cm
 void moveWithSerial(int speed, int distance) {
 	
-	if (speed < 1) {
-		speed *= -1;
-	}
-	
 	printf("\nspeed value recieved: %d\ndistance value recieved: %d\n",
-	speed, distance
-	);
+	speed, distance);
 	
 	int dist1, dist2, speed1, speed2, counter1 = 0;
 	
@@ -366,13 +394,14 @@ void moveWithSerial(int speed, int distance) {
 		
 		speed1 = 0;
 		speed2 = speed * -1;
+		distance *= -1;
 		
 		while (speed2 > 255) {
 			speed1++;
 			speed2 -= 255;
 		}
 		
-	} else {
+		} else {
 		speed1 = 255;
 		speed2 = speed;
 		while (speed2 > 255) {
@@ -392,7 +421,7 @@ void moveWithSerial(int speed, int distance) {
 			dist2 -= 255;
 		}
 		
-	} else {
+		} else {
 		dist1 = 255;
 		dist2 = distance;
 		while (dist2 > 255) {
@@ -405,38 +434,54 @@ void moveWithSerial(int speed, int distance) {
 	printf("\nspeed1: %d\nspeed2:%d\ndist1: %d\ndist2: %d\n\n",
 	speed1, speed2, dist1, dist2
 	);
-	 
-	create_disconnect();
-	create_connect();
 	
-			create_write_byte(128); //initializes mode to full
-			create_write_byte(132);
-
-			create_write_byte(152); // script size
-			create_write_byte(13);
+	msleep(300);
+	create_clear_serial_buffer();
+	msleep(300);
 	
-			create_write_byte(137); //drive straight
-			create_write_byte(speed1);
-			create_write_byte(speed2);
-			create_write_byte(128);
-			create_write_byte(0);
+	create_write_byte(128); //initializes mode to full
+	msleep(20);
+	create_write_byte(132);
+	msleep(20);
 	
-			create_write_byte(156); //wait specified distance
-			create_write_byte(dist1);
-			create_write_byte(dist2);
-
-			create_write_byte(137); //stop
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			
-	create_disconnect();
+	create_write_byte(152); // script size
+	msleep(20);
+	create_write_byte(13);
+	msleep(20);
 	
-	create_connect();
+	create_write_byte(137); //drive straight
+	msleep(20);
+	create_write_byte(speed1);
+	msleep(20);
+	create_write_byte(speed2);
+	msleep(20);
+	create_write_byte(128);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	
+	create_write_byte(156); //wait specified distance
+	msleep(20);
+	create_write_byte(dist1);
+	msleep(20);
+	create_write_byte(dist2);
+	msleep(20);
+	
+	create_write_byte(137); //stop
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
 	create_write_byte(153);
-	create_disconnect();
-	create_connect();
+	
+	msleep(300);
+	create_clear_serial_buffer();
+	msleep(300);
 	
 }
 
@@ -451,32 +496,32 @@ void turnWithSerial(int speed, int degrees) {
 	
 	if (degrees < 0) {
 		
-	if (degrees >= -15) {
-		compensation = 0;
-	} else if (degrees >= -45) {
-		compensation = 4;
-	} else if (degrees >= -90) {
-		compensation = 6;
-	} else if (degrees >= -180) {
-		compensation = 8;
-	} else {
-		compensation = 0;
-	}
-	
-	} else {
+		if (degrees >= -15) {
+			compensation = 0;
+			} else if (degrees >= -45) {
+			compensation = 4;
+			} else if (degrees >= -90) {
+			compensation = 6;
+			} else if (degrees >= -180) {
+			compensation = 8;
+			} else {
+			compensation = 0;
+		}
 		
-	if (degrees <= 15) {
-		compensation = 0;
-	} else if (degrees <= 45) {
-		compensation = 4;
-	} else if (degrees <= 90) {
-		compensation = 6;
-	} else if (degrees <= 180) {
-		compensation = 8;
-	} else {
-		compensation = 0;
-	}
-	
+		} else {
+		
+		if (degrees <= 15) {
+			compensation = 0;
+			} else if (degrees <= 45) {
+			compensation = 4;
+			} else if (degrees <= 90) {
+			compensation = 6;
+			} else if (degrees <= 180) {
+			compensation = 8;
+			} else {
+			compensation = 0;
+		}
+		
 	}
 	
 	int angle1, angle2, speed1, speed2, counter1 = 0;
@@ -491,7 +536,7 @@ void turnWithSerial(int speed, int degrees) {
 			speed2 -= 255;
 		}
 		
-	} else {
+		} else {
 		speed1 = 255;
 		speed2 = speed;
 		while (speed2 > 255) {
@@ -513,7 +558,7 @@ void turnWithSerial(int speed, int degrees) {
 		
 		angle2 -= compensation;
 		
-	} else {
+		} else {
 		
 		angle1 = 255;
 		angle2 = degrees;
@@ -546,46 +591,46 @@ void turnWithSerial(int speed, int degrees) {
 	create_clear_serial_buffer();
 	msleep(300);
 	
-			create_write_byte(128); //initializes mode to full
+	create_write_byte(128); //initializes mode to full
 	msleep(20);
-			create_write_byte(132);
-	msleep(20);
-
-			create_write_byte(152); //script size
-	msleep(20);
-			create_write_byte(13);
+	create_write_byte(132);
 	msleep(20);
 	
-			create_write_byte(137); //spin
+	create_write_byte(152); //script size
 	msleep(20);
-			create_write_byte(speed1);
+	create_write_byte(13);
 	msleep(20);
-			create_write_byte(speed2);
-	msleep(20);
-			create_write_byte(0);
-			msleep(20);
-			create_write_byte(0);
-			msleep(20);
 	
-			create_write_byte(157); //wait angle
-			msleep(20);
-			create_write_byte(angle1);
-			msleep(20);
-			create_write_byte(angle2);
-			msleep(20);
-
-			create_write_byte(137); //stop
-			msleep(20);
-			create_write_byte(0);
-			msleep(20);
-			create_write_byte(0);
-			msleep(20);
-			create_write_byte(0);
-			msleep(20);
-			create_write_byte(0);
-			msleep(20);
-			create_write_byte(153);
-			
+	create_write_byte(137); //spin
+	msleep(20);
+	create_write_byte(speed1);
+	msleep(20);
+	create_write_byte(speed2);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	
+	create_write_byte(157); //wait angle
+	msleep(20);
+	create_write_byte(angle1);
+	msleep(20);
+	create_write_byte(angle2);
+	msleep(20);
+	
+	create_write_byte(137); //stop
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(0);
+	msleep(20);
+	create_write_byte(153);
+	
 	msleep(300);
 	create_clear_serial_buffer();
 	msleep(300);
@@ -593,33 +638,33 @@ void turnWithSerial(int speed, int degrees) {
 }
 
 void arcToPinkTape() {
-	 
+	
 	create_disconnect();
 	msleep(300);
 	create_connect();
 	
-			create_write_byte(128); //initializes mode to full
-			create_write_byte(132);
-
-			create_write_byte(152); // script size
-			create_write_byte(13);
+	create_write_byte(128); //initializes mode to full
+	create_write_byte(132);
 	
-			create_write_byte(137); //arc with radius -45 cm at speed -200 mm/s
-			create_write_byte(255);
-			create_write_byte(55);
-			create_write_byte(252);
-			create_write_byte(225);
+	create_write_byte(152); // script size
+	create_write_byte(13);
 	
-			create_write_byte(156); //wait -80 cm
-			create_write_byte(253);
-			create_write_byte(15);
-
-			create_write_byte(137); //stop
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			
+	create_write_byte(137); //arc with radius -45 cm at speed -200 mm/s
+	create_write_byte(255);
+	create_write_byte(55);
+	create_write_byte(252);
+	create_write_byte(225);
+	
+	create_write_byte(156); //wait -80 cm
+	create_write_byte(253);
+	create_write_byte(15);
+	
+	create_write_byte(137); //stop
+	create_write_byte(0);
+	create_write_byte(0);
+	create_write_byte(0);
+	create_write_byte(0);
+	
 	create_disconnect();
 	
 	msleep(300);
@@ -636,28 +681,28 @@ void arcToBlockCapturePosition() {
 	msleep(300);
 	create_connect();
 	
-			create_write_byte(128); //initializes mode to full
-			create_write_byte(132);
-
-			create_write_byte(152); // script size
-			create_write_byte(13);
+	create_write_byte(128); //initializes mode to full
+	create_write_byte(132);
 	
-			create_write_byte(137); //arc with radius 10 cm at speed 150 mm/s
-			create_write_byte(0);
-			create_write_byte(80);
-			create_write_byte(0);
-			create_write_byte(130);
+	create_write_byte(152); // script size
+	create_write_byte(13);
 	
-			create_write_byte(156); //wait 30 cm
-			create_write_byte(1);
-			create_write_byte(220);
-
-			create_write_byte(137); //stop
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			create_write_byte(0);
-			
+	create_write_byte(137); //arc with radius 10 cm at speed 150 mm/s
+	create_write_byte(0);
+	create_write_byte(80);
+	create_write_byte(0);
+	create_write_byte(130);
+	
+	create_write_byte(156); //wait 30 cm
+	create_write_byte(1);
+	create_write_byte(220);
+	
+	create_write_byte(137); //stop
+	create_write_byte(0);
+	create_write_byte(0);
+	create_write_byte(0);
+	create_write_byte(0);
+	
 	create_disconnect();
 	
 	msleep(300);

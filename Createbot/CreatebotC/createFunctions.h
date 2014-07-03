@@ -14,11 +14,16 @@ void lowerArmToMiddleFromBetween();
 void lowerArm(int position);
 void lowerArmBySensor();
 void raiseArmToBlueBlockHeight();
+void raiseBlockOffShelf();
 
-//
+
 void captureOrangeBlock();
+
 void setDeltaAngle(int angle);
 int getDeltaAngle();
+
+void setDeltaDistance(int distance);
+int getDeltaDistance();
 
 //create movement
 void moveStraight(int vel);
