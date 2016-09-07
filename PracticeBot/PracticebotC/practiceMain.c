@@ -1,5 +1,6 @@
-int R_MOTOR = 0;
-int L_MOTOR = 2;
+int R_MOTOR = 1;
+int L_MOTOR = 3;
+
 int main() {	
 	moveStraight(66.6);
 	turn(100,10);
@@ -31,4 +32,5 @@ void turn(double degrees, int speed) {
 	mav(L_MOTOR, (degrees > 0) ? 10 : 100);
 	while(abs(get_motor_position_counter(R_MOTOR)) < ticks);
 	ao();
+	
 }
